@@ -23,6 +23,35 @@ export const NewsPost: CollectionConfig = {
     delete: isAdminOrEditor,
   },
   defaultSort: '-publishedAt',
+  hooks: {
+    afterChange: [
+      async ({ doc, previousDoc, req, operation }) => {
+        try {
+          // Обратный постинг только для новостей, созданных на сайте (не из соцсетей —
+          // иначе зациклим), и только при переходе в статус «опубликовано».
+          if (doc.originPlatform !== 'site') return
+          if (doc.status !== 'published') return
+          if (operation === 'update' && previousDoc?.status === 'published') return
+
+          const settings = await req.payload.findGlobal({
+            slug: 'integration-settings',
+            overrideAccess: true,
+            depth: 0,
+          })
+          const tg = (settings as { telegram?: { enabled?: boolean; crosspostOnPublish?: boolean } })
+            ?.telegram
+          if (!tg?.enabled || !tg?.crosspostOnPublish) return
+
+          await req.payload.jobs.queue({
+            task: 'crosspostTelegram',
+            input: { postId: String(doc.id) },
+          })
+        } catch (err) {
+          req.payload.logger.error(err, '[news afterChange] enqueue crosspost failed')
+        }
+      },
+    ],
+  },
   fields: [
     { name: 'title', type: 'text', label: 'Заголовок', required: true },
     slugField('title'),

@@ -28,6 +28,15 @@ export const IntegrationSettings: GlobalConfig = {
         { name: 'botToken', type: 'text', label: 'Bot Token' },
         { name: 'channelId', type: 'text', label: 'ID / @username канала' },
         { name: 'crosspostOnPublish', type: 'checkbox', label: 'Постить новости с сайта в Telegram', defaultValue: false },
+        {
+          name: 'testConnection',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '/components/admin/TelegramTest#TelegramTest',
+            },
+          },
+        },
       ],
     },
     {

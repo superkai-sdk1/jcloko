@@ -18,6 +18,7 @@ import { FormSubmission } from './collections/FormSubmission'
 import { Pages } from './collections/Pages'
 import { SiteSettings } from './globals/SiteSettings'
 import { IntegrationSettings } from './globals/IntegrationSettings'
+import { crosspostTelegram } from './integrations/telegram/crosspost'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -47,6 +48,22 @@ export default buildConfig({
     FormSubmission,
   ],
   globals: [SiteSettings, IntegrationSettings],
+  // Асинхронные задачи (обратный постинг в соцсети с ретраями).
+  jobs: {
+    tasks: [
+      {
+        slug: 'crosspostTelegram',
+        retries: 3,
+        inputSchema: [{ name: 'postId', type: 'text', required: true }],
+        handler: async ({ input, req }) => {
+          await crosspostTelegram(req.payload, (input as { postId: string }).postId)
+          return { output: {} }
+        },
+      },
+    ],
+    // Внутренний крон обрабатывает очередь раз в минуту (процесс long-running).
+    autoRun: [{ cron: '* * * * *', queue: 'default' }],
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
