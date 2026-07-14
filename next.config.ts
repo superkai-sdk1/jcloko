@@ -7,6 +7,11 @@ const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
+  // ESLint прогоняется в CI и в pre-check перед деплоем — в Docker-сборке пропускаем,
+  // чтобы не тратить время/память на 2GB-VPS. Типы Next проверяет как обычно.
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     localPatterns: [
       {

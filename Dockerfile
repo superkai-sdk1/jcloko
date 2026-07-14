@@ -9,7 +9,8 @@ WORKDIR /app
 # --- deps -------------------------------------------------------------------
 FROM base AS deps
 COPY package.json package-lock.json ./
-RUN npm ci
+# Кэш npm сохраняется между сборками (BuildKit) — быстрее при смене зависимостей.
+RUN --mount=type=cache,target=/root/.npm npm ci
 
 # --- build ------------------------------------------------------------------
 FROM base AS build
@@ -19,7 +20,9 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Генерируем importMap и типы Payload из актуального конфига (без БД),
 # затем next build компилирует публичную часть и админку Payload.
-RUN npm run generate && npm run build
+# Кэш компиляции Next (.next/cache) сохраняется между сборками (BuildKit) —
+# инкрементальные пересборки при правках исходников идут заметно быстрее.
+RUN --mount=type=cache,target=/app/.next/cache npm run generate && npm run build
 
 # --- runner -----------------------------------------------------------------
 FROM base AS runner
