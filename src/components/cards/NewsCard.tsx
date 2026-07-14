@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import { mediaSize, mediaUrl, mediaAlt } from '@/lib/media'
 import { AdTooltip } from '@/components/AdTooltip'
@@ -29,11 +29,10 @@ export function NewsCard({ n }: { n: News }) {
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-primary/50">
       <Link href={href} className="relative block aspect-[16/10] overflow-hidden bg-ink-800">
         {img ? (
-          <Image
+          <Img
             src={img}
             alt={mediaAlt(n.heroImage, str(n.title))}
             fill
-            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

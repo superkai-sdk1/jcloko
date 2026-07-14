@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
 import { mediaUrl, mediaAlt } from '@/lib/media'
@@ -126,12 +126,11 @@ export function HeroSlider({
             playsInline
           />
         ) : img ? (
-          <Image
+          <Img
             src={img}
             alt={mediaAlt(slide.image, slide.heading ?? 'Дзюдо Локомотив')}
             fill
             priority={i === 0}
-            sizes="100vw"
             className="object-cover"
           />
         ) : (

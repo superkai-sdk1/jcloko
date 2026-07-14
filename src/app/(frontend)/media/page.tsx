@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
@@ -37,7 +37,7 @@ export default async function MediaPage() {
                     >
                       <div className="relative aspect-video overflow-hidden bg-ink-800">
                         {cover ? (
-                          <Image src={cover} alt={mediaAlt(g.coverImage, str(g.title))} fill sizes="(max-width:1024px) 100vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                          <Img src={cover} alt={mediaAlt(g.coverImage, str(g.title))} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                         ) : (
                           <div className="h-full w-full bg-tatami" />
                         )}

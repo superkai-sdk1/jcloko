@@ -1,6 +1,6 @@
 import React from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
+import { Img } from '@/components/ui/Img'
 import { mediaUrl, mediaAlt, mediaSize } from '@/lib/media'
 
 type Person = Record<string, unknown>
@@ -29,11 +29,10 @@ function PersonShell({
     >
       <div className="relative aspect-[3/4] overflow-hidden bg-ink-800">
         {img ? (
-          <Image
+          <Img
             src={img}
             alt={mediaAlt(photo, name)}
             fill
-            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

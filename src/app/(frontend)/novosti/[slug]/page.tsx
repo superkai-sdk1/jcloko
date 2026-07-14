@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -54,7 +54,7 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
       <div className="relative border-b border-line bg-ink-800">
         {img && (
           <div className="relative h-[42vh] min-h-72 w-full overflow-hidden">
-            <Image src={img} alt={mediaAlt(post.heroImage, str(post.title))} fill priority sizes="100vw" className="object-cover" />
+            <Img src={img} alt={mediaAlt(post.heroImage, str(post.title))} fill priority className="object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-ink to-ink/20" aria-hidden />
           </div>
         )}

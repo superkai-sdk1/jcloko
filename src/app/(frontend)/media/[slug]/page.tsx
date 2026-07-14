@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -60,11 +60,10 @@ export default async function GalleryDetail({ params }: { params: Promise<{ slug
                 return (
                   <Reveal key={i} delay={i * 0.03}>
                     <div className="relative aspect-square overflow-hidden rounded-lg border border-line">
-                      <Image
+                      <Img
                         src={url}
                         alt={mediaAlt(p, str(gallery.title))}
                         fill
-                        sizes="(max-width:640px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 hover:scale-105"
                       />
                     </div>

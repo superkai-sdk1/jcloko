@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
@@ -45,7 +45,7 @@ function MissionBlock({ b }: { b: Block }) {
           {img && (
             <Reveal delay={0.1}>
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-line">
-                <Image src={img} alt={mediaAlt(b.image, 'Дзюдо')} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover" />
+                <Img src={img} alt={mediaAlt(b.image, 'Дзюдо')} fill className="object-cover" />
               </div>
             </Reveal>
           )}
@@ -254,7 +254,7 @@ function GalleryBlock({ b }: { b: Block }) {
             return (
               <Reveal key={i} delay={i * 0.03}>
                 <div className="relative aspect-square overflow-hidden rounded-lg border border-line">
-                  <Image src={url} alt={mediaAlt(im, 'Фото')} fill sizes="(max-width:640px) 50vw, 25vw" className="object-cover transition-transform duration-500 hover:scale-105" />
+                  <Img src={url} alt={mediaAlt(im, 'Фото')} fill className="object-cover transition-transform duration-500 hover:scale-105" />
                 </div>
               </Reveal>
             )

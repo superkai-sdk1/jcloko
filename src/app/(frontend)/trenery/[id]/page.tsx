@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -42,12 +42,11 @@ export default async function CoachDetail({ params }: { params: Promise<{ id: st
         <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
           <div className="relative aspect-[3/4] overflow-hidden rounded-2xl border border-line bg-ink-800">
             {photo ? (
-              <Image
+              <Img
                 src={photo}
                 alt={mediaAlt(coach.photo, str(coach.name))}
                 fill
                 priority
-                sizes="(max-width:1024px) 100vw, 360px"
                 className="object-cover"
               />
             ) : (
