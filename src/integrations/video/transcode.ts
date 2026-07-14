@@ -52,9 +52,10 @@ export async function transcodeVideo(payload: Payload, videoId: string): Promise
     return
   }
 
-  const base = path.parse(video.filename).name
-  const webmName = `${base}.webm`
-  const posterName = `${base}-poster.webp`
+  // Имя вывода по ID документа — гарантированно отличается от входного файла
+  // (иначе, если загрузили уже .webm, вход == выход и ffmpeg падает).
+  const webmName = `hero-${videoId}.webm`
+  const posterName = `hero-${videoId}-poster.webp`
   const webmPath = path.join(VIDEO_DIR, webmName)
   const posterPath = path.join(VIDEO_DIR, posterName)
 
@@ -73,6 +74,7 @@ export async function transcodeVideo(payload: Payload, videoId: string): Promise
     '-y',
     '-i', input,
     ...(trim > 0 ? ['-t', String(trim)] : []),
+    '-map', '0:v:0', // только первый видеопоток (игнорируем аудио/данные)
     '-vf', "scale='min(1280,iw)':-2",
     '-c:v', 'libvpx-vp9',
     '-b:v', '1200k',
@@ -103,7 +105,7 @@ export async function transcodeVideo(payload: Payload, videoId: string): Promise
 
     // Постер-кадр (1-я секунда)
     await run('ffmpeg', [
-      '-y', '-ss', '1', '-i', input, '-frames:v', '1',
+      '-y', '-ss', '1', '-i', input, '-map', '0:v:0', '-frames:v', '1',
       '-vf', "scale='min(1280,iw)':-2", posterPath,
     ]).catch(() => {})
 
@@ -118,7 +120,7 @@ export async function transcodeVideo(payload: Payload, videoId: string): Promise
       collection: 'videos',
       id: videoId,
       overrideAccess: true,
-      data: { status: 'failed', errorText: err instanceof Error ? err.message.slice(0, 250) : 'Ошибка транскода' },
+      data: { status: 'failed', errorText: err instanceof Error ? err.message.slice(0, 800) : 'Ошибка транскода' },
     })
     throw err
   }
