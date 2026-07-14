@@ -14,6 +14,7 @@ import { NewsPost } from './collections/NewsPost'
 import { Partners } from './collections/Partners'
 import { MediaGallery } from './collections/MediaGallery'
 import { SocialPostQueue } from './collections/SocialPostQueue'
+import { FormSubmission } from './collections/FormSubmission'
 import { Pages } from './collections/Pages'
 import { SiteSettings } from './globals/SiteSettings'
 import { IntegrationSettings } from './globals/IntegrationSettings'
@@ -43,6 +44,7 @@ export default buildConfig({
     Media,
     Users,
     SocialPostQueue,
+    FormSubmission,
   ],
   globals: [SiteSettings, IntegrationSettings],
   editor: lexicalEditor(),

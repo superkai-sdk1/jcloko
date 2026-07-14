@@ -25,6 +25,7 @@
     "@payloadcms/richtext-lexical": "3.86.0",
     "@payloadcms/ui": "3.86.0",
     "cross-env": "^7.0.3",
+    "framer-motion": "12.42.2",
     "graphql": "^16.8.1",
     "next": "15.4.11",
     "payload": "3.86.0",

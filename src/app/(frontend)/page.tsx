@@ -1,47 +1,37 @@
-import { headers as getHeaders } from 'next/headers.js'
-import { getPayload } from 'payload'
 import React from 'react'
+import { getPageBySlug } from '@/lib/queries'
+import { BlockRenderer } from '@/components/blocks'
+import { Section } from '@/components/ui/Section'
+import { Container } from '@/components/ui/Container'
+import { Button } from '@/components/ui/Button'
 
-import config from '@/payload.config'
+export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  const page = await getPageBySlug('glavnaya')
 
+  if (page && Array.isArray(page.layout) && page.layout.length > 0) {
+    return <BlockRenderer blocks={page.layout} />
+  }
+
+  // Фолбэк, пока в CMS не собрана «Главная»
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-8 bg-neutral-950 px-6 text-center text-neutral-100">
-      <div className="flex flex-col items-center gap-3">
-        <span className="rounded-full border border-red-500/40 bg-red-500/10 px-4 py-1 text-sm font-medium tracking-wide text-red-300">
-          Фаза 0 · инфраструктура
+    <Section tone="ink" pattern className="flex min-h-[70vh] items-center">
+      <Container className="text-center">
+        <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1 font-display text-sm font-semibold uppercase tracking-[0.16em] text-primary-400">
+          Клуб дзюдо
         </span>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Клуб дзюдо «Локомотив»
+        <h1 className="mx-auto mt-5 max-w-3xl text-5xl font-bold uppercase leading-none text-paper sm:text-7xl">
+          Локомотив
         </h1>
-        <p className="max-w-md text-neutral-400">
-          Каркас сайта развёрнут. Публичный дизайн появится в Фазе 2, модель
-          данных — в Фазе 1.
+        <p className="mx-auto mt-5 max-w-xl text-lg text-muted">
+          Сила, дисциплина, движение вперёд. Соберите главную страницу из блоков в админке.
         </p>
-      </div>
-
-      <div className="flex flex-col items-center gap-3 text-sm text-neutral-500">
-        <p>
-          {user ? (
-            <>
-              Вы вошли как <span className="text-neutral-200">{user.email}</span>
-            </>
-          ) : (
-            'Панель управления доступна администраторам и редакторам.'
-          )}
-        </p>
-        <a
-          href={payloadConfig.routes.admin}
-          className="rounded-lg bg-red-600 px-5 py-2.5 font-semibold text-white transition-colors hover:bg-red-500"
-        >
-          Войти в админку →
-        </a>
-      </div>
-    </div>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <Button href="/kontakty" variant="accent" size="lg">Записаться</Button>
+          <Button href="/raspisanie" variant="outline" size="lg">Расписание</Button>
+        </div>
+      </Container>
+    </Section>
   )
 }

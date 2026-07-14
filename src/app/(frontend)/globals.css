@@ -1,18 +1,128 @@
 @import 'tailwindcss';
 
 /*
-  Глобальные стили публичной части сайта.
-  Админка Payload изолирована в route-группе (payload) и этих стилей не видит,
-  поэтому Tailwind preflight не конфликтует с UI админки.
+  Дизайн-система «Локомотив». Токены — через Tailwind 4 @theme (генерируют утилиты
+  bg-ink, text-primary, font-display и т.д.). Админка Payload изолирована в
+  route-группе (payload) и этих стилей не видит.
 */
 
-:root {
-  color-scheme: light;
+@theme {
+  /* Палитра «Локомотив»: тёмная база, зелёный, гранат */
+  --color-ink: #0e1b14;
+  --color-ink-800: #10231a;
+  --color-surface: #14261c;
+  --color-surface-2: #1b3327;
+  --color-line: #244233;
+
+  --color-primary: #1f7a4d;
+  --color-primary-600: #18653f;
+  --color-primary-400: #33a06a;
+
+  --color-accent: #c1121f;
+  --color-accent-600: #a10f1a;
+
+  --color-paper: #f2f5f1;
+  --color-muted: #9db0a4;
+
+  /* Шрифты (из next/font) */
+  --font-display: var(--font-oswald), 'Oswald', sans-serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+
+  /* Радиусы под спортивный, слегка гранёный стиль */
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
 }
 
-html,
-body {
-  padding: 0;
-  margin: 0;
-  min-height: 100%;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: #fff;
+  }
+
+  /* Уважаем системную настройку «меньше движения» */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Тонкая «зернистая» сетка-паттерн для тёмных секций (декоративный фон) */
+  .bg-tatami {
+    background-image:
+      linear-gradient(rgba(31, 122, 77, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(31, 122, 77, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  /* Типографика для richText-контента из Payload */
+  .rich-text {
+    color: var(--color-paper);
+    line-height: 1.7;
+  }
+  .rich-text > * + * {
+    margin-top: 1rem;
+  }
+  .rich-text h2,
+  .rich-text h3 {
+    color: var(--color-paper);
+    margin-top: 1.6rem;
+  }
+  .rich-text h2 {
+    font-size: 1.6rem;
+  }
+  .rich-text h3 {
+    font-size: 1.3rem;
+  }
+  .rich-text a {
+    color: var(--color-primary-400);
+    text-decoration: underline;
+  }
+  .rich-text ul,
+  .rich-text ol {
+    padding-left: 1.25rem;
+  }
+  .rich-text ul {
+    list-style: disc;
+  }
+  .rich-text ol {
+    list-style: decimal;
+  }
+  .rich-text li + li {
+    margin-top: 0.35rem;
+  }
+  .rich-text strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .rich-text blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1rem;
+    color: var(--color-muted);
+    font-style: italic;
+  }
 }

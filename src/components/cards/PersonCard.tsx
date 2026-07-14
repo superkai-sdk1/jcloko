@@ -1,0 +1,68 @@
+import React from 'react'
+import Image from 'next/image'
+import { mediaUrl, mediaAlt, mediaSize } from '@/lib/media'
+
+type Person = Record<string, unknown>
+const str = (v: unknown): string => (typeof v === 'string' ? v : '')
+
+function PersonShell({
+  photo,
+  name,
+  primary,
+  secondary,
+}: {
+  photo: unknown
+  name: string
+  primary?: string
+  secondary?: string
+}) {
+  const img = mediaSize(photo, 'card') || mediaUrl(photo)
+  return (
+    <article className="group h-full overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-primary/50">
+      <div className="relative aspect-[3/4] overflow-hidden bg-ink-800">
+        {img ? (
+          <Image
+            src={img}
+            alt={mediaAlt(photo, name)}
+            fill
+            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="grid h-full w-full place-items-center bg-tatami">
+            <span className="font-display text-5xl font-bold text-line">{name.charAt(0)}</span>
+          </div>
+        )}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-surface to-transparent" aria-hidden />
+      </div>
+      <div className="p-5">
+        <h3 className="font-display text-xl font-semibold uppercase text-paper">{name}</h3>
+        {primary && <p className="mt-1 text-sm text-primary-400">{primary}</p>}
+        {secondary && <p className="mt-0.5 text-sm text-muted">{secondary}</p>}
+      </div>
+    </article>
+  )
+}
+
+export function CoachCard({ c }: { c: Person }) {
+  return (
+    <PersonShell
+      photo={c.photo}
+      name={str(c.name)}
+      primary={str(c.title) || undefined}
+      secondary={str(c.rank) || undefined}
+    />
+  )
+}
+
+export function AthleteCard({ a }: { a: Person }) {
+  const year = typeof a.birthYear === 'number' ? String(a.birthYear) : ''
+  return (
+    <PersonShell
+      photo={a.photo}
+      name={str(a.name)}
+      primary={str(a.rank) || undefined}
+      secondary={[year && `${year} г.р.`, str(a.weightCategory)].filter(Boolean).join(' · ') || undefined}
+    />
+  )
+}

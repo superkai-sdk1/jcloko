@@ -77,6 +77,7 @@ export interface Config {
     media: Media;
     users: User;
     'social-post-queue': SocialPostQueue;
+    'form-submissions': FormSubmission;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -94,6 +95,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'social-post-queue': SocialPostQueueSelect<false> | SocialPostQueueSelect<true>;
+    'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -764,6 +766,20 @@ export interface SocialPostQueue {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions".
+ */
+export interface FormSubmission {
+  id: number;
+  name: string;
+  contact: string;
+  message?: string | null;
+  consent: boolean;
+  sourcePage?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -825,6 +841,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'social-post-queue';
         value: number | SocialPostQueue;
+      } | null)
+    | ({
+        relationTo: 'form-submissions';
+        value: number | FormSubmission;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -1321,6 +1341,19 @@ export interface SocialPostQueueSelect<T extends boolean = true> {
   rawPayload?: T;
   status?: T;
   linkedNewsPost?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-submissions_select".
+ */
+export interface FormSubmissionsSelect<T extends boolean = true> {
+  name?: T;
+  contact?: T;
+  message?: T;
+  consent?: T;
+  sourcePage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
