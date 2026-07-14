@@ -2,8 +2,9 @@
 
 # --- base -------------------------------------------------------------------
 FROM node:22-alpine AS base
-# libc6-compat нужен sharp (нативные бинарники) на alpine/musl
-RUN apk add --no-cache libc6-compat
+# libc6-compat нужен sharp (нативные бинарники) на alpine/musl;
+# ffmpeg — для транскода видео в WebM и генерации постера.
+RUN apk add --no-cache libc6-compat ffmpeg
 WORKDIR /app
 
 # --- deps -------------------------------------------------------------------

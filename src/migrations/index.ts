@@ -4,6 +4,7 @@ import * as migration_20260714_135258_phase2_form_submissions from './20260714_1
 import * as migration_20260714_142554_phase3_jobs_queue from './20260714_142554_phase3_jobs_queue';
 import * as migration_20260714_150658_phase5_dedup_fields from './20260714_150658_phase5_dedup_fields';
 import * as migration_20260714_180439_erid_sponsor_links from './20260714_180439_erid_sponsor_links';
+import * as migration_20260714_183258_videos_and_hero_video from './20260714_183258_videos_and_hero_video';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20260714_180439_erid_sponsor_links.up,
     down: migration_20260714_180439_erid_sponsor_links.down,
-    name: '20260714_180439_erid_sponsor_links'
+    name: '20260714_180439_erid_sponsor_links',
+  },
+  {
+    up: migration_20260714_183258_videos_and_hero_video.up,
+    down: migration_20260714_183258_videos_and_hero_video.down,
+    name: '20260714_183258_videos_and_hero_video'
   },
 ];

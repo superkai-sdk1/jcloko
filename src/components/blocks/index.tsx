@@ -387,7 +387,14 @@ export function BlockRenderer({ blocks }: { blocks?: unknown }) {
         const key = `${type}-${i}`
         switch (type) {
           case 'heroSlider':
-            return <HeroSlider key={key} slides={arr(b.slides) as never} />
+            return (
+              <HeroSlider
+                key={key}
+                slides={arr(b.slides) as never}
+                adaptContrast={b.adaptContrast !== false}
+                slideDurationSec={typeof b.slideDurationSec === 'number' ? b.slideDurationSec : 6}
+              />
+            )
           case 'mission':
             return <MissionBlock key={key} b={b} />
           case 'statistics':

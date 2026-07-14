@@ -24,6 +24,13 @@ export const HeroSliderBlock: Block = {
       label: 'Слайды',
       minRows: 1,
       fields: [
+        {
+          name: 'video',
+          type: 'relationship',
+          relationTo: 'videos',
+          label: 'Видео-фон (автоплей, приоритетнее картинки)',
+          admin: { description: 'Загрузите видео в разделе «Видео» — оно сожмётся в WebM.' },
+        },
         { name: 'image', type: 'upload', relationTo: 'media', label: 'Изображение / постер' },
         { name: 'heading', type: 'text', label: 'Заголовок' },
         { name: 'subheading', type: 'text', label: 'Подзаголовок' },
@@ -35,6 +42,19 @@ export const HeroSliderBlock: Block = {
           ],
         },
       ],
+    },
+    {
+      name: 'adaptContrast',
+      type: 'checkbox',
+      label: 'Адаптировать контраст текста под цвет видео в реальном времени',
+      defaultValue: true,
+    },
+    {
+      name: 'slideDurationSec',
+      type: 'number',
+      label: 'Смена слайдов, сек',
+      defaultValue: 6,
+      admin: { description: 'Как часто листаются слайды (для видео обычно дольше — 10–15 с).' },
     },
   ],
 }

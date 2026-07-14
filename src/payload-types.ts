@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     news: News;
     'media-galleries': MediaGallery;
+    videos: Video;
     coaches: Coach;
     athletes: Athlete;
     'schedule-entries': ScheduleEntry;
@@ -89,6 +90,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     'media-galleries': MediaGalleriesSelect<false> | MediaGalleriesSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
     coaches: CoachesSelect<false> | CoachesSelect<true>;
     athletes: AthletesSelect<false> | AthletesSelect<true>;
     'schedule-entries': ScheduleEntriesSelect<false> | ScheduleEntriesSelect<true>;
@@ -124,6 +126,7 @@ export interface Config {
     tasks: {
       crosspostTelegram: TaskCrosspostTelegram;
       crosspostVk: TaskCrosspostVk;
+      transcodeVideo: TaskTranscodeVideo;
       inline: {
         input: unknown;
         output: unknown;
@@ -195,6 +198,10 @@ export interface Page {
 export interface HeroSliderBlock {
   slides?:
     | {
+        /**
+         * Загрузите видео в разделе «Видео» — оно сожмётся в WebM.
+         */
+        video?: (number | null) | Video;
         image?: (number | null) | Media;
         heading?: string | null;
         subheading?: string | null;
@@ -203,9 +210,45 @@ export interface HeroSliderBlock {
         id?: string | null;
       }[]
     | null;
+  adaptContrast?: boolean | null;
+  /**
+   * Как часто листаются слайды (для видео обычно дольше — 10–15 с).
+   */
+  slideDurationSec?: number | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'heroSlider';
+}
+/**
+ * Загрузите видео любого формата — оно автоматически сожмётся в WebM для слайдера.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  title?: string | null;
+  /**
+   * 0 — не обрезать. Для hero обычно достаточно 8–15 секунд (меньше вес, быстрее транскод).
+   */
+  trimSeconds?: number | null;
+  status?: ('pending' | 'processing' | 'ready' | 'failed') | null;
+  progress?: number | null;
+  durationSeconds?: number | null;
+  webmFilename?: string | null;
+  posterFilename?: string | null;
+  errorText?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -880,7 +923,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'crosspostTelegram' | 'crosspostVk';
+        taskSlug: 'inline' | 'crosspostTelegram' | 'crosspostVk' | 'transcodeVideo';
         taskID: string;
         input?:
           | {
@@ -913,7 +956,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'crosspostTelegram' | 'crosspostVk') | null;
+  taskSlug?: ('inline' | 'crosspostTelegram' | 'crosspostVk' | 'transcodeVideo') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -938,6 +981,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media-galleries';
         value: number | MediaGallery;
+      } | null)
+    | ({
+        relationTo: 'videos';
+        value: number | Video;
       } | null)
     | ({
         relationTo: 'coaches';
@@ -1053,6 +1100,7 @@ export interface HeroSliderBlockSelect<T extends boolean = true> {
   slides?:
     | T
     | {
+        video?: T;
         image?: T;
         heading?: T;
         subheading?: T;
@@ -1060,6 +1108,8 @@ export interface HeroSliderBlockSelect<T extends boolean = true> {
         ctaUrl?: T;
         id?: T;
       };
+  adaptContrast?: T;
+  slideDurationSec?: T;
   id?: T;
   blockName?: T;
 }
@@ -1304,6 +1354,31 @@ export interface MediaGalleriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  title?: T;
+  trimSeconds?: T;
+  status?: T;
+  progress?: T;
+  durationSeconds?: T;
+  webmFilename?: T;
+  posterFilename?: T;
+  errorText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1720,6 +1795,16 @@ export interface TaskCrosspostTelegram {
 export interface TaskCrosspostVk {
   input: {
     postId: string;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskTranscodeVideo".
+ */
+export interface TaskTranscodeVideo {
+  input: {
+    videoId: string;
   };
   output?: unknown;
 }

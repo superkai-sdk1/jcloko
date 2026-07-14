@@ -19,8 +19,10 @@ import { FormSubmission } from './collections/FormSubmission'
 import { Pages } from './collections/Pages'
 import { SiteSettings } from './globals/SiteSettings'
 import { IntegrationSettings } from './globals/IntegrationSettings'
+import { Videos } from './collections/Videos'
 import { crosspostTelegram } from './integrations/telegram/crosspost'
 import { crosspostVk } from './integrations/vk/crosspost'
+import { transcodeVideo } from './integrations/video/transcode'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,6 +42,7 @@ export default buildConfig({
     Pages,
     NewsPost,
     MediaGallery,
+    Videos,
     Coaches,
     Athletes,
     ScheduleEntry,
@@ -73,6 +76,15 @@ export default buildConfig({
         inputSchema: [{ name: 'postId', type: 'text', required: true }],
         handler: async ({ input, req }) => {
           await crosspostVk(req.payload, (input as { postId: string }).postId)
+          return { output: {} }
+        },
+      },
+      {
+        slug: 'transcodeVideo',
+        retries: 1,
+        inputSchema: [{ name: 'videoId', type: 'text', required: true }],
+        handler: async ({ input, req }) => {
+          await transcodeVideo(req.payload, (input as { videoId: string }).videoId)
           return { output: {} }
         },
       },
