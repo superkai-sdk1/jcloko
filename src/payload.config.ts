@@ -19,6 +19,7 @@ import { Pages } from './collections/Pages'
 import { SiteSettings } from './globals/SiteSettings'
 import { IntegrationSettings } from './globals/IntegrationSettings'
 import { crosspostTelegram } from './integrations/telegram/crosspost'
+import { crosspostVk } from './integrations/vk/crosspost'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -57,6 +58,15 @@ export default buildConfig({
         inputSchema: [{ name: 'postId', type: 'text', required: true }],
         handler: async ({ input, req }) => {
           await crosspostTelegram(req.payload, (input as { postId: string }).postId)
+          return { output: {} }
+        },
+      },
+      {
+        slug: 'crosspostVk',
+        retries: 3,
+        inputSchema: [{ name: 'postId', type: 'text', required: true }],
+        handler: async ({ input, req }) => {
+          await crosspostVk(req.payload, (input as { postId: string }).postId)
           return { output: {} }
         },
       },

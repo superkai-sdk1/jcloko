@@ -40,12 +40,20 @@ export const NewsPost: CollectionConfig = {
           })
           const tg = (settings as { telegram?: { enabled?: boolean; crosspostOnPublish?: boolean } })
             ?.telegram
-          if (!tg?.enabled || !tg?.crosspostOnPublish) return
+          const vk = (settings as { vk?: { enabled?: boolean; crosspostOnPublish?: boolean } })?.vk
 
-          await req.payload.jobs.queue({
-            task: 'crosspostTelegram',
-            input: { postId: String(doc.id) },
-          })
+          if (tg?.enabled && tg?.crosspostOnPublish) {
+            await req.payload.jobs.queue({
+              task: 'crosspostTelegram',
+              input: { postId: String(doc.id) },
+            })
+          }
+          if (vk?.enabled && vk?.crosspostOnPublish) {
+            await req.payload.jobs.queue({
+              task: 'crosspostVk',
+              input: { postId: String(doc.id) },
+            })
+          }
         } catch (err) {
           req.payload.logger.error(err, '[news afterChange] enqueue crosspost failed')
         }

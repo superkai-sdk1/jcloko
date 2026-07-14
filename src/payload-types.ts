@@ -123,6 +123,7 @@ export interface Config {
   jobs: {
     tasks: {
       crosspostTelegram: TaskCrosspostTelegram;
+      crosspostVk: TaskCrosspostVk;
       inline: {
         input: unknown;
         output: unknown;
@@ -855,7 +856,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'crosspostTelegram';
+        taskSlug: 'inline' | 'crosspostTelegram' | 'crosspostVk';
         taskID: string;
         input?:
           | {
@@ -888,7 +889,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'crosspostTelegram') | null;
+  taskSlug?: ('inline' | 'crosspostTelegram' | 'crosspostVk') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1673,6 +1674,16 @@ export interface CollectionsWidget {
  * via the `definition` "TaskCrosspostTelegram".
  */
 export interface TaskCrosspostTelegram {
+  input: {
+    postId: string;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCrosspostVk".
+ */
+export interface TaskCrosspostVk {
   input: {
     postId: string;
   };

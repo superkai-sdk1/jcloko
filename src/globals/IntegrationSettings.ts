@@ -49,6 +49,15 @@ export const IntegrationSettings: GlobalConfig = {
         { name: 'groupId', type: 'text', label: 'ID сообщества' },
         { name: 'confirmationToken', type: 'text', label: 'Строка подтверждения Callback API' },
         { name: 'crosspostOnPublish', type: 'checkbox', label: 'Постить новости с сайта в ВК', defaultValue: false },
+        {
+          name: 'testConnection',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '/components/admin/VkTest#VkTest',
+            },
+          },
+        },
       ],
     },
     {
