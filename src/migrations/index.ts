@@ -5,6 +5,7 @@ import * as migration_20260714_142554_phase3_jobs_queue from './20260714_142554_
 import * as migration_20260714_150658_phase5_dedup_fields from './20260714_150658_phase5_dedup_fields';
 import * as migration_20260714_180439_erid_sponsor_links from './20260714_180439_erid_sponsor_links';
 import * as migration_20260714_183258_videos_and_hero_video from './20260714_183258_videos_and_hero_video';
+import * as migration_20260714_190557_media_alt_optional from './20260714_190557_media_alt_optional';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260714_183258_videos_and_hero_video.up,
     down: migration_20260714_183258_videos_and_hero_video.down,
-    name: '20260714_183258_videos_and_hero_video'
+    name: '20260714_183258_videos_and_hero_video',
+  },
+  {
+    up: migration_20260714_190557_media_alt_optional.up,
+    down: migration_20260714_190557_media_alt_optional.down,
+    name: '20260714_190557_media_alt_optional'
   },
 ];

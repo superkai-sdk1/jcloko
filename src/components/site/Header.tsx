@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { navLinks } from '@/lib/nav'
 import { cn } from '@/utils/cn'
@@ -20,7 +19,9 @@ type GeneralPartner = {
 
 function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; align?: 'center' | 'right' }) {
   const inner = sponsor.logoUrl ? (
-    <Image src={sponsor.logoUrl} alt={sponsor.name} width={96} height={28} className="h-7 w-auto" />
+    // Обычный img (не next/image): надёжно для SVG и логотипов
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={sponsor.logoUrl} alt={sponsor.name} className="h-7 w-auto object-contain" />
   ) : (
     <span className="font-display text-sm font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
@@ -79,7 +80,8 @@ export function Header({
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="На главную">
           {logoUrl ? (
-            <Image src={logoUrl} alt={clubName} width={44} height={44} className="h-10 w-auto lg:h-11" />
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} alt={clubName} className="h-10 w-auto lg:h-11" />
           ) : (
             <span className="grid h-10 w-10 place-items-center rounded-md bg-accent font-display text-xl font-bold text-white">
               Л

@@ -213,7 +213,9 @@ async function PartnersStripBlock({ b }: { b: Block }) {
             const href = resolvePartnerHref(partner)
             const external = href ? isExternalHref(href) : false
             const inner = logo ? (
-              <Image src={logo} alt={mediaAlt(partner.logo, str(partner.name))} width={140} height={64} className="h-12 w-auto object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 lg:h-16" />
+              // Обычный img — надёжно для SVG-логотипов и «нестандартных» имён файлов
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={logo} alt={mediaAlt(partner.logo, str(partner.name))} className="h-12 w-auto object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 lg:h-16" />
             ) : (
               <span className="font-display text-lg font-semibold text-muted">{str(partner.name)}</span>
             )

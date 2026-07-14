@@ -256,7 +256,10 @@ export interface Video {
  */
 export interface Media {
   id: number;
-  alt: string;
+  /**
+   * Можно оставить пустым — подставится из имени файла / названия при показе.
+   */
+  alt?: string | null;
   caption?: string | null;
   updatedAt: string;
   createdAt: string;
