@@ -12,7 +12,7 @@ import { FAQAccordion } from './FAQAccordion'
 import { ContactForm } from './ContactForm'
 import { CoachCard, AthleteCard } from '@/components/cards/PersonCard'
 import { getCoaches, getAthletes, getPartners, getScheduleEntries } from '@/lib/queries'
-import { mediaUrl, mediaAlt } from '@/lib/media'
+import { mediaUrl, mediaAlt, mediaFocal } from '@/lib/media'
 import { toEmbedUrl } from '@/lib/embed'
 import { resolvePartnerHref, isExternalHref } from '@/lib/partnerLink'
 import { AdTooltip } from '@/components/AdTooltip'
@@ -45,7 +45,7 @@ function MissionBlock({ b }: { b: Block }) {
           {img && (
             <Reveal delay={0.1}>
               <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-line">
-                <Img src={img} alt={mediaAlt(b.image, 'Дзюдо')} fill className="object-cover" />
+                <Img src={img} alt={mediaAlt(b.image, 'Дзюдо')} fill focal={mediaFocal(b.image)} className="object-cover" />
               </div>
             </Reveal>
           )}

@@ -1,0 +1,37 @@
+/* Фирменная лёгкая тема админки «Локомотив» (зелёный + гранат). */
+
+:root {
+  --brand-green: #1f7a4d;
+  --brand-green-dark: #18653f;
+  --brand-garnet: #c1121f;
+}
+
+/* Первичные кнопки — фирменный зелёный */
+.btn--style-primary {
+  background-color: var(--brand-green);
+  border-color: var(--brand-green);
+  color: #fff;
+
+  &:hover,
+  &:focus {
+    background-color: var(--brand-green-dark);
+    border-color: var(--brand-green-dark);
+  }
+}
+
+/* Ссылки-акценты */
+a:not(.btn):hover {
+  color: var(--brand-green);
+}
+
+/* Страница входа — мягкий фирменный фон и акцентная полоса на форме */
+.login {
+  background:
+    radial-gradient(1200px 500px at 20% -10%, rgba(31, 122, 77, 0.1), transparent 60%),
+    radial-gradient(900px 400px at 100% 110%, rgba(193, 18, 31, 0.06), transparent 55%);
+
+  &__form,
+  form {
+    border-top: 3px solid var(--brand-green);
+  }
+}

@@ -15,3 +15,16 @@ export const mediaSize = (m: unknown, size: string): string | null => {
   const sizes = (m as { sizes?: Record<string, { url?: string | null }> }).sizes
   return sizes?.[size]?.url ?? mediaUrl(m)
 }
+
+/**
+ * object-position из фокус-точки Payload (focalX/focalY, проценты 0–100).
+ * Позволяет уважать кадрирование, заданное редактором, при object-cover.
+ */
+export const mediaFocal = (m: unknown): string => {
+  if (!m || typeof m !== 'object') return '50% 50%'
+  const x = (m as { focalX?: number | null }).focalX
+  const y = (m as { focalY?: number | null }).focalY
+  const px = typeof x === 'number' ? x : 50
+  const py = typeof y === 'number' ? y : 50
+  return `${px}% ${py}%`
+}

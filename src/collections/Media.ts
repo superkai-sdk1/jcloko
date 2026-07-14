@@ -9,7 +9,11 @@ const dirname = path.dirname(fileURLToPath(import.meta.url))
 export const Media: CollectionConfig = {
   slug: 'media',
   labels: { singular: 'Файл', plural: 'Медиа-библиотека' },
-  admin: { group: 'Контент' },
+  admin: {
+    group: 'Контент',
+    description:
+      'После загрузки нажмите «Редактировать изображение» (Edit image), чтобы задать фокус-точку и кадрирование — она определяет видимую часть фото на сайте (превью показывается в модальном окне).',
+  },
   access: {
     read: anyone,
     create: isAdminOrEditor,

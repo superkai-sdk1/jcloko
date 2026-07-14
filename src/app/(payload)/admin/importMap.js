@@ -21,9 +21,13 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { VideoProgress as VideoProgress_de0f0c9bef6e8ed0a138656258251b3e } from '../../../components/admin/VideoProgress'
 import { TelegramTest as TelegramTest_d365d4f5fe0fc4ac6997188052ffefab } from '../../../components/admin/TelegramTest'
 import { VkTest as VkTest_5785e9720395bd1cfa3c8a6a34346b50 } from '../../../components/admin/VkTest'
 import { DuplicatesView as DuplicatesView_9ae029321a2819fe2d17a891d52bb607 } from '../../../components/admin/DuplicatesView'
+import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
+import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
+import { DashboardWelcome as DashboardWelcome_76ec03dd917ecfb7a53441d4e825edcb } from '../../../components/admin/DashboardWelcome'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -51,8 +55,12 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "/components/admin/VideoProgress#VideoProgress": VideoProgress_de0f0c9bef6e8ed0a138656258251b3e,
   "/components/admin/TelegramTest#TelegramTest": TelegramTest_d365d4f5fe0fc4ac6997188052ffefab,
   "/components/admin/VkTest#VkTest": VkTest_5785e9720395bd1cfa3c8a6a34346b50,
   "/components/admin/DuplicatesView#DuplicatesView": DuplicatesView_9ae029321a2819fe2d17a891d52bb607,
+  "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
+  "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
+  "/components/admin/DashboardWelcome#DashboardWelcome": DashboardWelcome_76ec03dd917ecfb7a53441d4e825edcb,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
-import { mediaSize, mediaUrl, mediaAlt } from '@/lib/media'
+import { mediaSize, mediaUrl, mediaAlt, mediaFocal } from '@/lib/media'
 import { AdTooltip } from '@/components/AdTooltip'
 
 type News = Record<string, unknown>
@@ -33,6 +33,7 @@ export function NewsCard({ n }: { n: News }) {
             src={img}
             alt={mediaAlt(n.heroImage, str(n.title))}
             fill
+            focal={mediaFocal(n.heroImage)}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

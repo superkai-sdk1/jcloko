@@ -35,7 +35,14 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: ' — Локомотив Дзюдо',
+      titleSuffix: ' — JC/LOKO/ADMIN',
+    },
+    components: {
+      graphics: {
+        Logo: '/components/admin/Logo#Logo',
+        Icon: '/components/admin/Icon#Icon',
+      },
+      beforeDashboard: ['/components/admin/DashboardWelcome#DashboardWelcome'],
     },
   },
   collections: [

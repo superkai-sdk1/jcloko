@@ -13,6 +13,9 @@ export const Videos: CollectionConfig = {
     defaultColumns: ['title', 'status', 'progress'],
     group: 'Контент',
     description: 'Загрузите видео любого формата — оно автоматически сожмётся в WebM для слайдера.',
+    // Скрыто из основной навигации: видео загружается прямо в редакторе страницы
+    // (блок «Слайдер-герой» → поле «Видео-фон» → «Создать»), а не как отдельный раздел.
+    hidden: true,
   },
   access: {
     read: anyone,

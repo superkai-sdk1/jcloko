@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Img } from '@/components/ui/Img'
-import { mediaUrl, mediaAlt, mediaSize } from '@/lib/media'
+import { mediaUrl, mediaAlt, mediaSize, mediaFocal } from '@/lib/media'
 
 type Person = Record<string, unknown>
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
@@ -33,6 +33,7 @@ function PersonShell({
             src={img}
             alt={mediaAlt(photo, name)}
             fill
+            focal={mediaFocal(photo)}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (

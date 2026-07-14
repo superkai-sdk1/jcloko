@@ -251,6 +251,8 @@ export interface Video {
   focalY?: number | null;
 }
 /**
+ * После загрузки нажмите «Редактировать изображение» (Edit image), чтобы задать фокус-точку и кадрирование — она определяет видимую часть фото на сайте (превью показывается в модальном окне).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */

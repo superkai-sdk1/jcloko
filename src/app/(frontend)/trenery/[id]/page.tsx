@@ -7,7 +7,7 @@ import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { RichText } from '@/components/RichText'
 import { getCoachById } from '@/lib/queries'
-import { mediaUrl, mediaAlt } from '@/lib/media'
+import { mediaUrl, mediaAlt, mediaFocal } from '@/lib/media'
 
 export const dynamic = 'force-dynamic'
 
@@ -47,6 +47,7 @@ export default async function CoachDetail({ params }: { params: Promise<{ id: st
                 alt={mediaAlt(coach.photo, str(coach.name))}
                 fill
                 priority
+                focal={mediaFocal(coach.photo)}
                 className="object-cover"
               />
             ) : (

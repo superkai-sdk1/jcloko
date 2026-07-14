@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Img } from '@/components/ui/Img'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Button } from '@/components/ui/Button'
-import { mediaUrl, mediaAlt } from '@/lib/media'
+import { mediaUrl, mediaAlt, mediaFocal } from '@/lib/media'
 import { cn } from '@/utils/cn'
 
 type HeroVideo =
@@ -131,6 +131,7 @@ export function HeroSlider({
             alt={mediaAlt(slide.image, slide.heading ?? 'Дзюдо Локомотив')}
             fill
             priority={i === 0}
+            focal={mediaFocal(slide.image)}
             className="object-cover"
           />
         ) : (
