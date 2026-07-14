@@ -8,7 +8,15 @@ export const Users: CollectionConfig = {
     defaultColumns: ['email', 'name', 'role'],
     group: 'Управление',
   },
-  auth: true,
+  auth: {
+    cookies: {
+      // Secure-cookie только по HTTPS. Пока сайт открыт по HTTP (по IP), иначе
+      // браузер не сохранит cookie и вход зациклится. При переходе на https-домен
+      // (NEXT_PUBLIC_SERVER_URL=https://…) флаг включится автоматически.
+      secure: (process.env.NEXT_PUBLIC_SERVER_URL || '').startsWith('https://'),
+      sameSite: 'Lax',
+    },
+  },
   access: {
     // Создавать/удалять пользователей может только администратор
     create: isAdmin,
