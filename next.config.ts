@@ -13,10 +13,13 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    // Разрешаем SVG (логотипы спонсоров/партнёров часто в SVG). Санитайзим через
+    // sandbox-CSP, чтобы SVG не выполнял скрипты.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     localPatterns: [
-      {
-        pathname: '/api/media/file/**',
-      },
+      { pathname: '/api/media/file/**' },
     ],
   },
   webpack: (webpackConfig) => {
