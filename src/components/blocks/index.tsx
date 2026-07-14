@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -13,6 +14,8 @@ import { CoachCard, AthleteCard } from '@/components/cards/PersonCard'
 import { getCoaches, getAthletes, getPartners, getScheduleEntries } from '@/lib/queries'
 import { mediaUrl, mediaAlt } from '@/lib/media'
 import { toEmbedUrl } from '@/lib/embed'
+import { resolvePartnerHref, isExternalHref } from '@/lib/partnerLink'
+import { AdTooltip } from '@/components/AdTooltip'
 
 // Блоки приходят из Payload как объекты с blockType. Читаем поля через утилиты.
 type Block = Record<string, unknown>
@@ -207,18 +210,25 @@ async function PartnersStripBlock({ b }: { b: Block }) {
           {partners.map((p, i) => {
             const partner = p as Block
             const logo = mediaUrl(partner.logo)
+            const href = resolvePartnerHref(partner)
+            const external = href ? isExternalHref(href) : false
             const inner = logo ? (
               <Image src={logo} alt={mediaAlt(partner.logo, str(partner.name))} width={140} height={64} className="h-12 w-auto object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 lg:h-16" />
             ) : (
               <span className="font-display text-lg font-semibold text-muted">{str(partner.name)}</span>
             )
+            const linked = href ? (
+              <Link href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                {inner}
+              </Link>
+            ) : (
+              inner
+            )
             return (
               <Reveal key={i} delay={i * 0.04}>
-                {str(partner.url) ? (
-                  <a href={str(partner.url)} target="_blank" rel="noopener noreferrer">{inner}</a>
-                ) : (
-                  inner
-                )}
+                <AdTooltip erid={str(partner.erid) || null} advertiser={str(partner.advertiserInfo) || null}>
+                  {linked}
+                </AdTooltip>
               </Reveal>
             )
           })}

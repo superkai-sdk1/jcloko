@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { mediaSize, mediaUrl, mediaAlt } from '@/lib/media'
+import { AdTooltip } from '@/components/AdTooltip'
 
 type News = Record<string, unknown>
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
@@ -45,9 +46,18 @@ export function NewsCard({ n }: { n: News }) {
         )}
       </Link>
       <div className="flex flex-1 flex-col p-5">
-        {formatDate(n.publishedAt) && (
-          <time className="text-xs uppercase tracking-wide text-muted">{formatDate(n.publishedAt)}</time>
-        )}
+        <div className="flex items-center gap-2">
+          {formatDate(n.publishedAt) && (
+            <time className="text-xs uppercase tracking-wide text-muted">{formatDate(n.publishedAt)}</time>
+          )}
+          {n.isAdvertising ? (
+            <AdTooltip erid={str(n.erid) || null} advertiser={str(n.advertiserInfo) || null}>
+              <span className="cursor-help rounded border border-line px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted">
+                Реклама
+              </span>
+            </AdTooltip>
+          ) : null}
+        </div>
         <h3 className="mt-2 font-display text-xl font-semibold text-paper">
           <Link href={href} className="transition-colors hover:text-primary-400">
             {str(n.title)}

@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { Container } from '@/components/ui/Container'
 import { RichText } from '@/components/RichText'
+import { AdTooltip } from '@/components/AdTooltip'
 import { getNewsBySlug } from '@/lib/queries'
 import { mediaUrl, mediaAlt } from '@/lib/media'
 
@@ -62,9 +63,18 @@ export default async function NewsDetail({ params }: { params: Promise<{ slug: s
             <Link href="/novosti" className="text-sm font-medium text-primary-400 hover:text-primary">
               ← Все новости
             </Link>
-            {formatDate(post.publishedAt) && (
-              <time className="mt-4 block text-sm uppercase tracking-wide text-muted">{formatDate(post.publishedAt)}</time>
-            )}
+            <div className="mt-4 flex items-center gap-3">
+              {formatDate(post.publishedAt) && (
+                <time className="block text-sm uppercase tracking-wide text-muted">{formatDate(post.publishedAt)}</time>
+              )}
+              {post.isAdvertising ? (
+                <AdTooltip erid={str(post.erid) || null} advertiser={str(post.advertiserInfo) || null}>
+                  <span className="cursor-help rounded border border-line px-2 py-0.5 text-xs uppercase tracking-wide text-muted">
+                    Реклама
+                  </span>
+                </AdTooltip>
+              ) : null}
+            </div>
             <h1 className="mt-2 max-w-3xl text-3xl font-bold uppercase text-paper sm:text-5xl">{str(post.title)}</h1>
           </div>
         </Container>

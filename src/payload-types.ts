@@ -151,6 +151,8 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Страницы сайта, собираемые из блоков. Slug «glavnaya» — это главная (/).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
@@ -515,8 +517,21 @@ export interface PartnersStripBlock {
 export interface Partner {
   id: number;
   name: string;
+  /**
+   * Картинка или иконка спонсора для показа на сайте и в шапке.
+   */
   logo?: (number | null) | Media;
+  linkType?: ('external' | 'internal' | 'none') | null;
   url?: string | null;
+  internalPage?: (number | null) | Page;
+  erid?: string | null;
+  /**
+   * Например: ОАО «РЖД», ИНН 7708503727.
+   */
+  advertiserInfo?: string | null;
+  /**
+   * Показывается кликабельной иконкой в конце панели навигации.
+   */
   isGeneralPartner?: boolean | null;
   displayOrder?: number | null;
   updatedAt: string;
@@ -651,6 +666,9 @@ export interface News {
    * Где новость появилась изначально. От этого зависит обратный постинг (site → соцсети).
    */
   originPlatform?: ('site' | 'telegram' | 'vk') | null;
+  isAdvertising?: boolean | null;
+  erid?: string | null;
+  advertiserInfo?: string | null;
   sources?:
     | {
         platform: 'site' | 'telegram' | 'vk';
@@ -1226,6 +1244,9 @@ export interface NewsSelect<T extends boolean = true> {
   heroImage?: T;
   content?: T;
   originPlatform?: T;
+  isAdvertising?: T;
+  erid?: T;
+  advertiserInfo?: T;
   sources?:
     | T
     | {
@@ -1353,7 +1374,11 @@ export interface ScheduleEntriesSelect<T extends boolean = true> {
 export interface PartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
+  linkType?: T;
   url?: T;
+  internalPage?: T;
+  erid?: T;
+  advertiserInfo?: T;
   isGeneralPartner?: T;
   displayOrder?: T;
   updatedAt?: T;

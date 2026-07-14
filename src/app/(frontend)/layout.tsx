@@ -5,6 +5,7 @@ import { Header } from '@/components/site/Header'
 import { Footer } from '@/components/site/Footer'
 import { getSiteSettings, getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
+import { resolvePartnerHref } from '@/lib/partnerLink'
 
 const oswald = Oswald({
   subsets: ['cyrillic', 'latin'],
@@ -46,12 +47,24 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   // Настройки сайта; при недоступности БД (например, во время сборки) — дефолты.
   let settings: Awaited<ReturnType<typeof getSiteSettings>> | null = null
-  let generalPartner: { name: string; logoUrl?: string | null; url?: string | null } | null = null
+  let generalPartner: {
+    name: string
+    logoUrl?: string | null
+    href?: string | null
+    erid?: string | null
+    advertiser?: string | null
+  } | null = null
   try {
     settings = await getSiteSettings()
     const gp = await getGeneralPartner()
     if (gp && typeof gp.name === 'string') {
-      generalPartner = { name: gp.name, logoUrl: mediaUrl(gp.logo), url: typeof gp.url === 'string' ? gp.url : null }
+      generalPartner = {
+        name: gp.name,
+        logoUrl: mediaUrl(gp.logo),
+        href: resolvePartnerHref(gp),
+        erid: typeof gp.erid === 'string' ? gp.erid : null,
+        advertiser: typeof gp.advertiserInfo === 'string' ? gp.advertiserInfo : null,
+      }
     }
   } catch {
     settings = null

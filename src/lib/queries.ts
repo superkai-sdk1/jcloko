@@ -46,7 +46,7 @@ export const getPartners = async () => {
 }
 
 /** Генеральный партнёр (для шапки). Сначала флаг isGeneralPartner, иначе — из SiteSettings. */
-export const getGeneralPartner = async () => {
+export const getGeneralPartner = async (): Promise<Record<string, unknown> | null> => {
   const payload = await getPayloadClient()
   const flagged = await payload.find({
     collection: 'partners',
@@ -55,7 +55,7 @@ export const getGeneralPartner = async () => {
     depth: 1,
     limit: 1,
   })
-  if (flagged.docs[0]) return flagged.docs[0]
+  if (flagged.docs[0]) return flagged.docs[0] as unknown as Record<string, unknown>
   const settings = await payload.findGlobal({ slug: 'site-settings', depth: 1 })
   const gp = (settings as { generalPartner?: unknown })?.generalPartner
   return gp && typeof gp === 'object' ? (gp as Record<string, unknown>) : null

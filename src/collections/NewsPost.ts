@@ -105,6 +105,35 @@ export const NewsPost: CollectionConfig = {
         description: 'Где новость появилась изначально. От этого зависит обратный постинг (site → соцсети).',
       },
     },
+    // ── Рекламная маркировка (38-ФЗ «О рекламе») ───────────────────────────
+    {
+      type: 'collapsible',
+      label: 'Рекламная маркировка (erid)',
+      admin: {
+        initCollapsed: true,
+        description: 'Если новость — реклама, отметьте и укажите erid. На сайте появится метка «Реклама».',
+      },
+      fields: [
+        {
+          name: 'isAdvertising',
+          type: 'checkbox',
+          label: 'Это рекламная публикация',
+          defaultValue: false,
+        },
+        {
+          name: 'erid',
+          type: 'text',
+          label: 'erid (рекламный идентификатор)',
+          admin: { condition: (data) => Boolean(data?.isAdvertising) },
+        },
+        {
+          name: 'advertiserInfo',
+          type: 'textarea',
+          label: 'Информация о рекламодателе',
+          admin: { condition: (data) => Boolean(data?.isAdvertising) },
+        },
+      ],
+    },
     // ── Интеграционная телеметрия (заполняется хуками в Фазах 3–5) ──
     {
       type: 'collapsible',
