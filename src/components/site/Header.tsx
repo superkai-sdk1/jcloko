@@ -18,16 +18,20 @@ type GeneralPartner = {
 }
 
 function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; align?: 'center' | 'right' }) {
-  const inner = sponsor.logoUrl ? (
+  const hasLogo = Boolean(sponsor.logoUrl)
+  const inner = hasLogo ? (
     // Обычный img (не next/image): надёжно для SVG и логотипов
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={sponsor.logoUrl} alt={sponsor.name} className="h-7 w-auto object-contain" />
+    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-9 w-auto object-contain" />
   ) : (
     <span className="font-display text-sm font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
     </span>
   )
-  const box = 'flex items-center gap-2 rounded-lg border border-line bg-surface/70 px-3 py-1.5 transition-colors hover:border-primary/50'
+  // С логотипом — без рамки/фона, только картинка; без логотипа — чип с текстом.
+  const box = hasLogo
+    ? 'flex items-center transition-opacity hover:opacity-80'
+    : 'flex items-center gap-2 rounded-lg border border-line bg-surface/70 px-3 py-1.5 transition-colors hover:border-primary/50'
   const external = sponsor.href ? isExternalHref(sponsor.href) : false
   return (
     <AdTooltip title={sponsor.name} erid={sponsor.erid} advertiser={sponsor.advertiser} align={align}>
