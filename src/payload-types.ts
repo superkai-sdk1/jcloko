@@ -67,8 +67,16 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    pages: Page;
+    news: News;
+    'media-galleries': MediaGallery;
+    coaches: Coach;
+    athletes: Athlete;
+    'schedule-entries': ScheduleEntry;
+    partners: Partner;
     media: Media;
+    users: User;
+    'social-post-queue': SocialPostQueue;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,19 +84,33 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
+    news: NewsSelect<false> | NewsSelect<true>;
+    'media-galleries': MediaGalleriesSelect<false> | MediaGalleriesSelect<true>;
+    coaches: CoachesSelect<false> | CoachesSelect<true>;
+    athletes: AthletesSelect<false> | AthletesSelect<true>;
+    'schedule-entries': ScheduleEntriesSelect<false> | ScheduleEntriesSelect<true>;
+    partners: PartnersSelect<false> | PartnersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
+    'social-post-queue': SocialPostQueueSelect<false> | SocialPostQueueSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    'integration-settings': IntegrationSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'integration-settings': IntegrationSettingsSelect<false> | IntegrationSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -119,10 +141,262 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * ЧПУ-адрес. Оставьте пустым — будет создан из заголовка.
+   */
+  slug?: string | null;
+  status: 'draft' | 'published';
+  layout?:
+    | (
+        | HeroSliderBlock
+        | MissionBlock
+        | StatisticsBlock
+        | CallToActionBlock
+        | TimelineBlock
+        | RulesListBlock
+        | TeamGridBlock
+        | ScheduleTableBlock
+        | PartnersStripBlock
+        | GalleryBlock
+        | VideoEmbedBlock
+        | FAQAccordionBlock
+        | ContactFormBlock
+        | RichTextBlock
+      )[]
+    | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  ogImage?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSliderBlock".
+ */
+export interface HeroSliderBlock {
+  slides?:
+    | {
+        image?: (number | null) | Media;
+        heading?: string | null;
+        subheading?: string | null;
+        ctaLabel?: string | null;
+        ctaUrl?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroSlider';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  caption?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock".
+ */
+export interface MissionBlock {
+  heading?: string | null;
+  text?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'mission';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock".
+ */
+export interface StatisticsBlock {
+  heading?: string | null;
+  stats?:
+    | {
+        value: string;
+        suffix?: string | null;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statistics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock".
+ */
+export interface CallToActionBlock {
+  heading?: string | null;
+  text?: string | null;
+  buttonLabel?: string | null;
+  buttonUrl?: string | null;
+  style?: ('primary' | 'outline') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'callToAction';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  heading?: string | null;
+  events?:
+    | {
+        year?: string | null;
+        title: string;
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RulesListBlock".
+ */
+export interface RulesListBlock {
+  heading?: string | null;
+  rules?:
+    | {
+        title?: string | null;
+        text?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'rulesList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamGridBlock".
+ */
+export interface TeamGridBlock {
+  heading?: string | null;
+  mode?: ('coaches' | 'athletes') | null;
+  showAll?: boolean | null;
+  coaches?: (number | Coach)[] | null;
+  athletes?: (number | Athlete)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'teamGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coaches".
+ */
+export interface Coach {
+  id: number;
+  name: string;
+  title?: string | null;
+  rank?: string | null;
+  photo?: (number | null) | Media;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  specializations?:
+    | {
+        value?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Привяжите пользователя с ролью «тренер», чтобы он мог редактировать свой профиль и расписание своих групп.
+   */
+  user?: (number | null) | User;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  name?: string | null;
+  /**
+   * Определяет права в CMS.
+   */
+  role: 'admin' | 'editor' | 'coach';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -144,29 +418,356 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "athletes".
  */
-export interface Media {
-  id: string;
-  alt: string;
+export interface Athlete {
+  id: number;
+  name: string;
+  photo?: (number | null) | Media;
+  birthYear?: number | null;
+  weightCategory?: string | null;
+  rank?: string | null;
+  coach?: (number | null) | Coach;
+  bio?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  achievements?:
+    | {
+        year?: number | null;
+        title: string;
+        id?: string | null;
+      }[]
+    | null;
+  parentalConsentObtained?: boolean | null;
+  parentalConsentDate?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScheduleTableBlock".
+ */
+export interface ScheduleTableBlock {
+  heading?: string | null;
+  showAll?: boolean | null;
+  entries?: (number | ScheduleEntry)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'scheduleTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schedule-entries".
+ */
+export interface ScheduleEntry {
+  id: number;
+  group: string;
+  dayOfWeek: 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
+  startTime: string;
+  endTime?: string | null;
+  coach?: (number | null) | Coach;
+  hall?: string | null;
+  ageGroup?: string | null;
+  level?: ('beginner' | 'intermediate' | 'advanced' | 'all') | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersStripBlock".
+ */
+export interface PartnersStripBlock {
+  heading?: string | null;
+  showAll?: boolean | null;
+  partners?: (number | Partner)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'partnersStrip';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners".
+ */
+export interface Partner {
+  id: number;
+  name: string;
+  logo?: (number | null) | Media;
   url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
+  isGeneralPartner?: boolean | null;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock".
+ */
+export interface GalleryBlock {
+  heading?: string | null;
+  images?: (number | Media)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock".
+ */
+export interface VideoEmbedBlock {
+  title?: string | null;
+  provider?: ('youtube' | 'rutube' | 'vk') | null;
+  url: string;
+  poster?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'videoEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQAccordionBlock".
+ */
+export interface FAQAccordionBlock {
+  heading?: string | null;
+  items?:
+    | {
+        question: string;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faqAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock".
+ */
+export interface ContactFormBlock {
+  heading?: string | null;
+  description?: string | null;
+  recipientEmail?: string | null;
+  /**
+   * Отображается рядом с обязательным чекбоксом согласия.
+   */
+  consentText?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contactForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richText';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  title: string;
+  /**
+   * ЧПУ-адрес. Оставьте пустым — будет создан из заголовка.
+   */
+  slug?: string | null;
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  excerpt?: string | null;
+  heroImage?: (number | null) | Media;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Где новость появилась изначально. От этого зависит обратный постинг (site → соцсети).
+   */
+  originPlatform?: ('site' | 'telegram' | 'vk') | null;
+  sources?:
+    | {
+        platform: 'site' | 'telegram' | 'vk';
+        externalId?: string | null;
+        url?: string | null;
+        rawPayload?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  crosspostTargets?:
+    | {
+        platform: 'telegram' | 'vk';
+        status?: ('pending' | 'sent' | 'failed' | 'skipped') | null;
+        remoteUrl?: string | null;
+        error?: string | null;
+        attempts?: number | null;
+        lastAttemptAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  needsReviewDuplicate?: boolean | null;
+  mergedFrom?:
+    | {
+        platform?: ('site' | 'telegram' | 'vk') | null;
+        externalId?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media-galleries".
+ */
+export interface MediaGallery {
+  id: number;
+  title: string;
+  /**
+   * ЧПУ-адрес. Оставьте пустым — будет создан из заголовка.
+   */
+  slug?: string | null;
+  kind: 'photo' | 'film' | 'interview';
+  status: 'draft' | 'published';
+  publishedAt?: string | null;
+  coverImage?: (number | null) | Media;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Для фотогалереи.
+   */
+  photos?: (number | Media)[] | null;
+  /**
+   * Видео не хостим у себя — только ссылки на YouTube / RuTube / VK Video.
+   */
+  videos?:
+    | {
+        provider?: ('youtube' | 'rutube' | 'vk') | null;
+        url: string;
+        title?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "social-post-queue".
+ */
+export interface SocialPostQueue {
+  id: number;
+  platform: 'telegram' | 'vk';
+  externalId: string;
+  receivedAt?: string | null;
+  rawText?: string | null;
+  normalizedText?: string | null;
+  mediaHashes?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  url?: string | null;
+  rawPayload?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  status?: ('pending' | 'processed' | 'merged' | 'discarded') | null;
+  linkedNewsPost?: (number | null) | News;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +784,52 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: string | User;
+        relationTo: 'pages';
+        value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'news';
+        value: number | News;
+      } | null)
+    | ({
+        relationTo: 'media-galleries';
+        value: number | MediaGallery;
+      } | null)
+    | ({
+        relationTo: 'coaches';
+        value: number | Coach;
+      } | null)
+    | ({
+        relationTo: 'athletes';
+        value: number | Athlete;
+      } | null)
+    | ({
+        relationTo: 'schedule-entries';
+        value: number | ScheduleEntry;
+      } | null)
+    | ({
+        relationTo: 'partners';
+        value: number | Partner;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'social-post-queue';
+        value: number | SocialPostQueue;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +839,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +862,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -237,9 +870,425 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  layout?:
+    | T
+    | {
+        heroSlider?: T | HeroSliderBlockSelect<T>;
+        mission?: T | MissionBlockSelect<T>;
+        statistics?: T | StatisticsBlockSelect<T>;
+        callToAction?: T | CallToActionBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
+        rulesList?: T | RulesListBlockSelect<T>;
+        teamGrid?: T | TeamGridBlockSelect<T>;
+        scheduleTable?: T | ScheduleTableBlockSelect<T>;
+        partnersStrip?: T | PartnersStripBlockSelect<T>;
+        gallery?: T | GalleryBlockSelect<T>;
+        videoEmbed?: T | VideoEmbedBlockSelect<T>;
+        faqAccordion?: T | FAQAccordionBlockSelect<T>;
+        contactForm?: T | ContactFormBlockSelect<T>;
+        richText?: T | RichTextBlockSelect<T>;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  ogImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSliderBlock_select".
+ */
+export interface HeroSliderBlockSelect<T extends boolean = true> {
+  slides?:
+    | T
+    | {
+        image?: T;
+        heading?: T;
+        subheading?: T;
+        ctaLabel?: T;
+        ctaUrl?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MissionBlock_select".
+ */
+export interface MissionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  image?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatisticsBlock_select".
+ */
+export interface StatisticsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  stats?:
+    | T
+    | {
+        value?: T;
+        suffix?: T;
+        label?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CallToActionBlock_select".
+ */
+export interface CallToActionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  text?: T;
+  buttonLabel?: T;
+  buttonUrl?: T;
+  style?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  heading?: T;
+  events?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RulesListBlock_select".
+ */
+export interface RulesListBlockSelect<T extends boolean = true> {
+  heading?: T;
+  rules?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TeamGridBlock_select".
+ */
+export interface TeamGridBlockSelect<T extends boolean = true> {
+  heading?: T;
+  mode?: T;
+  showAll?: T;
+  coaches?: T;
+  athletes?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ScheduleTableBlock_select".
+ */
+export interface ScheduleTableBlockSelect<T extends boolean = true> {
+  heading?: T;
+  showAll?: T;
+  entries?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PartnersStripBlock_select".
+ */
+export interface PartnersStripBlockSelect<T extends boolean = true> {
+  heading?: T;
+  showAll?: T;
+  partners?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock_select".
+ */
+export interface GalleryBlockSelect<T extends boolean = true> {
+  heading?: T;
+  images?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "VideoEmbedBlock_select".
+ */
+export interface VideoEmbedBlockSelect<T extends boolean = true> {
+  title?: T;
+  provider?: T;
+  url?: T;
+  poster?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQAccordionBlock_select".
+ */
+export interface FAQAccordionBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactFormBlock_select".
+ */
+export interface ContactFormBlockSelect<T extends boolean = true> {
+  heading?: T;
+  description?: T;
+  recipientEmail?: T;
+  consentText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news_select".
+ */
+export interface NewsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  status?: T;
+  publishedAt?: T;
+  excerpt?: T;
+  heroImage?: T;
+  content?: T;
+  originPlatform?: T;
+  sources?:
+    | T
+    | {
+        platform?: T;
+        externalId?: T;
+        url?: T;
+        rawPayload?: T;
+        id?: T;
+      };
+  crosspostTargets?:
+    | T
+    | {
+        platform?: T;
+        status?: T;
+        remoteUrl?: T;
+        error?: T;
+        attempts?: T;
+        lastAttemptAt?: T;
+        id?: T;
+      };
+  needsReviewDuplicate?: T;
+  mergedFrom?:
+    | T
+    | {
+        platform?: T;
+        externalId?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media-galleries_select".
+ */
+export interface MediaGalleriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  kind?: T;
+  status?: T;
+  publishedAt?: T;
+  coverImage?: T;
+  description?: T;
+  photos?: T;
+  videos?:
+    | T
+    | {
+        provider?: T;
+        url?: T;
+        title?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "coaches_select".
+ */
+export interface CoachesSelect<T extends boolean = true> {
+  name?: T;
+  title?: T;
+  rank?: T;
+  photo?: T;
+  bio?: T;
+  specializations?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  user?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "athletes_select".
+ */
+export interface AthletesSelect<T extends boolean = true> {
+  name?: T;
+  photo?: T;
+  birthYear?: T;
+  weightCategory?: T;
+  rank?: T;
+  coach?: T;
+  bio?: T;
+  achievements?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        id?: T;
+      };
+  parentalConsentObtained?: T;
+  parentalConsentDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "schedule-entries_select".
+ */
+export interface ScheduleEntriesSelect<T extends boolean = true> {
+  group?: T;
+  dayOfWeek?: T;
+  startTime?: T;
+  endTime?: T;
+  coach?: T;
+  hall?: T;
+  ageGroup?: T;
+  level?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "partners_select".
+ */
+export interface PartnersSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  url?: T;
+  isGeneralPartner?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  alt?: T;
+  caption?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+  sizes?:
+    | T
+    | {
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -259,21 +1308,21 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "social-post-queue_select".
  */
-export interface MediaSelect<T extends boolean = true> {
-  alt?: T;
+export interface SocialPostQueueSelect<T extends boolean = true> {
+  platform?: T;
+  externalId?: T;
+  receivedAt?: T;
+  rawText?: T;
+  normalizedText?: T;
+  mediaHashes?: T;
+  url?: T;
+  rawPayload?: T;
+  status?: T;
+  linkedNewsPost?: T;
   updatedAt?: T;
   createdAt?: T;
-  url?: T;
-  thumbnailURL?: T;
-  filename?: T;
-  mimeType?: T;
-  filesize?: T;
-  width?: T;
-  height?: T;
-  focalX?: T;
-  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +1363,136 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  clubName?: string | null;
+  tagline?: string | null;
+  logo?: (number | null) | Media;
+  contacts?: {
+    phone?: string | null;
+    email?: string | null;
+    address?: string | null;
+    mapEmbed?: string | null;
+  };
+  socials?: {
+    telegram?: string | null;
+    vk?: string | null;
+    youtube?: string | null;
+    rutube?: string | null;
+  };
+  generalPartner?: (number | null) | Partner;
+  defaultSeo?: {
+    title?: string | null;
+    description?: string | null;
+    ogImage?: (number | null) | Media;
+  };
+  footerText?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integration-settings".
+ */
+export interface IntegrationSetting {
+  id: number;
+  telegram?: {
+    enabled?: boolean | null;
+    botToken?: string | null;
+    channelId?: string | null;
+    crosspostOnPublish?: boolean | null;
+  };
+  vk?: {
+    enabled?: boolean | null;
+    accessToken?: string | null;
+    groupId?: string | null;
+    confirmationToken?: string | null;
+    crosspostOnPublish?: boolean | null;
+  };
+  deduplication?: {
+    enabled?: boolean | null;
+    timeWindowMinutes?: number | null;
+    similarityThreshold?: number | null;
+    reviewLowerBound?: number | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  clubName?: T;
+  tagline?: T;
+  logo?: T;
+  contacts?:
+    | T
+    | {
+        phone?: T;
+        email?: T;
+        address?: T;
+        mapEmbed?: T;
+      };
+  socials?:
+    | T
+    | {
+        telegram?: T;
+        vk?: T;
+        youtube?: T;
+        rutube?: T;
+      };
+  generalPartner?: T;
+  defaultSeo?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        ogImage?: T;
+      };
+  footerText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "integration-settings_select".
+ */
+export interface IntegrationSettingsSelect<T extends boolean = true> {
+  telegram?:
+    | T
+    | {
+        enabled?: T;
+        botToken?: T;
+        channelId?: T;
+        crosspostOnPublish?: T;
+      };
+  vk?:
+    | T
+    | {
+        enabled?: T;
+        accessToken?: T;
+        groupId?: T;
+        confirmationToken?: T;
+        crosspostOnPublish?: T;
+      };
+  deduplication?:
+    | T
+    | {
+        enabled?: T;
+        timeWindowMinutes?: T;
+        similarityThreshold?: T;
+        reviewLowerBound?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

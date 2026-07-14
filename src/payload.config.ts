@@ -7,6 +7,16 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Coaches } from './collections/Coaches'
+import { Athletes } from './collections/Athletes'
+import { ScheduleEntry } from './collections/ScheduleEntry'
+import { NewsPost } from './collections/NewsPost'
+import { Partners } from './collections/Partners'
+import { MediaGallery } from './collections/MediaGallery'
+import { SocialPostQueue } from './collections/SocialPostQueue'
+import { Pages } from './collections/Pages'
+import { SiteSettings } from './globals/SiteSettings'
+import { IntegrationSettings } from './globals/IntegrationSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -22,7 +32,19 @@ export default buildConfig({
       titleSuffix: ' — Локомотив Дзюдо',
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Pages,
+    NewsPost,
+    MediaGallery,
+    Coaches,
+    Athletes,
+    ScheduleEntry,
+    Partners,
+    Media,
+    Users,
+    SocialPostQueue,
+  ],
+  globals: [SiteSettings, IntegrationSettings],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -32,15 +54,13 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
-    // Фаза 0: авто-синхронизация схемы (dev-подобный режим).
-    // В Фазе 1, когда модель данных стабилизируется, переключимся на
-    // сгенерированные миграции (`payload migrate`) и push: false.
-    push: true,
+    // Схема управляется миграциями (`payload migrate`, авто-применение при старте).
+    // push отключён, чтобы прод и дев были согласованы и не было скрытого дрейфа.
+    push: false,
   }),
   sharp,
   // Идемпотентный сидинг первого админа при первом старте контейнера.
   // Управляется переменными SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD.
-  // Если пользователи уже есть — ничего не делает.
   onInit: async (payload) => {
     const email = process.env.SEED_ADMIN_EMAIL
     const password = process.env.SEED_ADMIN_PASSWORD
@@ -51,7 +71,7 @@ export default buildConfig({
 
     await payload.create({
       collection: 'users',
-      data: { email, password },
+      data: { email, password, role: 'admin', name: 'Администратор' },
     })
     payload.logger.info(`Seeded initial admin user: ${email}`)
   },

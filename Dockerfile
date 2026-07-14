@@ -17,9 +17,9 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# next build компилирует и публичную часть, и админку Payload.
-# Подключение к БД на этом шаге не требуется.
-RUN npm run build
+# Генерируем importMap и типы Payload из актуального конфига (без БД),
+# затем next build компилирует публичную часть и админку Payload.
+RUN npm run generate && npm run build
 
 # --- runner -----------------------------------------------------------------
 FROM base AS runner
