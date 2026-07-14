@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { mediaUrl, mediaAlt, mediaSize } from '@/lib/media'
 
 type Person = Record<string, unknown>
@@ -10,15 +11,22 @@ function PersonShell({
   name,
   primary,
   secondary,
+  href,
 }: {
   photo: unknown
   name: string
   primary?: string
   secondary?: string
+  href?: string
 }) {
   const img = mediaSize(photo, 'card') || mediaUrl(photo)
+  const Wrapper = href ? Link : 'div'
+  const wrapperProps = href ? { href } : {}
   return (
-    <article className="group h-full overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-primary/50">
+    <Wrapper
+      {...(wrapperProps as { href: string })}
+      className="group block h-full overflow-hidden rounded-xl border border-line bg-surface transition-colors hover:border-primary/50"
+    >
       <div className="relative aspect-[3/4] overflow-hidden bg-ink-800">
         {img ? (
           <Image
@@ -40,7 +48,7 @@ function PersonShell({
         {primary && <p className="mt-1 text-sm text-primary-400">{primary}</p>}
         {secondary && <p className="mt-0.5 text-sm text-muted">{secondary}</p>}
       </div>
-    </article>
+    </Wrapper>
   )
 }
 
@@ -51,6 +59,7 @@ export function CoachCard({ c }: { c: Person }) {
       name={str(c.name)}
       primary={str(c.title) || undefined}
       secondary={str(c.rank) || undefined}
+      href={c.id != null ? `/trenery/${c.id}` : undefined}
     />
   )
 }

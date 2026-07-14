@@ -27,7 +27,18 @@ export async function generateMetadata({
   const { slug } = await params
   const post = await getNewsBySlug(slug)
   if (!post) return {}
-  return { title: str(post.title), description: str(post.excerpt) || undefined }
+  const img = mediaUrl(post.heroImage)
+  const description = str(post.excerpt) || undefined
+  return {
+    title: str(post.title),
+    description,
+    openGraph: {
+      type: 'article',
+      title: str(post.title),
+      description,
+      ...(img ? { images: [{ url: img }] } : {}),
+    },
+  }
 }
 
 export default async function NewsDetail({ params }: { params: Promise<{ slug: string }> }) {

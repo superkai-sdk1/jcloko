@@ -21,12 +21,24 @@ const inter = Inter({
 })
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://chickenflow.ru'),
   title: {
     default: 'Клуб дзюдо «Локомотив»',
     template: '%s — Клуб дзюдо «Локомотив»',
   },
   description:
     'Клуб дзюдо «Локомотив» — тренировки, расписание, тренеры, новости и достижения спортсменов.',
+  openGraph: {
+    type: 'website',
+    locale: 'ru_RU',
+    siteName: 'Клуб дзюдо «Локомотив»',
+    title: 'Клуб дзюдо «Локомотив»',
+    description:
+      'Тренировки по дзюдо для детей и взрослых. Расписание, тренеры, новости клуба «Локомотив».',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

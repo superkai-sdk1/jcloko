@@ -52,14 +52,19 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
               className="object-cover"
             />
           ) : (
-            <div className="h-full w-full bg-tatami bg-ink-800" />
+            <div className="relative h-full w-full bg-ink-800 bg-tatami">
+              <div className="absolute -left-24 top-1/4 h-96 w-96 rounded-full bg-primary/20 blur-[120px]" />
+              <div className="absolute -right-16 bottom-0 h-80 w-80 rounded-full bg-accent/15 blur-[120px]" />
+            </div>
           )}
         </motion.div>
       </AnimatePresence>
 
       {/* Затемнение для читаемости */}
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/30" aria-hidden />
-      <div className="absolute inset-0 bg-gradient-to-r from-ink/85 to-transparent" aria-hidden />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/50 to-transparent" aria-hidden />
+      {/* Декоративная акцентная полоса слева */}
+      <div className="absolute left-0 top-0 h-full w-1 bg-gradient-to-b from-accent via-primary to-transparent" aria-hidden />
 
       {/* Контент */}
       <div className="relative mx-auto w-full max-w-6xl px-5 py-24 sm:px-6 lg:px-8">

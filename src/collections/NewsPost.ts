@@ -15,6 +15,11 @@ export const NewsPost: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'originPlatform', 'publishedAt'],
     group: 'Контент',
+    preview: (doc) => {
+      const base = process.env.NEXT_PUBLIC_SERVER_URL || ''
+      const slug = typeof doc?.slug === 'string' ? doc.slug : ''
+      return slug ? `${base}/novosti/${slug}` : null
+    },
   },
   access: {
     read: publishedOrLoggedIn,

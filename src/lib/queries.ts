@@ -72,6 +72,28 @@ export const getMediaGalleries = async () => {
   return res.docs
 }
 
+/** Одна медиа-подборка по slug (опубликованная), с фото/видео. */
+export const getMediaGalleryBySlug = async (slug: string) => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'media-galleries',
+    where: { and: [{ slug: { equals: slug } }, { status: { equals: 'published' } }] },
+    depth: 2,
+    limit: 1,
+  })
+  return res.docs[0] ?? null
+}
+
+/** Тренер по id. */
+export const getCoachById = async (id: string) => {
+  const payload = await getPayloadClient()
+  try {
+    return await payload.findByID({ collection: 'coaches', id, depth: 1 })
+  } catch {
+    return null
+  }
+}
+
 /** Одна новость по slug (опубликованная). */
 export const getNewsBySlug = async (slug: string) => {
   const payload = await getPayloadClient()

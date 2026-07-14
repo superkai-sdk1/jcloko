@@ -10,6 +10,12 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'status', 'updatedAt'],
     group: 'Контент',
+    description: 'Страницы сайта, собираемые из блоков. Slug «glavnaya» — это главная (/).',
+    preview: (doc) => {
+      const base = process.env.NEXT_PUBLIC_SERVER_URL || ''
+      const slug = typeof doc?.slug === 'string' ? doc.slug : ''
+      return slug === 'glavnaya' ? base || '/' : `${base}/${slug}`
+    },
   },
   access: {
     read: publishedOrLoggedIn,

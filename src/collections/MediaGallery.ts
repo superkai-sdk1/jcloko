@@ -9,6 +9,11 @@ export const MediaGallery: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'kind', 'status', 'publishedAt'],
     group: 'Контент',
+    preview: (doc) => {
+      const base = process.env.NEXT_PUBLIC_SERVER_URL || ''
+      const slug = typeof doc?.slug === 'string' ? doc.slug : ''
+      return slug ? `${base}/media/${slug}` : null
+    },
   },
   access: {
     read: publishedOrLoggedIn,
