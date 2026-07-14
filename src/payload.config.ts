@@ -34,6 +34,16 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — Локомотив Дзюдо',
     },
+    components: {
+      // Кастомный экран ручного разбора возможных дубликатов + ссылка в навигации.
+      views: {
+        duplicates: {
+          Component: '/components/admin/DuplicatesView#DuplicatesView',
+          path: '/duplicates',
+        },
+      },
+      afterNavLinks: ['/components/admin/DuplicatesNavLink#DuplicatesNavLink'],
+    },
   },
   collections: [
     Pages,

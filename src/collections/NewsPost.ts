@@ -160,6 +160,25 @@ export const NewsPost: CollectionConfig = {
           defaultValue: false,
         },
         {
+          name: 'duplicateOf',
+          type: 'relationship',
+          relationTo: 'news',
+          label: 'Похоже на новость',
+          admin: { description: 'Заполняется дедупликатором для ручной проверки/мержа.' },
+        },
+        {
+          name: 'similarityScore',
+          type: 'number',
+          label: 'Оценка схожести (0–1)',
+          admin: { step: 0.01 },
+        },
+        {
+          name: 'imageHash',
+          type: 'text',
+          label: 'pHash обложки',
+          admin: { readOnly: true },
+        },
+        {
           name: 'mergedFrom',
           type: 'array',
           label: 'Слито из источников',

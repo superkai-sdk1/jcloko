@@ -1,5 +1,5 @@
 import type { Payload } from 'payload'
-import { textToLexical } from '../lexical'
+import { ingestSocialPost, type IngestResult } from '../ingest'
 
 type VkPhotoSize = { url: string; width: number; height: number }
 type VkAttachment = { type: string; photo?: { sizes?: VkPhotoSize[] } }
@@ -10,11 +10,6 @@ type VkWallPost = {
   date?: number
   text?: string
   attachments?: VkAttachment[]
-}
-
-const firstLine = (t: string, max = 120): string => {
-  const line = (t || '').split('\n')[0].trim()
-  return line.length > max ? `${line.slice(0, max - 1)}…` : line || 'Новость из ВКонтакте'
 }
 
 function bestPhotoUrl(attachments: VkAttachment[] | undefined): string | null {
@@ -28,88 +23,40 @@ function bestPhotoUrl(attachments: VkAttachment[] | undefined): string | null {
   return null
 }
 
-async function importPhoto(payload: Payload, url: string | null, alt: string): Promise<number | null> {
+async function downloadPhoto(url: string | null): Promise<{ buffer: Buffer; name: string } | null> {
   if (!url) return null
   try {
     const res = await fetch(url)
     if (!res.ok) return null
-    const buf = Buffer.from(await res.arrayBuffer())
-    const name = url.split('/').pop()?.split('?')[0] || 'vk-photo.jpg'
-    const doc = await payload.create({
-      collection: 'media',
-      data: { alt },
-      file: { data: buf, name, mimetype: 'image/jpeg', size: buf.length },
-      overrideAccess: true,
-    })
-    return doc.id as number
+    const buffer = Buffer.from(await res.arrayBuffer())
+    return { buffer, name: url.split('/').pop()?.split('?')[0] || 'vk-photo.jpg' }
   } catch {
     return null
   }
 }
 
-/** Импортирует пост со стены ВК. Идемпотентно по externalId. */
+/** Обрабатывает пост со стены ВК через общий пайплайн приёма. */
 export async function ingestVkWallPost(
   payload: Payload,
   post: VkWallPost,
   groupId: string,
-): Promise<{ status: 'created' | 'duplicate' | 'ignored' }> {
+): Promise<IngestResult> {
   const ownerId = post.owner_id ?? -Math.abs(Number(groupId))
   const externalId = `${ownerId}_${post.id}`
   const bodyText = (post.text || '').trim()
-  if (!bodyText && !bestPhotoUrl(post.attachments)) return { status: 'ignored' }
-
-  const existing = await payload.find({
-    collection: 'news',
-    where: {
-      and: [
-        { 'sources.platform': { equals: 'vk' } },
-        { 'sources.externalId': { equals: externalId } },
-      ],
-    },
-    limit: 1,
-    overrideAccess: true,
-    depth: 0,
-  })
-  if (existing.totalDocs > 0) return { status: 'duplicate' }
-
   const url = `https://vk.com/wall${externalId}`
   const publishedAt = new Date((post.date || 0) * 1000).toISOString()
-  const title = firstLine(bodyText)
-  const heroImage = await importPhoto(payload, bestPhotoUrl(post.attachments), title)
 
-  const news = await payload.create({
-    collection: 'news',
-    overrideAccess: true,
-    data: {
-      title,
-      status: 'published',
-      originPlatform: 'vk',
-      publishedAt,
-      excerpt: bodyText.slice(0, 240),
-      content: textToLexical(bodyText) as never,
-      ...(heroImage ? { heroImage } : {}),
-      sources: [{ platform: 'vk', externalId, url, rawPayload: post as never }],
-    },
+  const photo = await downloadPhoto(bestPhotoUrl(post.attachments))
+
+  return ingestSocialPost(payload, {
+    platform: 'vk',
+    externalId,
+    url,
+    text: bodyText,
+    publishedAt,
+    imageBuffer: photo?.buffer ?? null,
+    imageName: photo?.name,
+    rawPayload: post,
   })
-
-  try {
-    await payload.create({
-      collection: 'social-post-queue',
-      overrideAccess: true,
-      data: {
-        platform: 'vk',
-        externalId,
-        receivedAt: publishedAt,
-        rawText: bodyText,
-        url,
-        rawPayload: post as never,
-        status: 'processed',
-        linkedNewsPost: news.id,
-      },
-    })
-  } catch {
-    // уникальный индекс при гонке — не критично
-  }
-
-  return { status: 'created' }
 }

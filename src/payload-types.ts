@@ -680,6 +680,12 @@ export interface News {
       }[]
     | null;
   needsReviewDuplicate?: boolean | null;
+  /**
+   * Заполняется дедупликатором для ручной проверки/мержа.
+   */
+  duplicateOf?: (number | null) | News;
+  similarityScore?: number | null;
+  imageHash?: string | null;
   mergedFrom?:
     | {
         platform?: ('site' | 'telegram' | 'vk') | null;
@@ -1241,6 +1247,9 @@ export interface NewsSelect<T extends boolean = true> {
         id?: T;
       };
   needsReviewDuplicate?: T;
+  duplicateOf?: T;
+  similarityScore?: T;
+  imageHash?: T;
   mergedFrom?:
     | T
     | {

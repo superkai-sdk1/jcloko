@@ -14,6 +14,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "typecheck": "cross-env NODE_OPTIONS=--no-deprecation tsc --noEmit",
+    "test": "cross-env NODE_OPTIONS=--no-deprecation vitest run",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate": "npm run generate:importmap && npm run generate:types",
@@ -43,6 +44,7 @@
     "eslint-config-next": "15.4.11",
     "prettier": "^3.4.2",
     "tailwindcss": "^4.1.0",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vitest": "^3.2.4"
   }
 }
