@@ -19,11 +19,10 @@ ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-# Генерируем importMap и типы Payload из актуального конфига (без БД),
-# затем next build компилирует публичную часть и админку Payload.
-# Кэш компиляции Next (.next/cache) сохраняется между сборками (BuildKit) —
-# инкрементальные пересборки при правках исходников идут заметно быстрее.
-RUN --mount=type=cache,target=/app/.next/cache npm run generate && npm run build
+# importMap и типы Payload уже сгенерированы и закоммичены (регенерируются в
+# pre-check/CI), поэтому в Docker-сборке их не пересоздаём — экономим ~20–30с.
+# Кэш компиляции Next (.next/cache) сохраняется между сборками (BuildKit).
+RUN --mount=type=cache,target=/app/.next/cache npm run build
 
 # --- runner -----------------------------------------------------------------
 FROM base AS runner
