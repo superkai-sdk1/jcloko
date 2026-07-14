@@ -1,4 +1,13 @@
 services:
+  # Выставляет права на том медиа для непривилегированного пользователя app (uid 1001),
+  # иначе именованный том создаётся под root и загрузка файлов падает с EACCES.
+  media-init:
+    image: alpine
+    command: sh -c "mkdir -p /media && chown -R 1001:1001 /media"
+    volumes:
+      - media:/media
+    restart: 'no'
+
   app:
     build: .
     restart: unless-stopped
@@ -7,6 +16,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      media-init:
+        condition: service_completed_successfully
     volumes:
       - media:/app/media
     expose:

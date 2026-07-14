@@ -1,5 +1,6 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { ru } from '@payloadcms/translations/languages/ru'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -49,6 +50,11 @@ export default buildConfig({
     FormSubmission,
   ],
   globals: [SiteSettings, IntegrationSettings],
+  // Русифицированный интерфейс админки и редактора.
+  i18n: {
+    supportedLanguages: { ru },
+    fallbackLanguage: 'ru',
+  },
   // Асинхронные задачи (обратный постинг в соцсети с ретраями).
   jobs: {
     tasks: [
