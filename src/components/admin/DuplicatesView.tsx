@@ -11,7 +11,7 @@ type NewsDoc = {
   duplicateOf?: { id: number | string; title?: string } | number | string | null
 }
 
-const wrap: React.CSSProperties = { padding: '2rem', maxWidth: 900, margin: '0 auto' }
+const wrap: React.CSSProperties = { margin: '1rem 0 2rem', maxWidth: 760 }
 const card: React.CSSProperties = {
   border: '1px solid #ddd',
   borderRadius: 8,

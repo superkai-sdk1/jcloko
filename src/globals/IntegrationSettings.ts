@@ -69,6 +69,15 @@ export const IntegrationSettings: GlobalConfig = {
         { name: 'timeWindowMinutes', type: 'number', label: 'Временное окно, мин', defaultValue: 30 },
         { name: 'similarityThreshold', type: 'number', label: 'Порог авто-мержа (0–1)', defaultValue: 0.82 },
         { name: 'reviewLowerBound', type: 'number', label: 'Нижняя граница ручной проверки (0–1)', defaultValue: 0.5 },
+        {
+          name: 'duplicatesReview',
+          type: 'ui',
+          admin: {
+            components: {
+              Field: '/components/admin/DuplicatesView#DuplicatesView',
+            },
+          },
+        },
       ],
     },
   ],
