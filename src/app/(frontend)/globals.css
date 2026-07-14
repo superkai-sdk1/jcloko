@@ -71,6 +71,15 @@
 }
 
 @layer utilities {
+  /* Горизонтальный скролл без полосы прокрутки */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Тонкая «зернистая» сетка-паттерн для тёмных секций (декоративный фон) */
   .bg-tatami {
     background-image:

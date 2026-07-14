@@ -3,6 +3,7 @@ import { Oswald, Inter } from 'next/font/google'
 import './globals.css'
 import { Header } from '@/components/site/Header'
 import { Footer } from '@/components/site/Footer'
+import { ScrollProgress } from '@/components/motion/ScrollProgress'
 import { getSiteSettings, getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 import { resolvePartnerHref } from '@/lib/partnerLink'
@@ -75,6 +76,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${oswald.variable} ${inter.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink font-sans text-paper antialiased">
+        <ScrollProgress />
         <Header
           clubName={settings?.clubName || 'Локомотив'}
           logoUrl={mediaUrl(settings?.logo)}

@@ -11,8 +11,9 @@ import { HeroSlider } from './HeroSlider'
 import { FAQAccordion } from './FAQAccordion'
 import { ContactForm } from './ContactForm'
 import { CoachCard, AthleteCard } from '@/components/cards/PersonCard'
-import { getCoaches, getAthletes, getPartners, getScheduleEntries } from '@/lib/queries'
-import { mediaUrl, mediaAlt, mediaFocal } from '@/lib/media'
+import { getCoaches, getAthletes, getPartners, getScheduleEntries, getNews } from '@/lib/queries'
+import { mediaUrl, mediaAlt, mediaFocal, mediaSize } from '@/lib/media'
+import { CardScroller, type DeckItem } from '@/components/decks/CardScroller'
 import { toEmbedUrl } from '@/lib/embed'
 import { resolvePartnerHref, isExternalHref } from '@/lib/partnerLink'
 import { AdTooltip } from '@/components/AdTooltip'
@@ -22,6 +23,11 @@ type Block = Record<string, unknown>
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const arr = (v: unknown): unknown[] => (Array.isArray(v) ? v : [])
 const bool = (v: unknown): boolean => v === true
+const fmtDate = (v: unknown): string => {
+  if (typeof v !== 'string') return ''
+  const d = new Date(v)
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+}
 
 const dayLabels: Record<string, string> = {
   mon: 'Понедельник', tue: 'Вторник', wed: 'Среда', thu: 'Четверг',
@@ -182,17 +188,59 @@ async function TeamGridBlock({ b }: { b: Block }) {
           title={str(b.heading) || (mode === 'athletes' ? 'Наши спортсмены' : 'Тренерский состав')}
           className="mb-10"
         />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {people.map((p, i) => {
-            const person = p as Block
-            if (typeof person !== 'object') return null
-            return (
-              <Reveal key={i} delay={i * 0.05}>
-                {mode === 'athletes' ? <AthleteCard a={person} /> : <CoachCard c={person} />}
-              </Reveal>
-            )
-          })}
-        </div>
+        <Reveal>
+          <CardScroller
+            items={people.slice(0, 12).map((p, i) => {
+              const person = p as Block
+              const photo = person.photo
+              return {
+                key: String(person.id ?? i),
+                href: mode === 'athletes' ? undefined : person.id != null ? `/trenery/${person.id}` : undefined,
+                img: mediaSize(photo, 'card') || mediaUrl(photo),
+                focal: mediaFocal(photo),
+                title: str(person.name),
+                subtitle: mode === 'athletes' ? str(person.rank) : str(person.title) || str(person.rank),
+              } as DeckItem
+            })}
+            aspect="3 / 4"
+            cardWidth="w-40 sm:w-44"
+            seeAllHref={mode === 'athletes' ? undefined : '/trenery'}
+            seeAllLabel={mode === 'athletes' ? undefined : 'Все тренеры'}
+          />
+        </Reveal>
+      </Container>
+    </Section>
+  )
+}
+
+// ─── LatestNews (последние новости колодой) ────────────────────────────────────
+async function LatestNewsBlock({ b }: { b: Block }) {
+  const count = typeof b.count === 'number' && b.count > 0 ? b.count : 3
+  const news = await getNews(count)
+  if (news.length === 0) return null
+  return (
+    <Section tone="surface">
+      <Container>
+        <SectionHeading eyebrow="Жизнь клуба" title={str(b.heading) || 'Последние новости'} className="mb-4" />
+        <Reveal>
+          <CardScroller
+            items={news.map((n, i) => {
+              const nn = n as unknown as Block
+              return {
+                key: String(nn.id ?? i),
+                href: `/novosti/${str(nn.slug)}`,
+                img: mediaSize(nn.heroImage, 'card') || mediaUrl(nn.heroImage),
+                focal: mediaFocal(nn.heroImage),
+                title: str(nn.title),
+                subtitle: fmtDate(nn.publishedAt),
+              } as DeckItem
+            })}
+            aspect="16 / 11"
+            cardWidth="w-64 sm:w-72"
+            seeAllHref="/novosti"
+            seeAllLabel="Все новости"
+          />
+        </Reveal>
       </Container>
     </Section>
   )
@@ -401,6 +449,8 @@ export function BlockRenderer({ blocks }: { blocks?: unknown }) {
             return <MissionBlock key={key} b={b} />
           case 'statistics':
             return <StatisticsBlock key={key} b={b} />
+          case 'latestNews':
+            return <LatestNewsBlock key={key} b={b} />
           case 'callToAction':
             return <CallToActionBlock key={key} b={b} />
           case 'timeline':

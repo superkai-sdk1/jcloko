@@ -44,6 +44,7 @@ export function HeroSlider({
   const [lum, setLum] = useState(0.15)
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const brightRef = useRef(false)
 
   const count = slides.length
   const slide = slides[i]
@@ -83,12 +84,12 @@ export function HeroSlider({
           sum += (0.2126 * data[p] + 0.7152 * data[p + 1] + 0.0722 * data[p + 2]) / 255
           n++
         }
-        if (n) setLum((prev) => prev * 0.6 + (sum / n) * 0.4) // сглаживание
+        if (n) setLum((prev) => prev * 0.9 + (sum / n) * 0.1) // сильное сглаживание
       } catch {
         /* CORS/недоступно — игнорируем */
       }
     }
-    const id = setInterval(sample, 350)
+    const id = setInterval(sample, 150)
     return () => {
       stop = true
       clearInterval(id)
@@ -98,7 +99,13 @@ export function HeroSlider({
   if (count === 0) return null
 
   const adapting = isVideo && adaptContrast
-  const bright = lum > 0.5
+  // Гистерезис: переключаемся в «светлый фон» при lum>0.58, обратно при <0.42 —
+  // чтобы у порога 0.5 не было дёрганья. Смена цвета сглажена CSS-переходом.
+  if (adapting) {
+    if (lum > 0.58) brightRef.current = true
+    else if (lum < 0.42) brightRef.current = false
+  }
+  const bright = adapting && brightRef.current
   const textColor = adapting ? (bright ? '#0e1b14' : '#f2f5f1') : '#f2f5f1'
   const subColor = adapting ? (bright ? 'rgba(14,27,20,0.85)' : 'rgba(242,245,241,0.85)') : 'rgba(242,245,241,0.85)'
   // Подложка противоположного тона, сила — по «серости» (mid-tона хуже читаются)
@@ -152,7 +159,7 @@ export function HeroSlider({
       {/* Адаптивная подложка под текст */}
       {adapting && (
         <div
-          className="absolute inset-0 transition-colors duration-500"
+          className="absolute inset-0 transition-all duration-700 ease-out"
           style={{ background: `linear-gradient(to right, ${scrim}, transparent 70%)` }}
           aria-hidden
         />
@@ -170,18 +177,18 @@ export function HeroSlider({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           className="max-w-2xl"
-          style={{ color: textColor }}
+          style={{ color: textColor, transition: 'color 0.9s ease' }}
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-4 py-1 font-display text-sm font-semibold uppercase tracking-[0.16em] text-primary-400">
             Клуб дзюдо
           </span>
           {slide.heading && (
-            <h1 className="mt-5 text-4xl font-bold uppercase leading-[1.02] sm:text-6xl lg:text-7xl" style={{ color: textColor }}>
+            <h1 className="mt-5 text-4xl font-bold uppercase leading-[1.02] sm:text-6xl lg:text-7xl" style={{ color: textColor, transition: 'color 0.9s ease' }}>
               {slide.heading}
             </h1>
           )}
           {slide.subheading && (
-            <p className="mt-5 max-w-xl text-lg" style={{ color: subColor }}>
+            <p className="mt-5 max-w-xl text-lg" style={{ color: subColor, transition: 'color 0.9s ease' }}>
               {slide.subheading}
             </p>
           )}

@@ -283,6 +283,16 @@ export const FAQAccordionBlock: Block = {
   ],
 }
 
+export const LatestNewsBlock: Block = {
+  slug: 'latestNews',
+  interfaceName: 'LatestNewsBlock',
+  labels: { singular: 'Последние новости', plural: 'Блоки последних новостей' },
+  fields: [
+    { name: 'heading', type: 'text', label: 'Заголовок', defaultValue: 'Последние новости' },
+    { name: 'count', type: 'number', label: 'Сколько новостей', defaultValue: 3, admin: { description: 'По умолчанию 3.' } },
+  ],
+}
+
 export const StatisticsBlock: Block = {
   slug: 'statistics',
   interfaceName: 'StatisticsBlock',
@@ -312,6 +322,7 @@ export const pageBlocks: Block[] = [
   HeroSliderBlock,
   MissionBlock,
   StatisticsBlock,
+  LatestNewsBlock,
   CallToActionBlock,
   TimelineBlock,
   RulesListBlock,
