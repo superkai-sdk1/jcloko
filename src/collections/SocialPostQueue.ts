@@ -33,7 +33,7 @@ export const SocialPostQueue: CollectionConfig = {
       ],
     },
     { name: 'externalId', type: 'text', label: 'Внешний ID', required: true, index: true },
-    { name: 'receivedAt', type: 'date', label: 'Получено', admin: { date: { pickerAppearance: 'dayAndTime' } } },
+    { name: 'receivedAt', type: 'date', label: 'Получено', admin: { date: { pickerAppearance: 'dayAndTime', displayFormat: 'dd.MM.yyyy HH:mm', timeFormat: 'HH:mm' } } },
     { name: 'rawText', type: 'textarea', label: 'Исходный текст' },
     { name: 'normalizedText', type: 'textarea', label: 'Нормализованный текст' },
     { name: 'mediaHashes', type: 'json', label: 'pHash изображений' },

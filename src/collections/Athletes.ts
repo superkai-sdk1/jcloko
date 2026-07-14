@@ -56,6 +56,7 @@ export const Athletes: CollectionConfig = {
           label: 'Дата получения согласия',
           admin: {
             condition: (data) => Boolean(data?.parentalConsentObtained),
+            date: { displayFormat: 'dd.MM.yyyy' },
           },
         },
       ],

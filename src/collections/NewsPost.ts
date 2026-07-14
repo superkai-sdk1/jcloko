@@ -87,7 +87,7 @@ export const NewsPost: CollectionConfig = {
           name: 'publishedAt',
           type: 'date',
           label: 'Дата публикации',
-          admin: { width: '50%', date: { pickerAppearance: 'dayAndTime' } },
+          admin: { width: '50%', date: { pickerAppearance: 'dayAndTime', displayFormat: 'dd.MM.yyyy HH:mm', timeFormat: 'HH:mm' } },
         },
       ],
     },
@@ -184,7 +184,7 @@ export const NewsPost: CollectionConfig = {
             { name: 'remoteUrl', type: 'text', label: 'Ссылка на публикацию' },
             { name: 'error', type: 'text', label: 'Текст ошибки' },
             { name: 'attempts', type: 'number', label: 'Попыток', defaultValue: 0 },
-            { name: 'lastAttemptAt', type: 'date', label: 'Последняя попытка' },
+            { name: 'lastAttemptAt', type: 'date', label: 'Последняя попытка', admin: { date: { pickerAppearance: 'dayAndTime', displayFormat: 'dd.MM.yyyy HH:mm', timeFormat: 'HH:mm' } } },
           ],
         },
         {

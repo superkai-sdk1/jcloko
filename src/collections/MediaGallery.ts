@@ -55,7 +55,7 @@ export const MediaGallery: CollectionConfig = {
         },
       ],
     },
-    { name: 'publishedAt', type: 'date', label: 'Дата', admin: { position: 'sidebar' } },
+    { name: 'publishedAt', type: 'date', label: 'Дата', admin: { position: 'sidebar', date: { displayFormat: 'dd.MM.yyyy' } } },
     { name: 'coverImage', type: 'upload', relationTo: 'media', label: 'Обложка' },
     { name: 'description', type: 'richText', label: 'Описание' },
     {
