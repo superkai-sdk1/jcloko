@@ -9,6 +9,9 @@ services:
     restart: 'no'
 
   app:
+    # На VPS берём готовый образ из GHCR (собран в CI): docker compose pull.
+    # build остаётся запасным вариантом для локальной сборки.
+    image: ${APP_IMAGE:-judo-app:latest}
     build: .
     restart: unless-stopped
     env_file:
