@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+
+/*
+  Глобальные стили публичной части сайта.
+  Админка Payload изолирована в route-группе (payload) и этих стилей не видит,
+  поэтому Tailwind preflight не конфликтует с UI админки.
+*/
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+}

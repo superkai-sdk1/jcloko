@@ -1,0 +1,14 @@
+# SITE_ADDRESS управляет режимом:
+#   ":80"            — HTTP без TLS (для smoke-теста по IP, пока DNS не настроен)
+#   "chickenflow.ru" — авто-HTTPS через Let's Encrypt (когда A-запись указывает на этот VPS)
+#   "jcloko.ru"      — боевой домен на этапе релиза
+{$SITE_ADDRESS} {
+	encode zstd gzip
+
+	# лимит на загрузку медиа
+	request_body {
+		max_size 25MB
+	}
+
+	reverse_proxy app:3000
+}

@@ -1,0 +1,17 @@
+node_modules
+.next
+.git
+.gitignore
+media
+Dockerfile
+.dockerignore
+docker-compose.yml
+Caddyfile
+.env
+.env*.local
+npm-debug.log*
+README.md
+PLAN.md
+caddy_data
+caddy_config
+**/.DS_Store
