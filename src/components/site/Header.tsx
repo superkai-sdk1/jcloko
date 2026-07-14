@@ -8,12 +8,16 @@ import { navLinks } from '@/lib/nav'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 
+type GeneralPartner = { name: string; logoUrl?: string | null; url?: string | null }
+
 export function Header({
   clubName = 'Локомотив',
   logoUrl,
+  generalPartner,
 }: {
   clubName?: string
   logoUrl?: string | null
+  generalPartner?: GeneralPartner | null
 }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
@@ -36,6 +40,30 @@ export function Header({
         scrolled || open ? 'bg-ink/95 backdrop-blur border-b border-line' : 'bg-transparent',
       )}
     >
+      {/* Строка генерального партнёра */}
+      {generalPartner && (
+        <div className="border-b border-line/50 bg-ink-800/85 backdrop-blur">
+          <div className="mx-auto flex h-9 max-w-6xl items-center justify-end gap-2.5 px-5 sm:px-6 lg:px-8">
+            <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted">
+              Генеральный партнёр
+            </span>
+            {generalPartner.url ? (
+              <a href={generalPartner.url} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                {generalPartner.logoUrl ? (
+                  <Image src={generalPartner.logoUrl} alt={generalPartner.name} width={80} height={20} className="h-4 w-auto" />
+                ) : (
+                  <span className="font-display text-sm font-bold uppercase tracking-wide text-paper">{generalPartner.name}</span>
+                )}
+              </a>
+            ) : generalPartner.logoUrl ? (
+              <Image src={generalPartner.logoUrl} alt={generalPartner.name} width={80} height={20} className="h-4 w-auto" />
+            ) : (
+              <span className="font-display text-sm font-bold uppercase tracking-wide text-paper">{generalPartner.name}</span>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="На главную">
           {logoUrl ? (

@@ -45,6 +45,22 @@ export const getPartners = async () => {
   return res.docs
 }
 
+/** Генеральный партнёр (для шапки). Сначала флаг isGeneralPartner, иначе — из SiteSettings. */
+export const getGeneralPartner = async () => {
+  const payload = await getPayloadClient()
+  const flagged = await payload.find({
+    collection: 'partners',
+    where: { isGeneralPartner: { equals: true } },
+    sort: 'displayOrder',
+    depth: 1,
+    limit: 1,
+  })
+  if (flagged.docs[0]) return flagged.docs[0]
+  const settings = await payload.findGlobal({ slug: 'site-settings', depth: 1 })
+  const gp = (settings as { generalPartner?: unknown })?.generalPartner
+  return gp && typeof gp === 'object' ? (gp as Record<string, unknown>) : null
+}
+
 /** Спортсмены. */
 export const getAthletes = async () => {
   const payload = await getPayloadClient()

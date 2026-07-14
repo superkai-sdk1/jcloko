@@ -3,7 +3,7 @@ import { Oswald, Inter } from 'next/font/google'
 import './globals.css'
 import { Header } from '@/components/site/Header'
 import { Footer } from '@/components/site/Footer'
-import { getSiteSettings } from '@/lib/queries'
+import { getSiteSettings, getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 
 const oswald = Oswald({
@@ -46,8 +46,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   // Настройки сайта; при недоступности БД (например, во время сборки) — дефолты.
   let settings: Awaited<ReturnType<typeof getSiteSettings>> | null = null
+  let generalPartner: { name: string; logoUrl?: string | null; url?: string | null } | null = null
   try {
     settings = await getSiteSettings()
+    const gp = await getGeneralPartner()
+    if (gp && typeof gp.name === 'string') {
+      generalPartner = { name: gp.name, logoUrl: mediaUrl(gp.logo), url: typeof gp.url === 'string' ? gp.url : null }
+    }
   } catch {
     settings = null
   }
@@ -57,7 +62,11 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="ru" className={`${oswald.variable} ${inter.variable}`}>
       <body className="flex min-h-dvh flex-col bg-ink font-sans text-paper antialiased">
-        <Header clubName={settings?.clubName || 'Локомотив'} logoUrl={mediaUrl(settings?.logo)} />
+        <Header
+          clubName={settings?.clubName || 'Локомотив'}
+          logoUrl={mediaUrl(settings?.logo)}
+          generalPartner={generalPartner}
+        />
         <main className="flex-1">{children}</main>
         <Footer
           clubName={clubName}
