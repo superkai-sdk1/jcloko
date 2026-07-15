@@ -76,6 +76,7 @@ export interface Config {
     'schedule-entries': ScheduleEntry;
     partners: Partner;
     media: Media;
+    documents: Document;
     users: User;
     'social-post-queue': SocialPostQueue;
     'form-submissions': FormSubmission;
@@ -96,6 +97,7 @@ export interface Config {
     'schedule-entries': ScheduleEntriesSelect<false> | ScheduleEntriesSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    documents: DocumentsSelect<false> | DocumentsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'social-post-queue': SocialPostQueueSelect<false> | SocialPostQueueSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -172,6 +174,7 @@ export interface Page {
         | HeroSliderBlock
         | MissionBlock
         | StatisticsBlock
+        | LatestNewsBlock
         | CallToActionBlock
         | TimelineBlock
         | RulesListBlock
@@ -182,6 +185,7 @@ export interface Page {
         | VideoEmbedBlock
         | FAQAccordionBlock
         | ContactFormBlock
+        | EducationProgramBlock
         | RichTextBlock
       )[]
     | null;
@@ -344,6 +348,20 @@ export interface StatisticsBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'statistics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestNewsBlock".
+ */
+export interface LatestNewsBlock {
+  heading?: string | null;
+  /**
+   * По умолчанию 3.
+   */
+  count?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestNews';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -655,6 +673,60 @@ export interface ContactFormBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contactForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EducationProgramBlock".
+ */
+export interface EducationProgramBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  /**
+   * Короткое описание под заголовком.
+   */
+  intro?: string | null;
+  /**
+   * Документ для кнопки «Скачать программу». Загрузите PDF в разделе «Документы» и выберите здесь. Если не задан — используется файл по умолчанию.
+   */
+  programFile?: (number | null) | Document;
+  showProgramDetails?: boolean | null;
+  /**
+   * Карточки под кнопкой скачивания (организация, кем принято и т. п.).
+   */
+  meta?:
+    | {
+        k?: string | null;
+        v?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'educationProgram';
+}
+/**
+ * Файлы для скачивания (например, программа спортивной подготовки в PDF).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents".
+ */
+export interface Document {
+  id: number;
+  /**
+   * Понятное имя документа для админки (необязательно).
+   */
+  title?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1012,6 +1084,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'documents';
+        value: number | Document;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1079,6 +1155,7 @@ export interface PagesSelect<T extends boolean = true> {
         heroSlider?: T | HeroSliderBlockSelect<T>;
         mission?: T | MissionBlockSelect<T>;
         statistics?: T | StatisticsBlockSelect<T>;
+        latestNews?: T | LatestNewsBlockSelect<T>;
         callToAction?: T | CallToActionBlockSelect<T>;
         timeline?: T | TimelineBlockSelect<T>;
         rulesList?: T | RulesListBlockSelect<T>;
@@ -1089,6 +1166,7 @@ export interface PagesSelect<T extends boolean = true> {
         videoEmbed?: T | VideoEmbedBlockSelect<T>;
         faqAccordion?: T | FAQAccordionBlockSelect<T>;
         contactForm?: T | ContactFormBlockSelect<T>;
+        educationProgram?: T | EducationProgramBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
       };
   metaTitle?: T;
@@ -1143,6 +1221,16 @@ export interface StatisticsBlockSelect<T extends boolean = true> {
         label?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestNewsBlock_select".
+ */
+export interface LatestNewsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  count?: T;
   id?: T;
   blockName?: T;
 }
@@ -1274,6 +1362,26 @@ export interface ContactFormBlockSelect<T extends boolean = true> {
   description?: T;
   recipientEmail?: T;
   consentText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EducationProgramBlock_select".
+ */
+export interface EducationProgramBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  programFile?: T;
+  showProgramDetails?: T;
+  meta?:
+    | T
+    | {
+        k?: T;
+        v?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1516,6 +1624,24 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "documents_select".
+ */
+export interface DocumentsSelect<T extends boolean = true> {
+  title?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
