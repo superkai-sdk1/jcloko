@@ -179,16 +179,18 @@ export function Header({
           </span>
         </Link>
 
-        {/* Десктоп-навигация */}
-        <nav className="hidden items-center gap-0.5 lg:flex">
-          {navLinks.map((l) => (
-            <DesktopNavItem key={l.href} item={l} pathname={pathname} />
-          ))}
-        </nav>
-
-        {/* Справа: логотип ген. спонсора, затем переключатель темы в самом углу */}
-        <div className="hidden items-center gap-5 lg:flex">
+        {/* Центр-право: десктоп-навигация + логотип ген. спонсора одной группой */}
+        <div className="hidden items-center gap-5 lg:flex xl:gap-8">
+          <nav className="flex items-center gap-0.5">
+            {navLinks.map((l) => (
+              <DesktopNavItem key={l.href} item={l} pathname={pathname} />
+            ))}
+          </nav>
           {generalPartner && <SponsorMark sponsor={generalPartner} align="right" />}
+        </div>
+
+        {/* Переключатель темы — отдельной зоной в самом правом углу */}
+        <div className="hidden shrink-0 lg:flex">
           <ThemeToggle />
         </div>
 
