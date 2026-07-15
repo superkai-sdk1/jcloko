@@ -103,6 +103,15 @@
 }
 
 @layer utilities {
+  /* Знак «Сделано в России»: чёрный логотип на светлой теме, инверсия в белый на тёмной */
+  .made-in-russia {
+    filter: none;
+    transition: filter 0.25s ease;
+  }
+  .dark .made-in-russia {
+    filter: invert(1);
+  }
+
   /* Горизонтальный скролл без полосы прокрутки */
   .no-scrollbar {
     scrollbar-width: none;

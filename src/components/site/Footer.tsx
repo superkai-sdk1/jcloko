@@ -122,7 +122,7 @@ export function Footer({
 
         <div className="mt-12 flex flex-col items-center gap-5 border-t border-line pt-6 text-sm text-muted sm:flex-row sm:justify-between">
           <p className="order-2 sm:order-1">© {year} {clubName}. {rightsText}</p>
-          <MadeInRussia className="order-1 text-paper/70 transition-colors hover:text-paper sm:order-2" />
+          <MadeInRussia className="order-1 sm:order-2" />
           <Link href="/politika" className="order-3 hover:text-paper">
             Политика конфиденциальности
           </Link>
