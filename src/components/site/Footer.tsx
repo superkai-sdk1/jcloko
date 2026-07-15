@@ -94,8 +94,8 @@ export function Footer({
               )}
               {contacts?.email && (
                 <li>
-                  <a href={`mailto:${contacts.email}`} className="hover:text-paper">
-                    {contacts.email}
+                  <a href={`mailto:${contacts.email.trim()}`} className="hover:text-paper">
+                    {contacts.email.trim()}
                   </a>
                 </li>
               )}

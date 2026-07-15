@@ -5,6 +5,8 @@ import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Разработка сайта — Titan Development Team',
   description:

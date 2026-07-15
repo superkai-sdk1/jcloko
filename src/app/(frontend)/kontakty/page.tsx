@@ -44,8 +44,8 @@ export default async function ContactsPage() {
                   <div>
                     <dt className="text-sm uppercase tracking-wide text-muted">Email</dt>
                     <dd className="mt-1 text-lg text-paper">
-                      <a href={`mailto:${str(contacts.email)}`} className="hover:text-primary-400">
-                        {str(contacts.email)}
+                      <a href={`mailto:${str(contacts.email).trim()}`} className="hover:text-primary-400">
+                        {str(contacts.email).trim()}
                       </a>
                     </dd>
                   </div>

@@ -24,6 +24,12 @@ const inter = Inter({
   display: 'swap',
 })
 
+// Общий layout тянет настройки (лого, название, меню) из БД и обёртывает все
+// страницы. Делаем его динамическим, иначе статические дочерние страницы
+// (например /razrabotka) запекают шапку на этапе сборки с пустой БД — и логотип
+// с названием «залипают» пустыми до перезагрузки.
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://chickenflow.ru'),
   title: {
