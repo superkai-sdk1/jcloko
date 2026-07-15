@@ -164,7 +164,7 @@ export function Header({
         scrolled || open ? 'bg-ink/95 backdrop-blur border-b border-line' : 'bg-transparent',
       )}
     >
-      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-4 px-5 sm:px-6 lg:h-24 lg:px-8">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-5 sm:px-6 lg:h-24 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="На главную">
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
