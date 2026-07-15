@@ -1791,10 +1791,68 @@ export interface SiteSetting {
     rutube?: string | null;
   };
   generalPartner?: (number | null) | Partner;
+  /**
+   * Пункты верхнего меню (и списка «Разделы» в подвале). Если у пункта задать вложенные ссылки — он станет выпадающим. Если меню пустое — используется меню по умолчанию.
+   */
+  navigation?:
+    | {
+        label: string;
+        href: string;
+        children?:
+          | {
+              label: string;
+              href: string;
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * «Шапки» списочных страниц (надзаголовок, заголовок, подзаголовок).
+   */
+  pageHeaders?: {
+    news?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    schedule?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    coaches?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    media?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    partners?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    contacts?: {
+      eyebrow?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+  };
   defaultSeo?: {
     title?: string | null;
     description?: string | null;
     ogImage?: (number | null) | Media;
+  };
+  footer?: {
+    linksHeading?: string | null;
+    contactsHeading?: string | null;
+    rightsText?: string | null;
   };
   footerText?: string | null;
   updatedAt?: string | null;
@@ -1853,12 +1911,80 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         rutube?: T;
       };
   generalPartner?: T;
+  navigation?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              description?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  pageHeaders?:
+    | T
+    | {
+        news?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        schedule?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        coaches?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        media?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        partners?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        contacts?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              subtitle?: T;
+            };
+      };
   defaultSeo?:
     | T
     | {
         title?: T;
         description?: T;
         ogImage?: T;
+      };
+  footer?:
+    | T
+    | {
+        linksHeading?: T;
+        contactsHeading?: T;
+        rightsText?: T;
       };
   footerText?: T;
   updatedAt?: T;
