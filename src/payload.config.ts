@@ -50,7 +50,6 @@ export default buildConfig({
     // день.месяц.год + 24-часовое время.
     dateFormat: 'dd.MM.yyyy HH:mm',
     meta: {
-      title: 'LokoAdmin',
       titleSuffix: ' — LokoAdmin',
     },
     components: {
