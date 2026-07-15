@@ -65,7 +65,7 @@ function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string })
   const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
   const active = isActive(item.href) || (item.children?.some((c) => isActive(c.href)) ?? false)
   const base =
-    'group/link relative flex items-center gap-1 rounded-md px-3.5 py-2 font-display text-[15px] font-medium uppercase tracking-wide transition-colors'
+    'group/link relative flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-3 py-2 font-display text-[15px] font-medium uppercase tracking-wide transition-colors'
   const underline = (
     <span
       className={cn(
@@ -174,7 +174,7 @@ export function Header({
               Л
             </span>
           )}
-          <span className="hidden font-display text-lg font-bold uppercase tracking-wide text-paper sm:block lg:text-2xl">
+          <span className="hidden shrink-0 whitespace-nowrap font-display text-lg font-bold uppercase tracking-wide text-paper sm:block lg:text-xl">
             {clubName}
           </span>
         </Link>
