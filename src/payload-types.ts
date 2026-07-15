@@ -310,6 +310,10 @@ export interface Media {
  * via the `definition` "MissionBlock".
  */
 export interface MissionBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   text?: {
     root: {
@@ -336,6 +340,10 @@ export interface MissionBlock {
  * via the `definition` "StatisticsBlock".
  */
 export interface StatisticsBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   stats?:
     | {
@@ -354,6 +362,10 @@ export interface StatisticsBlock {
  * via the `definition` "LatestNewsBlock".
  */
 export interface LatestNewsBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   /**
    * По умолчанию 3.
@@ -382,6 +394,10 @@ export interface CallToActionBlock {
  * via the `definition` "TimelineBlock".
  */
 export interface TimelineBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   events?:
     | {
@@ -400,6 +416,10 @@ export interface TimelineBlock {
  * via the `definition` "RulesListBlock".
  */
 export interface RulesListBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   rules?:
     | {
@@ -417,6 +437,10 @@ export interface RulesListBlock {
  * via the `definition` "TeamGridBlock".
  */
 export interface TeamGridBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   mode?: ('coaches' | 'athletes') | null;
   showAll?: boolean | null;
@@ -539,6 +563,10 @@ export interface Athlete {
  * via the `definition` "ScheduleTableBlock".
  */
 export interface ScheduleTableBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   showAll?: boolean | null;
   entries?: (number | ScheduleEntry)[] | null;
@@ -569,6 +597,10 @@ export interface ScheduleEntry {
  * via the `definition` "PartnersStripBlock".
  */
 export interface PartnersStripBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   showAll?: boolean | null;
   partners?: (number | Partner)[] | null;
@@ -608,6 +640,10 @@ export interface Partner {
  * via the `definition` "GalleryBlock".
  */
 export interface GalleryBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   images?: (number | Media)[] | null;
   id?: string | null;
@@ -619,6 +655,10 @@ export interface GalleryBlock {
  * via the `definition` "VideoEmbedBlock".
  */
 export interface VideoEmbedBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   title?: string | null;
   provider?: ('youtube' | 'rutube' | 'vk') | null;
   url: string;
@@ -632,6 +672,10 @@ export interface VideoEmbedBlock {
  * via the `definition` "FAQAccordionBlock".
  */
 export interface FAQAccordionBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   items?:
     | {
@@ -663,8 +707,16 @@ export interface FAQAccordionBlock {
  * via the `definition` "ContactFormBlock".
  */
 export interface ContactFormBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
   heading?: string | null;
   description?: string | null;
+  /**
+   * По умолчанию «Отправить заявку».
+   */
+  submitLabel?: string | null;
   recipientEmail?: string | null;
   /**
    * Отображается рядом с обязательным чекбоксом согласия.
@@ -1201,6 +1253,7 @@ export interface HeroSliderBlockSelect<T extends boolean = true> {
  * via the `definition` "MissionBlock_select".
  */
 export interface MissionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   text?: T;
   image?: T;
@@ -1212,6 +1265,7 @@ export interface MissionBlockSelect<T extends boolean = true> {
  * via the `definition` "StatisticsBlock_select".
  */
 export interface StatisticsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   stats?:
     | T
@@ -1229,6 +1283,7 @@ export interface StatisticsBlockSelect<T extends boolean = true> {
  * via the `definition` "LatestNewsBlock_select".
  */
 export interface LatestNewsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   count?: T;
   id?: T;
@@ -1252,6 +1307,7 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
  * via the `definition` "TimelineBlock_select".
  */
 export interface TimelineBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   events?:
     | T
@@ -1269,6 +1325,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
  * via the `definition` "RulesListBlock_select".
  */
 export interface RulesListBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   rules?:
     | T
@@ -1285,6 +1342,7 @@ export interface RulesListBlockSelect<T extends boolean = true> {
  * via the `definition` "TeamGridBlock_select".
  */
 export interface TeamGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   mode?: T;
   showAll?: T;
@@ -1298,6 +1356,7 @@ export interface TeamGridBlockSelect<T extends boolean = true> {
  * via the `definition` "ScheduleTableBlock_select".
  */
 export interface ScheduleTableBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   showAll?: T;
   entries?: T;
@@ -1309,6 +1368,7 @@ export interface ScheduleTableBlockSelect<T extends boolean = true> {
  * via the `definition` "PartnersStripBlock_select".
  */
 export interface PartnersStripBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   showAll?: T;
   partners?: T;
@@ -1320,6 +1380,7 @@ export interface PartnersStripBlockSelect<T extends boolean = true> {
  * via the `definition` "GalleryBlock_select".
  */
 export interface GalleryBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   images?: T;
   id?: T;
@@ -1330,6 +1391,7 @@ export interface GalleryBlockSelect<T extends boolean = true> {
  * via the `definition` "VideoEmbedBlock_select".
  */
 export interface VideoEmbedBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   title?: T;
   provider?: T;
   url?: T;
@@ -1342,6 +1404,7 @@ export interface VideoEmbedBlockSelect<T extends boolean = true> {
  * via the `definition` "FAQAccordionBlock_select".
  */
 export interface FAQAccordionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   items?:
     | T
@@ -1358,8 +1421,10 @@ export interface FAQAccordionBlockSelect<T extends boolean = true> {
  * via the `definition` "ContactFormBlock_select".
  */
 export interface ContactFormBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
   heading?: T;
   description?: T;
+  submitLabel?: T;
   recipientEmail?: T;
   consentText?: T;
   id?: T;
@@ -1855,6 +1920,16 @@ export interface SiteSetting {
     rightsText?: string | null;
   };
   footerText?: string | null;
+  /**
+   * Служебные подписи: пустые состояния списков и страница 404.
+   */
+  uiTexts?: {
+    emptyNews?: string | null;
+    emptyMedia?: string | null;
+    emptyCoaches?: string | null;
+    notFoundTitle?: string | null;
+    notFoundText?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1987,6 +2062,15 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         rightsText?: T;
       };
   footerText?: T;
+  uiTexts?:
+    | T
+    | {
+        emptyNews?: T;
+        emptyMedia?: T;
+        emptyCoaches?: T;
+        notFoundTitle?: T;
+        notFoundText?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
