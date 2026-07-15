@@ -190,7 +190,7 @@ export default buildConfig({
     // 3) Идемпотентный сид меню навигации в «Настройки сайта», чтобы админ
     //    редактировал текущее меню, а не собирал его с нуля.
     try {
-      const s = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as Record<string, unknown>
+      const s = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as unknown as Record<string, unknown>
       const nav = s?.navigation
       if (!Array.isArray(nav) || nav.length === 0) {
         // Пишем обратно все существующие поля (без системных), добавляя только меню —
