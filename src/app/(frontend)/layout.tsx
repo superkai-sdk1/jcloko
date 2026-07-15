@@ -73,9 +73,14 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   const clubName = settings?.clubName || 'Клуб дзюдо «Локомотив»'
 
+  // Ставим тему (light/dark) до первой отрисовки, чтобы не было мигания.
+  // По умолчанию «Авто» — из prefers-color-scheme ОС.
+  const themeInit = `(function(){try{var p=localStorage.getItem('theme');if(p!=='light'&&p!=='dark'&&p!=='system')p='system';var d=window.matchMedia('(prefers-color-scheme: dark)').matches;var t=p==='system'?(d?'dark':'light'):p;var e=document.documentElement;e.classList.remove('light','dark');e.classList.add(t);e.dataset.themePref=p;}catch(e){document.documentElement.classList.add('dark');}})();`
+
   return (
-    <html lang="ru" className={`${oswald.variable} ${inter.variable}`}>
+    <html lang="ru" className={`${oswald.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="flex min-h-dvh flex-col bg-ink font-sans text-paper antialiased">
+        <script dangerouslySetInnerHTML={{ __html: themeInit }} />
         <ScrollProgress />
         <Header
           clubName={settings?.clubName || 'Локомотив'}

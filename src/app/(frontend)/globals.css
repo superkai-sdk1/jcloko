@@ -33,6 +33,36 @@
   --radius-xl: 1rem;
 }
 
+/*
+  Темы. Утилиты Tailwind (bg-ink, text-paper…) ссылаются на var(--color-*),
+  поэтому переопределение переменных под .light переключает весь сайт разом.
+  Класс .light / .dark ставится инлайн-скриптом в layout ДО отрисовки — без
+  мигания. По умолчанию (:root) — тёмная палитра, как раньше.
+*/
+:root,
+.dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+  --color-ink: #eef2ec;
+  --color-ink-800: #e4ebe1;
+  --color-surface: #ffffff;
+  --color-surface-2: #e7eee4;
+  --color-line: #cedbcd;
+
+  --color-primary: #1f7a4d;
+  --color-primary-600: #18653f;
+  --color-primary-400: #1f7a4d;
+
+  --color-accent: #c1121f;
+  --color-accent-600: #a10f1a;
+
+  --color-paper: #13241b;
+  --color-muted: #55685c;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -40,6 +70,8 @@
 
   body {
     text-rendering: optimizeLegibility;
+    /* Плавная смена темы (на первичную отрисовку не влияет) */
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   h1,
@@ -125,8 +157,8 @@
     margin-top: 0.35rem;
   }
   .rich-text strong {
-    color: #fff;
-    font-weight: 600;
+    color: var(--color-paper);
+    font-weight: 700;
   }
   .rich-text blockquote {
     border-left: 3px solid var(--color-accent);

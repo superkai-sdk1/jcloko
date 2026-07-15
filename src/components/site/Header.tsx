@@ -8,6 +8,7 @@ import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { AdTooltip } from '@/components/AdTooltip'
 import { isExternalHref } from '@/lib/partnerLink'
+import { ThemeToggle } from '@/components/site/ThemeToggle'
 
 type GeneralPartner = {
   name: string
@@ -185,12 +186,11 @@ export function Header({
           ))}
         </nav>
 
-        {/* Генеральный спонсор — крупным логотипом в конце панели навигации */}
-        {generalPartner && (
-          <div className="hidden items-center lg:flex">
-            <SponsorMark sponsor={generalPartner} align="right" />
-          </div>
-        )}
+        {/* Справа: логотип ген. спонсора + переключатель темы */}
+        <div className="hidden items-center gap-3 lg:flex">
+          {generalPartner && <SponsorMark sponsor={generalPartner} align="right" />}
+          <ThemeToggle />
+        </div>
 
         {/* Кнопка мобильного меню */}
         <button
@@ -262,6 +262,10 @@ export function Header({
             <Button href="/kontakty" variant="accent" size="md" className="w-full">
               Записаться
             </Button>
+          </div>
+          <div className="mt-4 flex items-center justify-between border-t border-line px-3 pt-4">
+            <span className="text-xs uppercase tracking-wide text-muted">Тема оформления</span>
+            <ThemeToggle size="md" />
           </div>
           {generalPartner && (
             <div className="mt-4 flex items-center gap-3 border-t border-line px-3 pt-4">
