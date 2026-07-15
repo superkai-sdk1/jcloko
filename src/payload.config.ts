@@ -8,6 +8,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Documents } from './collections/Documents'
 import { Coaches } from './collections/Coaches'
 import { Athletes } from './collections/Athletes'
 import { ScheduleEntry } from './collections/ScheduleEntry'
@@ -58,6 +59,7 @@ export default buildConfig({
     ScheduleEntry,
     Partners,
     Media,
+    Documents,
     Users,
     SocialPostQueue,
     FormSubmission,
@@ -119,18 +121,60 @@ export default buildConfig({
   // Идемпотентный сидинг первого админа при первом старте контейнера.
   // Управляется переменными SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD.
   onInit: async (payload) => {
+    // 1) Идемпотентный сид первого админа.
     const email = process.env.SEED_ADMIN_EMAIL
     const password = process.env.SEED_ADMIN_PASSWORD
-    if (!email || !password) return
+    if (email && password) {
+      const existing = await payload.count({ collection: 'users' })
+      if (existing.totalDocs === 0) {
+        await payload.create({
+          collection: 'users',
+          data: { email, password, role: 'admin', name: 'Администратор' },
+        })
+        payload.logger.info(`Seeded initial admin user: ${email}`)
+      }
+    }
 
-    const existing = await payload.count({ collection: 'users' })
-    if (existing.totalDocs > 0) return
-
-    await payload.create({
-      collection: 'users',
-      data: { email, password, role: 'admin', name: 'Администратор' },
-    })
-    payload.logger.info(`Seeded initial admin user: ${email}`)
+    // 2) Идемпотентный сид CMS-страницы «Образовательная деятельность».
+    //    Создаётся один раз; далее редактируется в админке как обычная страница.
+    try {
+      const eduSlug = 'obrazovatelnaya-deyatelnost'
+      const found = await payload.find({
+        collection: 'pages',
+        where: { slug: { equals: eduSlug } },
+        limit: 1,
+        depth: 0,
+      })
+      if (found.totalDocs === 0) {
+        await payload.create({
+          collection: 'pages',
+          data: {
+            title: 'Образовательная деятельность',
+            slug: eduSlug,
+            status: 'published',
+            layout: [
+              {
+                blockType: 'educationProgram',
+                eyebrow: 'О клубе',
+                heading: 'Образовательная деятельность',
+                intro:
+                  'Дополнительная образовательная программа спортивной подготовки по виду спорта «Дзюдо». Разработана на основе Федерального стандарта спортивной подготовки, утверждённого приказом Министерства спорта России от 14.08.2025 г. № 655.',
+                showProgramDetails: true,
+                meta: [
+                  { k: 'Организация', v: 'РОО КБР «ДЮСШ Клуба дзюдо “Локомотив”»' },
+                  { k: 'Принято', v: 'Педагогический совет, протокол № 2 от 23.12.2025 г.' },
+                  { k: 'Утверждаю', v: 'Генеральный директор Н. Х. Гаданов' },
+                  { k: 'Срок реализации', v: 'Без ограничения · г. о. Нальчик' },
+                ],
+              },
+            ],
+          } as never,
+        })
+        payload.logger.info('Seeded page: Образовательная деятельность')
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to seed education page')
+    }
   },
   plugins: [],
 })

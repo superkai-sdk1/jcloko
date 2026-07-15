@@ -10,6 +10,7 @@ import { RichText } from '@/components/RichText'
 import { HeroSlider } from './HeroSlider'
 import { FAQAccordion } from './FAQAccordion'
 import { ContactForm } from './ContactForm'
+import { EducationProgram } from './EducationProgram'
 import { CoachCard, AthleteCard } from '@/components/cards/PersonCard'
 import { getCoaches, getAthletes, getPartners, getScheduleEntries, getNews } from '@/lib/queries'
 import { mediaUrl, mediaAlt, mediaFocal, mediaSize } from '@/lib/media'
@@ -506,6 +507,8 @@ export function BlockRenderer({ blocks }: { blocks?: unknown }) {
             return <FAQBlock key={key} b={b} />
           case 'richText':
             return <RichTextBlock key={key} b={b} />
+          case 'educationProgram':
+            return <EducationProgram key={key} b={b} />
           default:
             return null
         }

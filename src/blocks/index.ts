@@ -317,6 +317,53 @@ export const StatisticsBlock: Block = {
   ],
 }
 
+export const EducationProgramBlock: Block = {
+  slug: 'educationProgram',
+  interfaceName: 'EducationProgramBlock',
+  labels: { singular: 'Образовательная программа', plural: 'Образовательные программы' },
+  fields: [
+    { name: 'eyebrow', type: 'text', label: 'Надзаголовок', defaultValue: 'О клубе' },
+    { name: 'heading', type: 'text', label: 'Заголовок', defaultValue: 'Образовательная деятельность' },
+    {
+      name: 'intro',
+      type: 'textarea',
+      label: 'Вводный текст',
+      admin: { description: 'Короткое описание под заголовком.' },
+    },
+    {
+      name: 'programFile',
+      type: 'relationship',
+      relationTo: 'documents',
+      label: 'Файл программы (PDF)',
+      admin: {
+        description:
+          'Документ для кнопки «Скачать программу». Загрузите PDF в разделе «Документы» и выберите здесь. Если не задан — используется файл по умолчанию.',
+      },
+    },
+    {
+      name: 'showProgramDetails',
+      type: 'checkbox',
+      label: 'Показывать полную программу (таблицы и разделы)',
+      defaultValue: true,
+    },
+    {
+      name: 'meta',
+      type: 'array',
+      label: 'Реквизиты документа',
+      admin: { description: 'Карточки под кнопкой скачивания (организация, кем принято и т. п.).' },
+      fields: [
+        {
+          type: 'row',
+          fields: [
+            { name: 'k', type: 'text', label: 'Поле', admin: { width: '40%' } },
+            { name: 'v', type: 'text', label: 'Значение', admin: { width: '60%' } },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
 /** Все блоки конструктора страниц. */
 export const pageBlocks: Block[] = [
   HeroSliderBlock,
@@ -333,5 +380,6 @@ export const pageBlocks: Block[] = [
   VideoEmbedBlock,
   FAQAccordionBlock,
   ContactFormBlock,
+  EducationProgramBlock,
   RichTextBlock,
 ]

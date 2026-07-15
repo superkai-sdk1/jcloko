@@ -30,7 +30,7 @@ function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; al
   const inner = hasLogo ? (
     // Обычный img (не next/image): надёжно для SVG и логотипов
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-12 w-auto object-contain lg:h-14" />
+    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-14 w-auto object-contain lg:h-20" />
   ) : (
     <span className="font-display text-base font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
@@ -185,18 +185,12 @@ export function Header({
           ))}
         </nav>
 
-        <div className="hidden items-center gap-4 lg:flex">
-          <Button href="/kontakty" variant="accent" size="sm">
-            Записаться
-          </Button>
-          {/* Генеральный спонсор — в конце панели навигации */}
-          {generalPartner && (
-            <>
-              <span className="h-8 w-px bg-line" aria-hidden />
-              <SponsorMark sponsor={generalPartner} align="right" />
-            </>
-          )}
-        </div>
+        {/* Генеральный спонсор — крупным логотипом в конце панели навигации */}
+        {generalPartner && (
+          <div className="hidden items-center lg:flex">
+            <SponsorMark sponsor={generalPartner} align="right" />
+          </div>
+        )}
 
         {/* Кнопка мобильного меню */}
         <button
