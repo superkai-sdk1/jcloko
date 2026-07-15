@@ -130,5 +130,24 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     { name: 'footerText', type: 'textarea', label: 'Текст в подвале' },
+    // ── Служебные тексты интерфейса ───────────────────────────────────────────
+    {
+      type: 'group',
+      name: 'uiTexts',
+      label: 'Тексты интерфейса',
+      admin: { description: 'Служебные подписи: пустые состояния списков и страница 404.' },
+      fields: [
+        { name: 'emptyNews', type: 'text', label: 'Когда нет новостей', defaultValue: 'Пока новостей нет.' },
+        { name: 'emptyMedia', type: 'text', label: 'Когда нет медиа', defaultValue: 'Материалы скоро появятся.' },
+        { name: 'emptyCoaches', type: 'text', label: 'Когда нет тренеров', defaultValue: 'Информация скоро появится.' },
+        { name: 'notFoundTitle', type: 'text', label: '404 — заголовок', defaultValue: 'Страница не найдена' },
+        {
+          name: 'notFoundText',
+          type: 'textarea',
+          label: '404 — текст',
+          defaultValue: 'Возможно, страница была перемещена или удалена. Вернитесь на главную или загляните в расписание тренировок.',
+        },
+      ],
+    },
   ],
 }

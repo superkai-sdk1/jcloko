@@ -1,10 +1,16 @@
-import type { Block } from 'payload'
+import type { Block, Field } from 'payload'
 
 /**
  * Конфиги блоков для конструктора страниц (Pages.layout).
- * Здесь описана только модель данных полей; React-компоненты рендера
- * появятся в Фазе 2 (публичный дизайн).
  */
+
+/** Переиспользуемое поле «надзаголовок» (eyebrow) — маленькая подпись над заголовком секции. */
+const eyebrowField: Field = {
+  name: 'eyebrow',
+  type: 'text',
+  label: 'Надзаголовок (eyebrow)',
+  admin: { description: 'Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.' },
+}
 
 export const RichTextBlock: Block = {
   slug: 'richText',
@@ -64,6 +70,7 @@ export const MissionBlock: Block = {
   interfaceName: 'MissionBlock',
   labels: { singular: 'Миссия', plural: 'Блоки миссии' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     { name: 'text', type: 'richText', label: 'Текст' },
     { name: 'image', type: 'upload', relationTo: 'media', label: 'Изображение' },
@@ -102,6 +109,7 @@ export const PartnersStripBlock: Block = {
   interfaceName: 'PartnersStripBlock',
   labels: { singular: 'Лента партнёров', plural: 'Ленты партнёров' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'showAll',
@@ -125,6 +133,7 @@ export const TimelineBlock: Block = {
   interfaceName: 'TimelineBlock',
   labels: { singular: 'История (таймлайн)', plural: 'Таймлайны' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'events',
@@ -144,6 +153,7 @@ export const RulesListBlock: Block = {
   interfaceName: 'RulesListBlock',
   labels: { singular: 'Заповеди / правила', plural: 'Списки правил' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'rules',
@@ -162,6 +172,7 @@ export const TeamGridBlock: Block = {
   interfaceName: 'TeamGridBlock',
   labels: { singular: 'Сетка команды', plural: 'Сетки команды' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'mode',
@@ -198,6 +209,7 @@ export const VideoEmbedBlock: Block = {
   interfaceName: 'VideoEmbedBlock',
   labels: { singular: 'Видео (embed)', plural: 'Видео-блоки' },
   fields: [
+    eyebrowField,
     { name: 'title', type: 'text', label: 'Заголовок' },
     {
       name: 'provider',
@@ -219,6 +231,7 @@ export const GalleryBlock: Block = {
   interfaceName: 'GalleryBlock',
   labels: { singular: 'Галерея', plural: 'Галереи' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'images',
@@ -235,6 +248,7 @@ export const ScheduleTableBlock: Block = {
   interfaceName: 'ScheduleTableBlock',
   labels: { singular: 'Таблица расписания', plural: 'Таблицы расписания' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     { name: 'showAll', type: 'checkbox', label: 'Показывать всё расписание', defaultValue: true },
     {
@@ -253,8 +267,10 @@ export const ContactFormBlock: Block = {
   interfaceName: 'ContactFormBlock',
   labels: { singular: 'Форма обратной связи', plural: 'Формы обратной связи' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     { name: 'description', type: 'textarea', label: 'Описание' },
+    { name: 'submitLabel', type: 'text', label: 'Текст кнопки отправки', admin: { description: 'По умолчанию «Отправить заявку».' } },
     { name: 'recipientEmail', type: 'text', label: 'Email получателя заявок' },
     {
       name: 'consentText',
@@ -270,6 +286,7 @@ export const FAQAccordionBlock: Block = {
   interfaceName: 'FAQAccordionBlock',
   labels: { singular: 'FAQ (аккордеон)', plural: 'FAQ-блоки' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'items',
@@ -288,6 +305,7 @@ export const LatestNewsBlock: Block = {
   interfaceName: 'LatestNewsBlock',
   labels: { singular: 'Последние новости', plural: 'Блоки последних новостей' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок', defaultValue: 'Последние новости' },
     { name: 'count', type: 'number', label: 'Сколько новостей', defaultValue: 3, admin: { description: 'По умолчанию 3.' } },
   ],
@@ -298,6 +316,7 @@ export const StatisticsBlock: Block = {
   interfaceName: 'StatisticsBlock',
   labels: { singular: 'Статистика / цифры', plural: 'Блоки статистики' },
   fields: [
+    eyebrowField,
     { name: 'heading', type: 'text', label: 'Заголовок' },
     {
       name: 'stats',

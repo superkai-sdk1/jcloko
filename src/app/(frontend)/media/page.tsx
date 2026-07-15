@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { getPageHeader } from '@/lib/pageHeader'
+import { getUiText } from '@/lib/uiTexts'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -17,14 +18,14 @@ const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const kindLabel: Record<string, string> = { photo: 'Фото', film: 'Фильм', interview: 'Интервью' }
 
 export default async function MediaPage() {
-  const [galleries, h] = await Promise.all([getMediaGalleries(), getPageHeader('media')])
+  const [galleries, h, emptyText] = await Promise.all([getMediaGalleries(), getPageHeader('media'), getUiText('emptyMedia')])
   return (
     <>
       <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {galleries.length === 0 ? (
-            <p className="text-muted">Материалы скоро появятся.</p>
+            <p className="text-muted">{emptyText}</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {galleries.map((g, i) => {

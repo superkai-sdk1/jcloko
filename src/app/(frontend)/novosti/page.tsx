@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { getPageHeader } from '@/lib/pageHeader'
+import { getUiText } from '@/lib/uiTexts'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -12,14 +13,14 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Новости' }
 
 export default async function NewsPage() {
-  const [news, h] = await Promise.all([getNews(30), getPageHeader('news')])
+  const [news, h, emptyText] = await Promise.all([getNews(30), getPageHeader('news'), getUiText('emptyNews')])
   return (
     <>
       <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {news.length === 0 ? (
-            <p className="text-muted">Пока новостей нет.</p>
+            <p className="text-muted">{emptyText}</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {news.map((n, i) => (

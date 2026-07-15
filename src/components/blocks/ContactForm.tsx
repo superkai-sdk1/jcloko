@@ -9,9 +9,11 @@ type State = 'idle' | 'sending' | 'ok' | 'error'
 export function ContactForm({
   consentText,
   className,
+  submitLabel = 'Отправить заявку',
 }: {
   consentText?: string | null
   className?: string
+  submitLabel?: string
 }) {
   const [state, setState] = useState<State>('idle')
   const [error, setError] = useState('')
@@ -115,7 +117,7 @@ export function ContactForm({
       )}
 
       <Button type="submit" variant="accent" size="lg" disabled={state === 'sending'} className="w-full sm:w-auto">
-        {state === 'sending' ? 'Отправляем…' : 'Отправить заявку'}
+        {state === 'sending' ? 'Отправляем…' : submitLabel}
       </Button>
     </form>
   )

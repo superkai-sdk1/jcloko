@@ -23,7 +23,7 @@ export async function getPageHeader(key: PageHeaderKey): Promise<SectionHeader> 
   let ph: Record<string, unknown> | undefined
   try {
     const settings = await getSiteSettings()
-    const all = settings?.pageHeaders as Record<string, unknown> | undefined
+    const all = settings?.pageHeaders as unknown as Record<string, unknown> | undefined
     ph = all?.[key] as Record<string, unknown> | undefined
   } catch {
     ph = undefined

@@ -44,7 +44,7 @@ function MissionBlock({ b }: { b: Block }) {
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <SectionHeading eyebrow="О клубе" title={str(b.heading) || 'Наша миссия'} />
+            <SectionHeading eyebrow={str(b.eyebrow) || 'О клубе'} title={str(b.heading) || 'Наша миссия'} />
             <div className="mt-5">
               <RichText data={b.text as never} />
             </div>
@@ -68,7 +68,7 @@ function StatisticsBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        {str(b.heading) && <SectionHeading eyebrow="Цифры" title={str(b.heading)} align="center" className="mb-10" />}
+        {str(b.heading) && <SectionHeading eyebrow={str(b.eyebrow) || 'Цифры'} title={str(b.heading)} align="center" className="mb-10" />}
         <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {stats.map((s, i) => {
             const st = s as Block
@@ -122,7 +122,7 @@ function TimelineBlock({ b }: { b: Block }) {
   return (
     <Section tone="ink">
       <Container>
-        <SectionHeading eyebrow="История" title={str(b.heading) || 'История клуба'} className="mb-12" />
+        <SectionHeading eyebrow={str(b.eyebrow) || 'История'} title={str(b.heading) || 'История клуба'} className="mb-12" />
         <div className="relative border-l border-line pl-6 sm:pl-8">
           {events.map((e, i) => {
             const ev = e as Block
@@ -149,7 +149,7 @@ function RulesListBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface" pattern>
       <Container>
-        <SectionHeading eyebrow="Принципы" title={str(b.heading) || 'Заповеди дзюдо'} align="center" className="mb-12" />
+        <SectionHeading eyebrow={str(b.eyebrow) || 'Принципы'} title={str(b.heading) || 'Заповеди дзюдо'} align="center" className="mb-12" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rules.map((r, i) => {
             const rule = r as Block
@@ -185,7 +185,7 @@ async function TeamGridBlock({ b }: { b: Block }) {
     <Section tone="ink">
       <Container>
         <SectionHeading
-          eyebrow={mode === 'athletes' ? 'Спортсмены' : 'Тренеры'}
+          eyebrow={str(b.eyebrow) || (mode === 'athletes' ? 'Спортсмены' : 'Тренеры')}
           title={str(b.heading) || (mode === 'athletes' ? 'Наши спортсмены' : 'Тренерский состав')}
           className="mb-10"
         />
@@ -222,7 +222,7 @@ async function LatestNewsBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        <SectionHeading eyebrow="Жизнь клуба" title={str(b.heading) || 'Последние новости'} className="mb-4" />
+        <SectionHeading eyebrow={str(b.eyebrow) || 'Жизнь клуба'} title={str(b.heading) || 'Последние новости'} className="mb-4" />
         <Reveal>
           <CardScroller
             items={news.map((n, i) => {
@@ -254,7 +254,7 @@ async function PartnersStripBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        {str(b.heading) && <SectionHeading eyebrow="Партнёры" title={str(b.heading)} align="center" className="mb-12" />}
+        {str(b.heading) && <SectionHeading eyebrow={str(b.eyebrow) || 'Партнёры'} title={str(b.heading)} align="center" className="mb-12" />}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {partners.map((p, i) => {
             const partner = p as Block
@@ -328,7 +328,7 @@ function GalleryBlock({ b }: { b: Block }) {
   return (
     <Section tone="ink">
       <Container>
-        {str(b.heading) && <SectionHeading eyebrow="Галерея" title={str(b.heading)} className="mb-10" />}
+        {str(b.heading) && <SectionHeading eyebrow={str(b.eyebrow) || 'Галерея'} title={str(b.heading)} className="mb-10" />}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {images.map((im, i) => {
             const url = mediaUrl(im)
@@ -354,7 +354,7 @@ function VideoEmbedBlock({ b }: { b: Block }) {
   return (
     <Section tone="ink">
       <Container>
-        {str(b.title) && <SectionHeading eyebrow="Видео" title={str(b.title)} align="center" className="mb-8" />}
+        {str(b.title) && <SectionHeading eyebrow={str(b.eyebrow) || 'Видео'} title={str(b.title)} align="center" className="mb-8" />}
         <Reveal>
           <div className="relative mx-auto aspect-video max-w-4xl overflow-hidden rounded-xl border border-line bg-black">
             <iframe
@@ -383,7 +383,7 @@ async function ScheduleTableBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        <SectionHeading eyebrow="Расписание" title={str(b.heading) || 'Расписание тренировок'} className="mb-10" />
+        <SectionHeading eyebrow={str(b.eyebrow) || 'Расписание'} title={str(b.heading) || 'Расписание тренировок'} className="mb-10" />
         <div className="space-y-8">
           {byDay.map((group) => (
             <Reveal key={group.day}>
@@ -423,13 +423,13 @@ function ContactFormBlock({ b }: { b: Block }) {
     <Section tone="ink" pattern>
       <Container className="max-w-3xl">
         <SectionHeading
-          eyebrow="Запись"
+          eyebrow={str(b.eyebrow) || 'Запись'}
           title={str(b.heading) || 'Записаться на тренировку'}
           subtitle={str(b.description) || undefined}
           align="center"
           className="mb-8"
         />
-        <ContactForm consentText={str(b.consentText) || null} />
+        <ContactForm consentText={str(b.consentText) || null} submitLabel={str(b.submitLabel) || undefined} />
       </Container>
     </Section>
   )
@@ -440,7 +440,7 @@ function FAQBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        <SectionHeading eyebrow="Вопросы" title={str(b.heading) || 'Частые вопросы'} align="center" className="mb-10" />
+        <SectionHeading eyebrow={str(b.eyebrow) || 'Вопросы'} title={str(b.heading) || 'Частые вопросы'} align="center" className="mb-10" />
         <FAQAccordion items={arr(b.items) as never} />
       </Container>
     </Section>

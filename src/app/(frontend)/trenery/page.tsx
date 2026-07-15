@@ -2,6 +2,7 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { getPageHeader } from '@/lib/pageHeader'
+import { getUiText } from '@/lib/uiTexts'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -12,14 +13,14 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Тренеры' }
 
 export default async function CoachesPage() {
-  const [coaches, h] = await Promise.all([getCoaches(), getPageHeader('coaches')])
+  const [coaches, h, emptyText] = await Promise.all([getCoaches(), getPageHeader('coaches'), getUiText('emptyCoaches')])
   return (
     <>
       <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {coaches.length === 0 ? (
-            <p className="text-muted">Информация скоро появится.</p>
+            <p className="text-muted">{emptyText}</p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {coaches.map((c, i) => (
