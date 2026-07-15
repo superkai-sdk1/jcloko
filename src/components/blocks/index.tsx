@@ -253,30 +253,63 @@ async function PartnersStripBlock({ b }: { b: Block }) {
   return (
     <Section tone="surface">
       <Container>
-        {str(b.heading) && <SectionHeading eyebrow="Партнёры" title={str(b.heading)} align="center" className="mb-10" />}
-        <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-10">
+        {str(b.heading) && <SectionHeading eyebrow="Партнёры" title={str(b.heading)} align="center" className="mb-12" />}
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-4">
           {partners.map((p, i) => {
             const partner = p as Block
             const logo = mediaUrl(partner.logo)
+            const name = str(partner.name)
             const href = resolvePartnerHref(partner)
             const external = href ? isExternalHref(href) : false
-            const inner = logo ? (
-              // Обычный img — надёжно для SVG-логотипов и «нестандартных» имён файлов
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={logo} alt={mediaAlt(partner.logo, str(partner.name))} className="h-12 w-auto object-contain opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0 lg:h-16" />
-            ) : (
-              <span className="font-display text-lg font-semibold text-muted">{str(partner.name)}</span>
+
+            const card = (
+              <div className="group relative flex h-full min-h-[160px] flex-col items-center justify-center gap-4 overflow-hidden rounded-2xl border border-line bg-surface/50 p-6 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-primary-400/50 hover:bg-surface hover:shadow-xl hover:shadow-primary/10 lg:min-h-[190px]">
+                {/* блик, пробегающий по карточке при наведении */}
+                <span
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-paper/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+                  aria-hidden
+                />
+                {logo ? (
+                  // Обычный img — надёжно для SVG-логотипов и «нестандартных» имён файлов
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={logo}
+                    alt={mediaAlt(partner.logo, name)}
+                    className="h-16 w-auto max-w-full object-contain opacity-70 grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0 lg:h-20"
+                  />
+                ) : (
+                  <span className="font-display text-xl font-bold uppercase tracking-wide text-muted transition-colors group-hover:text-paper">
+                    {name}
+                  </span>
+                )}
+                {logo && name && (
+                  <span className="text-center text-xs font-medium uppercase tracking-wide text-muted transition-colors group-hover:text-paper/90">
+                    {name}
+                  </span>
+                )}
+              </div>
             )
+
             const linked = href ? (
-              <Link href={href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                {inner}
+              <Link
+                href={href}
+                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                className="block h-full"
+                aria-label={name || 'Партнёр'}
+              >
+                {card}
               </Link>
             ) : (
-              inner
+              card
             )
+
             return (
-              <Reveal key={i} delay={i * 0.04}>
-                <AdTooltip erid={str(partner.erid) || null} advertiser={str(partner.advertiserInfo) || null}>
+              <Reveal key={i} delay={i * 0.05} variant="scale" className="h-full">
+                <AdTooltip
+                  className="h-full w-full"
+                  erid={str(partner.erid) || null}
+                  advertiser={str(partner.advertiserInfo) || null}
+                >
                   {linked}
                 </AdTooltip>
               </Reveal>

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { navLinks } from '@/lib/nav'
+import { navLinks, type NavItem } from '@/lib/nav'
 import { cn } from '@/utils/cn'
 import { Button } from '@/components/ui/Button'
 import { AdTooltip } from '@/components/AdTooltip'
@@ -17,20 +17,28 @@ type GeneralPartner = {
   advertiser?: string | null
 }
 
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden>
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  )
+}
+
 function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; align?: 'center' | 'right' }) {
   const hasLogo = Boolean(sponsor.logoUrl)
   const inner = hasLogo ? (
     // Обычный img (не next/image): надёжно для SVG и логотипов
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-9 w-auto object-contain" />
+    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-12 w-auto object-contain lg:h-14" />
   ) : (
-    <span className="font-display text-sm font-bold uppercase tracking-wide text-paper">
+    <span className="font-display text-base font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
     </span>
   )
   // С логотипом — без рамки/фона, только картинка; без логотипа — чип с текстом.
   const box = hasLogo
-    ? 'flex items-center transition-opacity hover:opacity-80'
+    ? 'flex items-center transition-transform duration-300 hover:scale-105'
     : 'flex items-center gap-2 rounded-lg border border-line bg-surface/70 px-3 py-1.5 transition-colors hover:border-primary/50'
   const external = sponsor.href ? isExternalHref(sponsor.href) : false
   return (
@@ -48,6 +56,78 @@ function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; al
         <span className={box}>{inner}</span>
       )}
     </AdTooltip>
+  )
+}
+
+/** Один пункт десктоп-навигации (с выпадающим меню при наличии children). */
+function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string }) {
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+  const active = isActive(item.href) || (item.children?.some((c) => isActive(c.href)) ?? false)
+  const base =
+    'group/link relative flex items-center gap-1 rounded-md px-3.5 py-2 font-display text-[15px] font-medium uppercase tracking-wide transition-colors'
+  const underline = (
+    <span
+      className={cn(
+        'absolute inset-x-3.5 -bottom-0.5 h-0.5 origin-left rounded-full bg-accent transition-transform duration-300',
+        active ? 'scale-x-100' : 'scale-x-0 group-hover/link:scale-x-100',
+      )}
+      aria-hidden
+    />
+  )
+
+  if (!item.children) {
+    return (
+      <Link href={item.href} className={cn(base, active ? 'text-primary-400' : 'text-paper/80 hover:text-paper')}>
+        {item.label}
+        {underline}
+      </Link>
+    )
+  }
+
+  return (
+    <div className="group relative">
+      <Link
+        href={item.href}
+        className={cn(base, active ? 'text-primary-400' : 'text-paper/80 hover:text-paper')}
+        aria-haspopup="true"
+      >
+        {item.label}
+        <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-180" />
+        {underline}
+      </Link>
+      {/* pt-3 создаёт зазор, оставаясь частью зоны наведения (мост для курсора) */}
+      <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 translate-y-1 pt-3 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div className="w-80 overflow-hidden rounded-2xl border border-line bg-ink/95 p-2 shadow-2xl shadow-black/60 backdrop-blur-md">
+          {item.children.map((c) => {
+            const cActive = isActive(c.href)
+            return (
+              <Link
+                key={c.href}
+                href={c.href}
+                className={cn(
+                  'block rounded-xl px-3.5 py-3 transition-colors',
+                  cActive ? 'bg-surface-2' : 'hover:bg-surface-2',
+                )}
+              >
+                <span className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      'h-1.5 w-1.5 rounded-full transition-colors',
+                      cActive ? 'bg-accent' : 'bg-primary-400/60',
+                    )}
+                    aria-hidden
+                  />
+                  <span className={cn('font-display text-sm font-semibold uppercase tracking-wide', cActive ? 'text-primary-400' : 'text-paper')}>
+                    {c.label}
+                  </span>
+                </span>
+                {c.description && <span className="mt-1 block pl-3.5 text-xs leading-snug text-muted">{c.description}</span>}
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -74,6 +154,8 @@ export function Header({
   // Закрываем мобильное меню при переходе
   useEffect(() => setOpen(false), [pathname])
 
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
+
   return (
     <header
       className={cn(
@@ -81,46 +163,39 @@ export function Header({
         scrolled || open ? 'bg-ink/95 backdrop-blur border-b border-line' : 'bg-transparent',
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-6 lg:h-20 lg:px-8">
+      <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between gap-4 px-5 sm:px-6 lg:h-24 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="На главную">
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl} alt={clubName} className="h-10 w-auto lg:h-11" />
+            <img src={logoUrl} alt={clubName} className="h-11 w-auto lg:h-14" />
           ) : (
-            <span className="grid h-10 w-10 place-items-center rounded-md bg-accent font-display text-xl font-bold text-white">
+            <span className="grid h-11 w-11 place-items-center rounded-md bg-accent font-display text-2xl font-bold text-white lg:h-14 lg:w-14">
               Л
             </span>
           )}
-          <span className="hidden font-display text-lg font-bold uppercase tracking-wide text-paper sm:block lg:text-xl">
+          <span className="hidden font-display text-lg font-bold uppercase tracking-wide text-paper sm:block lg:text-2xl">
             {clubName}
           </span>
         </Link>
 
         {/* Десктоп-навигация */}
-        <nav className="hidden items-center gap-1 lg:flex">
-          {navLinks.map((l) => {
-            const active = l.href === '/' ? pathname === '/' : pathname.startsWith(l.href)
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={cn(
-                  'rounded-md px-3 py-2 font-display text-sm font-medium uppercase tracking-wide transition-colors',
-                  active ? 'text-primary-400' : 'text-paper/80 hover:text-paper',
-                )}
-              >
-                {l.label}
-              </Link>
-            )
-          })}
+        <nav className="hidden items-center gap-0.5 lg:flex">
+          {navLinks.map((l) => (
+            <DesktopNavItem key={l.href} item={l} pathname={pathname} />
+          ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-4 lg:flex">
           <Button href="/kontakty" variant="accent" size="sm">
             Записаться
           </Button>
           {/* Генеральный спонсор — в конце панели навигации */}
-          {generalPartner && <SponsorMark sponsor={generalPartner} align="right" />}
+          {generalPartner && (
+            <>
+              <span className="h-8 w-px bg-line" aria-hidden />
+              <SponsorMark sponsor={generalPartner} align="right" />
+            </>
+          )}
         </div>
 
         {/* Кнопка мобильного меню */}
@@ -158,18 +233,35 @@ export function Header({
       {open && (
         <nav className="border-t border-line bg-ink px-5 pb-6 pt-2 lg:hidden">
           {navLinks.map((l) => {
-            const active = l.href === '/' ? pathname === '/' : pathname.startsWith(l.href)
+            const active = isActive(l.href) || (l.children?.some((c) => isActive(c.href)) ?? false)
             return (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={cn(
-                  'block rounded-md px-3 py-3 font-display text-base font-medium uppercase tracking-wide',
-                  active ? 'text-primary-400' : 'text-paper/85 hover:bg-surface-2',
+              <div key={l.href}>
+                <Link
+                  href={l.href}
+                  className={cn(
+                    'block rounded-md px-3 py-3 font-display text-base font-medium uppercase tracking-wide',
+                    active ? 'text-primary-400' : 'text-paper/85 hover:bg-surface-2',
+                  )}
+                >
+                  {l.label}
+                </Link>
+                {l.children && (
+                  <div className="mb-1 ml-3 border-l border-line pl-3">
+                    {l.children.map((c) => (
+                      <Link
+                        key={c.href}
+                        href={c.href}
+                        className={cn(
+                          'block rounded-md px-3 py-2.5 text-sm uppercase tracking-wide',
+                          isActive(c.href) ? 'text-primary-400' : 'text-paper/70 hover:bg-surface-2 hover:text-paper',
+                        )}
+                      >
+                        {c.label}
+                      </Link>
+                    ))}
+                  </div>
                 )}
-              >
-                {l.label}
-              </Link>
+              </div>
             )
           })}
           <div className="mt-3 px-3">
