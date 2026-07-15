@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { Container } from '@/components/ui/Container'
 import { navLinks, type NavItem } from '@/lib/nav'
+import { MadeInRussia } from '@/components/site/MadeInRussia'
 
 type Socials = { telegram?: string; vk?: string; youtube?: string; rutube?: string }
 type Contacts = { phone?: string; email?: string; address?: string }
@@ -119,9 +120,10 @@ export function Footer({
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-sm text-muted sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} {clubName}. {rightsText}</p>
-          <Link href="/politika" className="hover:text-paper">
+        <div className="mt-12 flex flex-col items-center gap-5 border-t border-line pt-6 text-sm text-muted sm:flex-row sm:justify-between">
+          <p className="order-2 sm:order-1">© {year} {clubName}. {rightsText}</p>
+          <MadeInRussia className="order-1 text-paper/70 transition-colors hover:text-paper sm:order-2" />
+          <Link href="/politika" className="order-3 hover:text-paper">
             Политика конфиденциальности
           </Link>
         </div>

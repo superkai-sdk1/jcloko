@@ -2,7 +2,7 @@ import React from 'react'
 import { getSiteSettings } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 
-/** Логотип на странице входа: лого сайта + вордмарк JC / LOKO / ADMIN. */
+/** Логотип на странице входа: лого сайта + вордмарк LokoAdmin. */
 export async function Logo() {
   let logoUrl: string | null = null
   try {
@@ -34,12 +34,9 @@ export async function Logo() {
           Л
         </span>
       )}
-      <span style={{ fontWeight: 800, letterSpacing: '0.12em', fontSize: 22 }}>
-        <span style={{ color: '#1f7a4d' }}>JC</span>
-        <span style={{ opacity: 0.35, margin: '0 6px' }}>/</span>
-        <span>LOKO</span>
-        <span style={{ opacity: 0.35, margin: '0 6px' }}>/</span>
-        <span style={{ color: '#c1121f' }}>ADMIN</span>
+      <span style={{ fontWeight: 800, letterSpacing: '0.04em', fontSize: 24 }}>
+        <span style={{ color: '#1f7a4d' }}>Loko</span>
+        <span style={{ color: '#c1121f' }}>Admin</span>
       </span>
     </div>
   )

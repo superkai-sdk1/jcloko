@@ -50,7 +50,8 @@ export default buildConfig({
     // день.месяц.год + 24-часовое время.
     dateFormat: 'dd.MM.yyyy HH:mm',
     meta: {
-      titleSuffix: ' — JC/LOKO/ADMIN',
+      title: 'LokoAdmin',
+      titleSuffix: ' — LokoAdmin',
     },
     components: {
       graphics: {
@@ -58,6 +59,15 @@ export default buildConfig({
         Icon: '/components/admin/Icon#Icon',
       },
       beforeDashboard: ['/components/admin/DashboardWelcome#DashboardWelcome'],
+      // Кнопка «Поддержка» внизу боковой навигации
+      afterNavLinks: ['/components/admin/SupportNavLink#SupportNavLink'],
+      // Кастомная страница /admin/support
+      views: {
+        support: {
+          Component: '/components/admin/SupportView#SupportView',
+          path: '/support',
+        },
+      },
     },
   },
   collections: [
