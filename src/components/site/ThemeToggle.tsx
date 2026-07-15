@@ -6,6 +6,8 @@ import { cn } from '@/utils/cn'
 type Pref = 'system' | 'light' | 'dark'
 
 const STORAGE_KEY = 'theme'
+const ORDER: Pref[] = ['system', 'light', 'dark']
+const LABEL: Record<Pref, string> = { system: 'Авто', light: 'Светлая', dark: 'Тёмная' }
 
 /** Применяет выбранную тему к <html> (резолвит «Авто» через prefers-color-scheme). */
 function applyTheme(pref: Pref) {
@@ -15,6 +17,14 @@ function applyTheme(pref: Pref) {
   el.classList.remove('light', 'dark')
   el.classList.add(resolved)
   el.dataset.themePref = pref
+}
+
+function readPref(): Pref {
+  try {
+    const v = localStorage.getItem(STORAGE_KEY)
+    if (v === 'light' || v === 'dark' || v === 'system') return v
+  } catch {}
+  return 'system'
 }
 
 function IconAuto({ className }: { className?: string }) {
@@ -40,81 +50,60 @@ function IconDark({ className }: { className?: string }) {
     </svg>
   )
 }
-
-const OPTIONS: { key: Pref; label: string; Icon: (p: { className?: string }) => React.ReactElement }[] = [
-  { key: 'system', label: 'Авто (как в системе)', Icon: IconAuto },
-  { key: 'light', label: 'Светлая тема', Icon: IconLight },
-  { key: 'dark', label: 'Тёмная тема', Icon: IconDark },
-]
+const ICON: Record<Pref, (p: { className?: string }) => React.ReactElement> = {
+  system: IconAuto,
+  light: IconLight,
+  dark: IconDark,
+}
 
 /**
- * Переключатель темы: Авто / Светлая / Тёмная. По умолчанию «Авто» — берётся из
- * настроек ОС. Выбор сохраняется в localStorage; при «Авто» тема следует за
- * системной в реальном времени.
+ * Переключатель темы — одна кнопка, циклически меняющая состояние:
+ * Авто → Светлая → Тёмная → Авто. По умолчанию «Авто» (из настроек ОС, следит за
+ * системной темой в реальном времени). Выбор сохраняется в localStorage.
  */
-export function ThemeToggle({ className, size = 'sm' }: { className?: string; size?: 'sm' | 'md' }) {
-  // На сервере и при первом рендере клиента — 'system' (совпадает → без гидрационных ошибок)
+export function ThemeToggle({ className, showLabel = false }: { className?: string; showLabel?: boolean }) {
+  // На сервере и при первом рендере — 'system' (совпадает → без гидрационных ошибок)
   const [pref, setPref] = useState<Pref>('system')
 
   useEffect(() => {
-    let stored: Pref = 'system'
-    try {
-      const v = localStorage.getItem(STORAGE_KEY)
-      if (v === 'light' || v === 'dark' || v === 'system') stored = v
-    } catch {}
-    setPref(stored)
-
-    // При «Авто» реагируем на смену системной темы
+    setPref(readPref())
     const mq = window.matchMedia('(prefers-color-scheme: dark)')
     const onChange = () => {
-      let cur: Pref = 'system'
-      try {
-        const v = localStorage.getItem(STORAGE_KEY)
-        if (v === 'light' || v === 'dark' || v === 'system') cur = v
-      } catch {}
-      if (cur === 'system') applyTheme('system')
+      if (readPref() === 'system') applyTheme('system')
     }
     mq.addEventListener('change', onChange)
     return () => mq.removeEventListener('change', onChange)
   }, [])
 
-  const choose = useCallback((p: Pref) => {
-    setPref(p)
-    try {
-      localStorage.setItem(STORAGE_KEY, p)
-    } catch {}
-    applyTheme(p)
+  const cycle = useCallback(() => {
+    setPref((cur) => {
+      const next = ORDER[(ORDER.indexOf(cur) + 1) % ORDER.length]
+      try {
+        localStorage.setItem(STORAGE_KEY, next)
+      } catch {}
+      applyTheme(next)
+      return next
+    })
   }, [])
 
-  const btn = size === 'md' ? 'h-9 w-9' : 'h-7 w-7'
-  const icon = size === 'md' ? 'h-[18px] w-[18px]' : 'h-4 w-4'
+  const Icon = ICON[pref]
+  const next = ORDER[(ORDER.indexOf(pref) + 1) % ORDER.length]
+  const title = `Тема: ${LABEL[pref]}. Нажмите — ${LABEL[next]}`
 
   return (
-    <div
-      role="group"
-      aria-label="Тема оформления"
-      className={cn('inline-flex items-center gap-0.5 rounded-full border border-line bg-surface/60 p-0.5', className)}
+    <button
+      type="button"
+      onClick={cycle}
+      aria-label={`Тема оформления: ${LABEL[pref]}. Нажмите, чтобы переключить`}
+      title={title}
+      className={cn(
+        'inline-flex shrink-0 cursor-pointer items-center gap-2 rounded-full border border-line bg-surface/60 text-paper transition-colors hover:border-primary-400/60 hover:bg-surface-2',
+        showLabel ? 'h-10 px-4' : 'h-10 w-10 justify-center',
+        className,
+      )}
     >
-      {OPTIONS.map((o) => {
-        const active = pref === o.key
-        return (
-          <button
-            key={o.key}
-            type="button"
-            onClick={() => choose(o.key)}
-            aria-label={o.label}
-            aria-pressed={active}
-            title={o.label}
-            className={cn(
-              'grid cursor-pointer place-items-center rounded-full transition-colors',
-              btn,
-              active ? 'bg-surface-2 text-primary-400' : 'text-muted hover:text-paper',
-            )}
-          >
-            <o.Icon className={icon} />
-          </button>
-        )
-      })}
-    </div>
+      <Icon className="h-[18px] w-[18px]" />
+      {showLabel && <span className="font-display text-sm font-medium uppercase tracking-wide">{LABEL[pref]}</span>}
+    </button>
   )
 }

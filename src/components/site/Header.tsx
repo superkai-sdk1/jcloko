@@ -31,7 +31,7 @@ function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; al
   const inner = hasLogo ? (
     // Обычный img (не next/image): надёжно для SVG и логотипов
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-14 w-auto object-contain lg:h-20" />
+    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-14 w-auto shrink-0 object-contain lg:h-20" />
   ) : (
     <span className="font-display text-base font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
@@ -39,8 +39,8 @@ function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; al
   )
   // С логотипом — без рамки/фона, только картинка; без логотипа — чип с текстом.
   const box = hasLogo
-    ? 'flex items-center transition-transform duration-300 hover:scale-105'
-    : 'flex items-center gap-2 rounded-lg border border-line bg-surface/70 px-3 py-1.5 transition-colors hover:border-primary/50'
+    ? 'flex shrink-0 items-center transition-transform duration-300 hover:scale-105'
+    : 'flex shrink-0 items-center gap-2 rounded-lg border border-line bg-surface/70 px-3 py-1.5 transition-colors hover:border-primary/50'
   const external = sponsor.href ? isExternalHref(sponsor.href) : false
   return (
     <AdTooltip title={sponsor.name} erid={sponsor.erid} advertiser={sponsor.advertiser} align={align}>
@@ -186,8 +186,8 @@ export function Header({
           ))}
         </nav>
 
-        {/* Справа: логотип ген. спонсора + переключатель темы */}
-        <div className="hidden items-center gap-3 lg:flex">
+        {/* Справа: логотип ген. спонсора, затем переключатель темы в самом углу */}
+        <div className="hidden items-center gap-5 lg:flex">
           {generalPartner && <SponsorMark sponsor={generalPartner} align="right" />}
           <ThemeToggle />
         </div>
@@ -265,7 +265,7 @@ export function Header({
           </div>
           <div className="mt-4 flex items-center justify-between border-t border-line px-3 pt-4">
             <span className="text-xs uppercase tracking-wide text-muted">Тема оформления</span>
-            <ThemeToggle size="md" />
+            <ThemeToggle showLabel />
           </div>
           {generalPartner && (
             <div className="mt-4 flex items-center gap-3 border-t border-line px-3 pt-4">
