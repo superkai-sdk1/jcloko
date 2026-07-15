@@ -27,7 +27,9 @@ import { VkTest as VkTest_5785e9720395bd1cfa3c8a6a34346b50 } from '../../../comp
 import { DuplicatesView as DuplicatesView_9ae029321a2819fe2d17a891d52bb607 } from '../../../components/admin/DuplicatesView'
 import { Icon as Icon_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { Logo as Logo_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
+import { SupportNavLink as SupportNavLink_7c87ba627acebf2826d8234583a262db } from '../../../components/admin/SupportNavLink'
 import { DashboardWelcome as DashboardWelcome_76ec03dd917ecfb7a53441d4e825edcb } from '../../../components/admin/DashboardWelcome'
+import { SupportView as SupportView_f786137cddb192de3fac54ed561077f1 } from '../../../components/admin/SupportView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
@@ -61,6 +63,8 @@ export const importMap = {
   "/components/admin/DuplicatesView#DuplicatesView": DuplicatesView_9ae029321a2819fe2d17a891d52bb607,
   "/components/admin/Icon#Icon": Icon_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#Logo": Logo_91a09b539d3c86b0aebf520e7564ce08,
+  "/components/admin/SupportNavLink#SupportNavLink": SupportNavLink_7c87ba627acebf2826d8234583a262db,
   "/components/admin/DashboardWelcome#DashboardWelcome": DashboardWelcome_76ec03dd917ecfb7a53441d4e825edcb,
+  "/components/admin/SupportView#SupportView": SupportView_f786137cddb192de3fac54ed561077f1,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
