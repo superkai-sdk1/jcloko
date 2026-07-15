@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { getPageHeader } from '@/lib/pageHeader'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -11,10 +12,10 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Тренеры' }
 
 export default async function CoachesPage() {
-  const coaches = await getCoaches()
+  const [coaches, h] = await Promise.all([getCoaches(), getPageHeader('coaches')])
   return (
     <>
-      <PageHeader eyebrow="Команда" title="Тренеры" subtitle="Тренерский состав клуба дзюдо «Локомотив»." />
+      <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {coaches.length === 0 ? (

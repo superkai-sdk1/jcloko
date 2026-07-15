@@ -5,6 +5,7 @@ import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { ContactForm } from '@/components/blocks/ContactForm'
 import { getSiteSettings } from '@/lib/queries'
+import { getPageHeader } from '@/lib/pageHeader'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Контакты' }
@@ -22,7 +23,7 @@ export default async function ContactsPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Свяжитесь с нами" title="Контакты" subtitle="Запишитесь на первую тренировку или задайте вопрос." />
+      <PageHeader {...(await getPageHeader('contacts'))} />
       <Section tone="ink" pattern>
         <Container>
           <div className="grid gap-12 lg:grid-cols-2">

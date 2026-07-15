@@ -7,7 +7,7 @@ import { BlockRenderer } from '@/components/blocks'
 export const dynamic = 'force-dynamic'
 
 // Зарезервированные под выделенные роуты слаги — их не обслуживает CMS-catch-all
-const reserved = new Set(['novosti', 'raspisanie', 'media', 'partnery', 'kontakty', 'politika', 'api'])
+const reserved = new Set(['novosti', 'raspisanie', 'media', 'partnery', 'kontakty', 'api'])
 
 export async function generateMetadata({
   params,

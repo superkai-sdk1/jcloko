@@ -1,6 +1,7 @@
 import React from 'react'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { getPageHeader } from '@/lib/pageHeader'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -11,10 +12,10 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Новости' }
 
 export default async function NewsPage() {
-  const news = await getNews(30)
+  const [news, h] = await Promise.all([getNews(30), getPageHeader('news')])
   return (
     <>
-      <PageHeader eyebrow="Жизнь клуба" title="Новости" subtitle="Соревнования, сборы, достижения и анонсы." />
+      <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {news.length === 0 ? (

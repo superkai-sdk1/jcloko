@@ -3,6 +3,7 @@ import { Img } from '@/components/ui/Img'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { getPageHeader } from '@/lib/pageHeader'
 import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
@@ -16,10 +17,10 @@ const str = (v: unknown): string => (typeof v === 'string' ? v : '')
 const kindLabel: Record<string, string> = { photo: 'Фото', film: 'Фильм', interview: 'Интервью' }
 
 export default async function MediaPage() {
-  const galleries = await getMediaGalleries()
+  const [galleries, h] = await Promise.all([getMediaGalleries(), getPageHeader('media')])
   return (
     <>
-      <PageHeader eyebrow="Галерея" title="Медиа" subtitle="Фотографии, фильмы и интервью клуба." />
+      <PageHeader {...h} />
       <Section tone="ink">
         <Container>
           {galleries.length === 0 ? (

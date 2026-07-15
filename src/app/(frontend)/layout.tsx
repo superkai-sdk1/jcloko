@@ -7,6 +7,7 @@ import { ScrollProgress } from '@/components/motion/ScrollProgress'
 import { getSiteSettings, getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 import { resolvePartnerHref } from '@/lib/partnerLink'
+import { resolveNav } from '@/lib/nav'
 
 const oswald = Oswald({
   subsets: ['cyrillic', 'latin'],
@@ -72,6 +73,13 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   }
 
   const clubName = settings?.clubName || 'Клуб дзюдо «Локомотив»'
+  const logoUrl = mediaUrl(settings?.logo)
+  const navItems = resolveNav(settings?.navigation)
+  const footer = (settings?.footer ?? {}) as {
+    linksHeading?: string
+    contactsHeading?: string
+    rightsText?: string
+  }
 
   // Ставим тему (light/dark) до первой отрисовки, чтобы не было мигания.
   // По умолчанию «Авто» — из prefers-color-scheme ОС.
@@ -84,16 +92,22 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <ScrollProgress />
         <Header
           clubName={settings?.clubName || 'Локомотив'}
-          logoUrl={mediaUrl(settings?.logo)}
+          logoUrl={logoUrl}
           generalPartner={generalPartner}
+          navItems={navItems}
         />
         <main className="flex-1">{children}</main>
         <Footer
           clubName={clubName}
+          logoUrl={logoUrl}
           tagline={settings?.tagline || undefined}
           contacts={settings?.contacts as never}
           socials={settings?.socials as never}
           footerText={settings?.footerText || undefined}
+          navItems={navItems}
+          linksHeading={footer.linksHeading || undefined}
+          contactsHeading={footer.contactsHeading || undefined}
+          rightsText={footer.rightsText || undefined}
         />
       </body>
     </html>

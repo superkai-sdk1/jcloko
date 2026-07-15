@@ -136,10 +136,12 @@ export function Header({
   clubName = 'Локомотив',
   logoUrl,
   generalPartner,
+  navItems = navLinks,
 }: {
   clubName?: string
   logoUrl?: string | null
   generalPartner?: GeneralPartner | null
+  navItems?: NavItem[]
 }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
@@ -182,7 +184,7 @@ export function Header({
         {/* Центр-право: десктоп-навигация + логотип ген. спонсора одной группой */}
         <div className="hidden items-center gap-5 lg:flex xl:gap-8">
           <nav className="flex items-center gap-0.5">
-            {navLinks.map((l) => (
+            {navItems.map((l) => (
               <DesktopNavItem key={l.href} item={l} pathname={pathname} />
             ))}
           </nav>
@@ -228,7 +230,7 @@ export function Header({
       {/* Мобильное меню */}
       {open && (
         <nav className="border-t border-line bg-ink px-5 pb-6 pt-2 lg:hidden">
-          {navLinks.map((l) => {
+          {navItems.map((l) => {
             const active = isActive(l.href) || (l.children?.some((c) => isActive(c.href)) ?? false)
             return (
               <div key={l.href}>
