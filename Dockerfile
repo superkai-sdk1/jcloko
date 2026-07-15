@@ -36,6 +36,9 @@ RUN addgroup -S nodejs -g 1001 && adduser -S nextjs -u 1001
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/.next ./.next
 COPY --from=build /app/public ./public
+# Публичные ассеты (в т.ч. загруженные из репо PDF) должны быть читаемы
+# пользователем nextjs независимо от исходных прав файла.
+RUN chmod -R a+rX ./public
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/next.config.ts ./next.config.ts
 COPY --from=build /app/postcss.config.mjs ./postcss.config.mjs
