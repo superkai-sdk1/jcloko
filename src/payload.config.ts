@@ -34,6 +34,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    // Единый формат дат по всей админке (в т.ч. Создано/Последнее изменение):
+    // день.месяц.год + 24-часовое время.
+    dateFormat: 'dd.MM.yyyy HH:mm',
     meta: {
       titleSuffix: ' — JC/LOKO/ADMIN',
     },
