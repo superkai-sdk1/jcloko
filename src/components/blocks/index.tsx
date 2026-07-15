@@ -203,7 +203,7 @@ async function TeamGridBlock({ b }: { b: Block }) {
               } as DeckItem
             })}
             aspect="3 / 4"
-            cardWidth="w-40 sm:w-44"
+            cardWidth="w-48 sm:w-52"
             seeAllHref={mode === 'athletes' ? undefined : '/trenery'}
             seeAllLabel={mode === 'athletes' ? undefined : 'Все тренеры'}
           />
