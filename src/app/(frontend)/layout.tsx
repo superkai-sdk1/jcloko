@@ -4,6 +4,7 @@ import './globals.css'
 import { Header } from '@/components/site/Header'
 import { Footer } from '@/components/site/Footer'
 import { ScrollProgress } from '@/components/motion/ScrollProgress'
+import { CookieConsent } from '@/components/site/CookieConsent'
 import { getSiteSettings, getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 import { resolvePartnerHref } from '@/lib/partnerLink'
@@ -109,6 +110,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
           contactsHeading={footer.contactsHeading || undefined}
           rightsText={footer.rightsText || undefined}
         />
+        <CookieConsent />
       </body>
     </html>
   )
