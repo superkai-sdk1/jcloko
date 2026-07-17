@@ -49,7 +49,7 @@ export async function ForumChallenge({ b }: { b: Block }) {
 
   const logoImg = gpLogo ? (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={gpLogo} alt={gpName || 'Генеральный партнёр'} className="h-10 w-auto object-contain lg:h-12" />
+    <img src={gpLogo} alt={gpName || 'Генеральный партнёр'} className="h-16 w-auto object-contain lg:h-24" />
   ) : null
 
   return (
@@ -57,20 +57,23 @@ export async function ForumChallenge({ b }: { b: Block }) {
       {/* ── Шапка форума ─────────────────────────────────────────────────── */}
       <div className="relative overflow-hidden border-b border-line bg-ink-800 bg-tatami">
         <Container className="py-14 lg:py-20">
-          {/* Логотип генерального партнёра — наверху */}
+          {/* Логотип генерального партнёра — крупно и в выделенной панели */}
           {logoImg && (
-            <div className="mb-9 flex items-center gap-4">
-              <span className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
-                Генеральный партнёр
-              </span>
-              <span className="h-px w-8 bg-line sm:w-12" aria-hidden />
-              {gpHref ? (
-                <Link href={gpHref} {...(gpExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="transition-opacity hover:opacity-80">
-                  {logoImg}
-                </Link>
-              ) : (
-                logoImg
-              )}
+            <div className="mb-10 flex justify-center sm:justify-start">
+              <div className="inline-flex flex-col items-center gap-4 rounded-2xl border border-primary-400/40 bg-gradient-to-br from-primary/15 via-surface/50 to-surface/50 px-8 py-5 shadow-xl shadow-black/25 sm:flex-row sm:gap-7">
+                <span className="whitespace-nowrap text-center font-display text-[11px] font-semibold uppercase tracking-[0.2em] text-primary-400">
+                  Генеральный
+                  <br className="hidden sm:block" /> партнёр
+                </span>
+                <span className="hidden h-14 w-px bg-line sm:block" aria-hidden />
+                {gpHref ? (
+                  <Link href={gpHref} {...(gpExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="transition-transform duration-300 hover:scale-105">
+                    {logoImg}
+                  </Link>
+                ) : (
+                  logoImg
+                )}
+              </div>
             </div>
           )}
 
