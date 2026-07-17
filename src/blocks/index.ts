@@ -383,6 +383,23 @@ export const EducationProgramBlock: Block = {
   ],
 }
 
+export const ForumChallengeBlock: Block = {
+  slug: 'forumChallenge',
+  interfaceName: 'ForumChallengeBlock',
+  labels: { singular: 'Форум «Вызов Локомотива»', plural: 'Форум «Вызов Локомотива»' },
+  fields: [
+    { name: 'eyebrow', type: 'text', label: 'Надзаголовок', defaultValue: 'ПМЭФ · Кавказский инвестиционный форум' },
+    { name: 'heading', type: 'text', label: 'Заголовок', defaultValue: 'Вызов Локомотива' },
+    { name: 'intro', type: 'textarea', label: 'Вводный текст' },
+    {
+      name: 'showSlides',
+      type: 'checkbox',
+      label: 'Показывать презентацию (слайды)',
+      defaultValue: true,
+    },
+  ],
+}
+
 /** Все блоки конструктора страниц. */
 export const pageBlocks: Block[] = [
   HeroSliderBlock,
@@ -400,5 +417,6 @@ export const pageBlocks: Block[] = [
   FAQAccordionBlock,
   ContactFormBlock,
   EducationProgramBlock,
+  ForumChallengeBlock,
   RichTextBlock,
 ]

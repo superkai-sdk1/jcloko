@@ -262,6 +262,26 @@ export default buildConfig({
     } catch (err) {
       payload.logger.error({ err }, 'Failed to seed privacy page')
     }
+
+    // 5) Идемпотентный сид CMS-страницы «Вызов Локомотива» (ПМЭФ/КИФ) — /forum.
+    try {
+      const slug = 'forum'
+      const found = await payload.find({ collection: 'pages', where: { slug: { equals: slug } }, limit: 1, depth: 0 })
+      if (found.totalDocs === 0) {
+        await payload.create({
+          collection: 'pages',
+          data: {
+            title: 'Вызов Локомотива (ПМЭФ / КИФ)',
+            slug,
+            status: 'published',
+            layout: [{ blockType: 'forumChallenge', showSlides: true }],
+          } as never,
+        })
+        payload.logger.info('Seeded page: Вызов Локомотива (forum)')
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to seed forum page')
+    }
   },
   plugins: [],
 })
