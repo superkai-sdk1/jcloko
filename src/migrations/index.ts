@@ -10,6 +10,7 @@ import * as migration_20260714_231842_latest_news_block from './20260714_231842_
 import * as migration_20260715_125447_education_documents from './20260715_125447_education_documents';
 import * as migration_20260715_150332_nav_pageheaders_footer from './20260715_150332_nav_pageheaders_footer';
 import * as migration_20260715_154714_ui_texts_and_eyebrows from './20260715_154714_ui_texts_and_eyebrows';
+import * as migration_20260717_095054_partner_page_fields from './20260717_095054_partner_page_fields';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20260715_154714_ui_texts_and_eyebrows.up,
     down: migration_20260715_154714_ui_texts_and_eyebrows.down,
-    name: '20260715_154714_ui_texts_and_eyebrows'
+    name: '20260715_154714_ui_texts_and_eyebrows',
+  },
+  {
+    up: migration_20260717_095054_partner_page_fields.up,
+    down: migration_20260717_095054_partner_page_fields.down,
+    name: '20260717_095054_partner_page_fields'
   },
 ];

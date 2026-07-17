@@ -619,6 +619,14 @@ export interface Partner {
    * Картинка или иконка спонсора для показа на сайте и в шапке.
    */
   logo?: (number | null) | Media;
+  /**
+   * Отдельный логотип для страницы партнёров (если нужен другой, чем в шапке). Если не задан — используется основной логотип.
+   */
+  pageLogo?: (number | null) | Media;
+  /**
+   * Короткий текст о партнёре — показывается на странице «Партнёры».
+   */
+  description?: string | null;
   linkType?: ('external' | 'internal' | 'none') | null;
   url?: string | null;
   internalPage?: (number | null) | Page;
@@ -1627,6 +1635,8 @@ export interface ScheduleEntriesSelect<T extends boolean = true> {
 export interface PartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
+  pageLogo?: T;
+  description?: T;
   linkType?: T;
   url?: T;
   internalPage?: T;
