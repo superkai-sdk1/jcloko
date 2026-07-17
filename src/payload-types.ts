@@ -186,6 +186,7 @@ export interface Page {
         | FAQAccordionBlock
         | ContactFormBlock
         | EducationProgramBlock
+        | ForumChallengeBlock
         | RichTextBlock
       )[]
     | null;
@@ -790,6 +791,19 @@ export interface Document {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ForumChallengeBlock".
+ */
+export interface ForumChallengeBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  showSlides?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'forumChallenge';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RichTextBlock".
  */
 export interface RichTextBlock {
@@ -1227,6 +1241,7 @@ export interface PagesSelect<T extends boolean = true> {
         faqAccordion?: T | FAQAccordionBlockSelect<T>;
         contactForm?: T | ContactFormBlockSelect<T>;
         educationProgram?: T | EducationProgramBlockSelect<T>;
+        forumChallenge?: T | ForumChallengeBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
       };
   metaTitle?: T;
@@ -1455,6 +1470,18 @@ export interface EducationProgramBlockSelect<T extends boolean = true> {
         v?: T;
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ForumChallengeBlock_select".
+ */
+export interface ForumChallengeBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  showSlides?: T;
   id?: T;
   blockName?: T;
 }

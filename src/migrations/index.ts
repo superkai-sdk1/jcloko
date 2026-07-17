@@ -11,6 +11,7 @@ import * as migration_20260715_125447_education_documents from './20260715_12544
 import * as migration_20260715_150332_nav_pageheaders_footer from './20260715_150332_nav_pageheaders_footer';
 import * as migration_20260715_154714_ui_texts_and_eyebrows from './20260715_154714_ui_texts_and_eyebrows';
 import * as migration_20260717_095054_partner_page_fields from './20260717_095054_partner_page_fields';
+import * as migration_20260717_101717_forum_page from './20260717_101717_forum_page';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20260717_095054_partner_page_fields.up,
     down: migration_20260717_095054_partner_page_fields.down,
-    name: '20260717_095054_partner_page_fields'
+    name: '20260717_095054_partner_page_fields',
+  },
+  {
+    up: migration_20260717_101717_forum_page.up,
+    down: migration_20260717_101717_forum_page.down,
+    name: '20260717_101717_forum_page'
   },
 ];
