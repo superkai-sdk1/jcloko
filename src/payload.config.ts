@@ -390,15 +390,34 @@ export default buildConfig({
       const nav = Array.isArray(s?.navigation) ? (s.navigation as Record<string, unknown>[]) : []
       const isTop = (href: string) => nav.some((n) => n?.href === href)
       // Признак старой (плоской) структуры — эти пункты ещё на верхнем уровне.
+      // Переносим их в выпадающие меню ХИРУРГИЧЕСКИ, сохраняя все прочие
+      // (в т.ч. пользовательские) пункты и их правки.
       if (nav.length && isTop('/raspisanie') && isTop('/media') && isTop('/kontakty')) {
-        const newNav = navLinks.map((l) => ({
-          label: l.label,
-          href: l.href,
-          children: (l.children ?? []).map((c) => ({ label: c.label, href: c.href, description: c.description })),
-        }))
+        const idx = (href: string) => nav.findIndex((n) => n?.href === href)
+        const ensureKids = (item: Record<string, unknown>) => {
+          if (!Array.isArray(item.children)) item.children = []
+          const kids = item.children as Record<string, unknown>[]
+          if (kids.length === 0) kids.push({ label: item.label, href: item.href })
+          return kids
+        }
+        const moveInto = (parentHref: string, itemHref: string, desc: string) => {
+          const pi = idx(parentHref)
+          const ii = idx(itemHref)
+          if (pi < 0 || ii < 0) return
+          const item = nav[ii]
+          const kids = ensureKids(nav[pi])
+          if (!kids.some((c) => c?.href === itemHref)) {
+            kids.push({ label: item.label, href: itemHref, description: (item.description as string) || desc })
+          }
+          const rem = idx(itemHref)
+          if (rem >= 0) nav.splice(rem, 1)
+        }
+        moveInto('/o-klube', '/kontakty', 'Как с нами связаться')
+        moveInto('/zaly', '/raspisanie', 'Тренировки по залам')
+        moveInto('/novosti', '/media', 'Фото, фильмы и интервью')
         const { id: _id, createdAt: _c, updatedAt: _u, globalType: _g, ...rest } = s
-        await payload.updateGlobal({ slug: 'site-settings', data: { ...rest, navigation: newNav } as never })
-        payload.logger.info('Reorganized navigation into dropdowns')
+        await payload.updateGlobal({ slug: 'site-settings', data: { ...rest, navigation: nav } as never })
+        payload.logger.info('Reorganized navigation into dropdowns (surgical)')
       }
     } catch (err) {
       payload.logger.error({ err }, 'Failed to reorganize navigation')
