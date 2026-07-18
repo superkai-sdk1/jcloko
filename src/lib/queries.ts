@@ -89,6 +89,25 @@ export const getHalls = async () => {
   return res.docs
 }
 
+/** Зал по slug (для страницы зала). */
+export const getHallBySlug = async (slug: string) => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'halls', where: { slug: { equals: slug } }, depth: 1, limit: 1 })
+  return res.docs[0] ?? null
+}
+
+/** Расписание конкретного зала. */
+export const getScheduleForHall = async (hallId: string | number) => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'schedule-entries',
+    where: { hallLink: { equals: hallId } },
+    depth: 1,
+    limit: 500,
+  })
+  return res.docs
+}
+
 /** Опубликованные медиа-подборки. */
 export const getMediaGalleries = async () => {
   const payload = await getPayloadClient()

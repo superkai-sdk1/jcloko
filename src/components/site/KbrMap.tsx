@@ -74,8 +74,10 @@ function Marker({
   )
 }
 
-export function KbrMap({ halls }: { halls: Hall[] }) {
-  const [active, setActive] = useState<Hall | null>(null)
+export function KbrMap({ halls, initialActiveId }: { halls: Hall[]; initialActiveId?: string }) {
+  const [active, setActive] = useState<Hall | null>(
+    initialActiveId ? halls.find((h) => h.id === initialActiveId) ?? null : null,
+  )
   const [scale, setScale] = useState(1)
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const viewportRef = useRef<HTMLDivElement>(null)
@@ -245,10 +247,10 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
 
               <div className="mt-3 flex flex-col gap-2">
                 <Link
-                  href={active.slug ? `/raspisanie?zal=${active.slug}` : '/raspisanie'}
+                  href={active.slug ? `/zaly/${active.slug}` : '/zaly'}
                   className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-primary-600"
                 >
-                  Полное расписание →
+                  Подробнее о зале →
                 </Link>
                 <a
                   href={`https://yandex.ru/maps/?text=${encodeURIComponent(`${active.city ? active.city + ', ' : ''}${active.address}, Кабардино-Балкария`)}`}

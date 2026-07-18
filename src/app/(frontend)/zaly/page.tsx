@@ -38,7 +38,10 @@ export default async function HallsPage() {
               <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {halls.map((h, i) => (
                   <Reveal key={h.id} delay={(i % 3) * 0.05} className="h-full">
-                    <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-5">
+                    <Link
+                      href={h.slug ? `/zaly/${h.slug}` : '/zaly'}
+                      className="group flex h-full flex-col rounded-2xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/50 hover:shadow-xl hover:shadow-black/30"
+                    >
                       {h.city && (
                         <div className="font-display text-[11px] font-semibold uppercase tracking-wide text-primary-400">{h.city}</div>
                       )}
@@ -51,13 +54,11 @@ export default async function HallsPage() {
                         {h.address}
                       </p>
                       {h.note && <p className="mt-1 text-xs text-muted">{h.note}</p>}
-                      <Link
-                        href={h.slug ? `/raspisanie?zal=${h.slug}` : '/raspisanie'}
-                        className="mt-4 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wide text-primary-400 hover:text-primary"
-                      >
-                        Расписание зала →
-                      </Link>
-                    </div>
+                      <span className="mt-auto pt-4 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wide text-primary-400">
+                        Подробнее о зале
+                        <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                      </span>
+                    </Link>
                   </Reveal>
                 ))}
               </div>

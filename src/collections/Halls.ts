@@ -24,6 +24,15 @@ export const Halls: CollectionConfig = {
     { name: 'city', type: 'text', label: 'Город / населённый пункт' },
     { name: 'address', type: 'text', label: 'Адрес', required: true },
     { name: 'note', type: 'text', label: 'Вместимость / примечание', admin: { description: 'Например: «60 человек».' } },
+    { name: 'description', type: 'textarea', label: 'Описание зала', admin: { description: 'Основная информация о зале — показывается на странице зала.' } },
+    { name: 'phone', type: 'text', label: 'Телефон зала' },
+    { name: 'photo', type: 'upload', relationTo: 'media', label: 'Фото зала' },
+    {
+      name: 'coach',
+      type: 'relationship',
+      relationTo: 'coaches',
+      label: 'Ответственный тренер',
+    },
     {
       type: 'row',
       fields: [
