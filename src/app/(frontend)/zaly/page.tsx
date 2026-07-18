@@ -6,7 +6,7 @@ import { Section } from '@/components/ui/Section'
 import { Container } from '@/components/ui/Container'
 import { Reveal } from '@/components/motion/Reveal'
 import { KbrMap, type Hall } from '@/components/site/KbrMap'
-import { getHalls } from '@/lib/queries'
+import { loadHallsWithSchedule } from '@/lib/hallMap'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -14,21 +14,8 @@ export const metadata: Metadata = {
   description: 'Спортзалы клуба дзюдо «Локомотив» на карте Кабардино-Балкарии — адреса и расписание.',
 }
 
-const str = (v: unknown): string => (typeof v === 'string' ? v : '')
-const num = (v: unknown): number | undefined => (typeof v === 'number' ? v : undefined)
-
 export default async function HallsPage() {
-  const raw = (await getHalls()) as unknown as Record<string, unknown>[]
-  const halls: Hall[] = raw.map((h) => ({
-    id: String(h.id),
-    name: str(h.name),
-    city: str(h.city),
-    address: str(h.address),
-    note: str(h.note),
-    slug: str(h.slug),
-    mapX: num(h.mapX),
-    mapY: num(h.mapY),
-  }))
+  const halls: Hall[] = await loadHallsWithSchedule()
 
   return (
     <>

@@ -400,6 +400,18 @@ export const ForumChallengeBlock: Block = {
   ],
 }
 
+export const GymMapBlock: Block = {
+  slug: 'gymMap',
+  interfaceName: 'GymMapBlock',
+  labels: { singular: 'Карта залов', plural: 'Карты залов' },
+  fields: [
+    eyebrowField,
+    { name: 'heading', type: 'text', label: 'Заголовок', defaultValue: 'Где мы тренируем' },
+    { name: 'subheading', type: 'text', label: 'Подзаголовок' },
+    { name: 'showAllLink', type: 'checkbox', label: 'Показывать кнопку «Все залы»', defaultValue: true },
+  ],
+}
+
 /** Все блоки конструктора страниц. */
 export const pageBlocks: Block[] = [
   HeroSliderBlock,
@@ -418,5 +430,6 @@ export const pageBlocks: Block[] = [
   ContactFormBlock,
   EducationProgramBlock,
   ForumChallengeBlock,
+  GymMapBlock,
   RichTextBlock,
 ]

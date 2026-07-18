@@ -12,6 +12,8 @@ import { FAQAccordion } from './FAQAccordion'
 import { ContactForm } from './ContactForm'
 import { EducationProgram } from './EducationProgram'
 import { ForumChallenge } from './ForumChallenge'
+import { KbrMap } from '@/components/site/KbrMap'
+import { loadHallsWithSchedule } from '@/lib/hallMap'
 import { CoachCard, AthleteCard } from '@/components/cards/PersonCard'
 import { getCoaches, getAthletes, getPartners, getScheduleEntries, getNews } from '@/lib/queries'
 import { mediaUrl, mediaAlt, mediaFocal, mediaSize } from '@/lib/media'
@@ -461,6 +463,35 @@ function RichTextBlock({ b }: { b: Block }) {
   )
 }
 
+// ─── GymMap (карта залов) ─────────────────────────────────────────────────────
+async function GymMapBlock({ b }: { b: Block }) {
+  const halls = await loadHallsWithSchedule()
+  if (halls.length === 0) return null
+  const showAll = b.showAllLink !== false
+  return (
+    <Section tone="surface">
+      <Container>
+        <SectionHeading
+          eyebrow={str(b.eyebrow) || 'Залы'}
+          title={str(b.heading) || 'Где мы тренируем'}
+          subtitle={str(b.subheading) || undefined}
+          className="mb-8"
+        />
+        <Reveal>
+          <KbrMap halls={halls as never} />
+        </Reveal>
+        {showAll && (
+          <div className="mt-6">
+            <Button href="/zaly" variant="outline" size="md">
+              Все залы →
+            </Button>
+          </div>
+        )}
+      </Container>
+    </Section>
+  )
+}
+
 // ─── Renderer ─────────────────────────────────────────────────────────────────
 export function BlockRenderer({ blocks }: { blocks?: unknown }) {
   const list = arr(blocks)
@@ -512,6 +543,8 @@ export function BlockRenderer({ blocks }: { blocks?: unknown }) {
             return <EducationProgram key={key} b={b} />
           case 'forumChallenge':
             return <ForumChallenge key={key} b={b} />
+          case 'gymMap':
+            return <GymMapBlock key={key} b={b} />
           default:
             return null
         }

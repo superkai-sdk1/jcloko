@@ -14,6 +14,7 @@ export type Hall = {
   slug?: string
   mapX?: number
   mapY?: number
+  scheduleSummary?: string
 }
 
 const MIN = 1
@@ -98,12 +99,6 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
     [clamp],
   )
 
-  const onWheel = (e: React.WheelEvent) => {
-    if (e.deltaY === 0) return
-    e.preventDefault()
-    zoomTo(scale + (e.deltaY < 0 ? 0.25 : -0.25))
-  }
-
   const onPointerDown = (e: React.PointerEvent) => {
     if (scale <= 1) return
     drag.current = { x: pos.x, y: pos.y, px: e.clientX, py: e.clientY }
@@ -125,14 +120,14 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
     <div className="relative">
       <div
         ref={viewportRef}
-        onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
         onClick={() => setActive(null)}
+        style={{ touchAction: scale > 1 ? 'none' : 'pan-y' }}
         className={cn(
-          'relative aspect-[1000/749] w-full touch-none select-none overflow-hidden rounded-3xl border border-line bg-gradient-to-b from-ink-800 to-ink shadow-2xl shadow-black/30',
+          'relative aspect-[1000/749] w-full select-none overflow-hidden rounded-3xl border border-line bg-gradient-to-b from-ink-800 to-ink shadow-2xl shadow-black/30',
           scale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default',
         )}
       >
@@ -218,20 +213,52 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
                 <div className="font-display text-[11px] font-semibold uppercase tracking-wide text-primary-400">{active.city}</div>
               )}
               <h3 className="mt-0.5 pr-6 font-display text-lg font-bold uppercase leading-tight text-paper">{active.name}</h3>
-              <p className="mt-1.5 flex items-start gap-1.5 text-sm text-muted">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden>
-                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                {active.address}
-              </p>
-              {active.note && <p className="mt-1 text-xs text-muted">{active.note}</p>}
-              <Link
-                href={active.slug ? `/raspisanie?zal=${active.slug}` : '/raspisanie'}
-                className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-primary-600"
-              >
-                Расписание зала →
-              </Link>
+
+              <dl className="mt-2 space-y-1.5 text-sm">
+                <div className="flex items-start gap-2 text-muted">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden>
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>{active.address}</span>
+                </div>
+                {active.scheduleSummary && (
+                  <div className="flex items-start gap-2 text-muted">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" aria-hidden>
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" strokeLinecap="round" />
+                    </svg>
+                    <span>{active.scheduleSummary}</span>
+                  </div>
+                )}
+                {active.note && (
+                  <div className="flex items-start gap-2 text-muted">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 h-4 w-4 shrink-0 text-primary-400" aria-hidden>
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" strokeLinecap="round" />
+                    </svg>
+                    <span>{active.note}</span>
+                  </div>
+                )}
+              </dl>
+
+              <div className="mt-3 flex flex-col gap-2">
+                <Link
+                  href={active.slug ? `/raspisanie?zal=${active.slug}` : '/raspisanie'}
+                  className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 font-display text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-primary-600"
+                >
+                  Полное расписание →
+                </Link>
+                <a
+                  href={`https://yandex.ru/maps/?text=${encodeURIComponent(`${active.city ? active.city + ', ' : ''}${active.address}, Кабардино-Балкария`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-lg border border-line px-4 font-display text-sm font-semibold uppercase tracking-wide text-paper transition-colors hover:bg-surface-2"
+                >
+                  Маршрут на карте
+                </a>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

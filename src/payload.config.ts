@@ -362,6 +362,26 @@ export default buildConfig({
     } catch (err) {
       payload.logger.error({ err }, 'Failed to seed halls')
     }
+
+    // 8) На главной один раз заменяем блок расписания на карту залов.
+    try {
+      const found = await payload.find({ collection: 'pages', where: { slug: { equals: 'glavnaya' } }, limit: 1, depth: 0 })
+      const page = found.docs[0] as Record<string, unknown> | undefined
+      const layout = page && Array.isArray(page.layout) ? (page.layout as Record<string, unknown>[]) : []
+      const hasSchedule = layout.some((b) => b?.blockType === 'scheduleTable')
+      const hasGymMap = layout.some((b) => b?.blockType === 'gymMap')
+      if (page && hasSchedule && !hasGymMap) {
+        const newLayout = layout.map((b) =>
+          b?.blockType === 'scheduleTable'
+            ? { blockType: 'gymMap', eyebrow: 'Залы', heading: 'Где мы тренируем', subheading: 'Спортзалы клуба по всей Кабардино-Балкарии — нажмите точку на карте', showAllLink: true }
+            : b,
+        )
+        await payload.update({ collection: 'pages', id: page.id as never, data: { layout: newLayout } as never })
+        payload.logger.info('Home: заменил расписание на карту залов')
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to swap home schedule to gym map')
+    }
   },
   plugins: [],
 })
