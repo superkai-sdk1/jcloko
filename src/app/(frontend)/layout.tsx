@@ -83,6 +83,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
 
   const clubName = settings?.clubName || 'Клуб дзюдо «Локомотив»'
   const logoUrl = mediaUrl(settings?.logo)
+  const logoLightUrl = mediaUrl(settings?.logoLight)
   const navItems = resolveNav(settings?.navigation)
   const footer = (settings?.footer ?? {}) as {
     linksHeading?: string
@@ -102,6 +103,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <Header
           clubName={settings?.clubName || 'Локомотив'}
           logoUrl={logoUrl}
+          logoLightUrl={logoLightUrl}
           generalPartner={generalPartner}
           navItems={navItems}
         />
@@ -109,6 +111,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <Footer
           clubName={clubName}
           logoUrl={logoUrl}
+          logoLightUrl={logoLightUrl}
           tagline={settings?.tagline || undefined}
           contacts={settings?.contacts as never}
           socials={settings?.socials as never}

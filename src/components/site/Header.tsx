@@ -145,11 +145,13 @@ function DesktopNavItem({ item, pathname }: { item: NavItem; pathname: string })
 export function Header({
   clubName = 'Локомотив',
   logoUrl,
+  logoLightUrl,
   generalPartner,
   navItems = navLinks,
 }: {
   clubName?: string
   logoUrl?: string | null
+  logoLightUrl?: string | null
   generalPartner?: GeneralPartner | null
   navItems?: NavItem[]
 }) {
@@ -179,8 +181,7 @@ export function Header({
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-5 sm:px-6 lg:h-24 lg:px-8">
         <Link href="/" className="flex items-center gap-3" aria-label="На главную">
           {logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={logoUrl} alt={clubName} className="h-11 w-auto lg:h-14" />
+            <ThemedLogo dark={logoUrl} light={logoLightUrl} alt={clubName} className="h-11 w-auto lg:h-14" />
           ) : (
             <span className="grid h-11 w-11 place-items-center rounded-md bg-accent font-display text-2xl font-bold text-white lg:h-14 lg:w-14">
               Л

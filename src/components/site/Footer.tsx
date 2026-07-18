@@ -3,13 +3,15 @@ import Link from 'next/link'
 import { Container } from '@/components/ui/Container'
 import { navLinks, type NavItem } from '@/lib/nav'
 import { MadeInRussia } from '@/components/site/MadeInRussia'
+import { ThemedLogo } from '@/components/ui/ThemedLogo'
 
-type Socials = { telegram?: string; vk?: string; youtube?: string; rutube?: string }
+type Socials = { telegram?: string; max?: string; vk?: string; youtube?: string; rutube?: string }
 type Contacts = { phone?: string; email?: string; address?: string }
 
 export function Footer({
   clubName = 'Клуб дзюдо «Локомотив»',
   logoUrl,
+  logoLightUrl,
   tagline,
   contacts,
   socials,
@@ -21,6 +23,7 @@ export function Footer({
 }: {
   clubName?: string
   logoUrl?: string | null
+  logoLightUrl?: string | null
   tagline?: string
   contacts?: Contacts
   socials?: Socials
@@ -37,6 +40,7 @@ export function Footer({
   ][]
   const socialLabels: Record<string, string> = {
     telegram: 'Telegram',
+    max: 'MAX',
     vk: 'ВКонтакте',
     youtube: 'YouTube',
     rutube: 'RuTube',
@@ -49,9 +53,8 @@ export function Footer({
           <div className="lg:col-span-2">
             <div className="flex items-center gap-3">
               {logoUrl ? (
-                // Тот же логотип, что и в шапке (не заглушка «Л»)
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={logoUrl} alt={clubName} className="h-11 w-auto" />
+                // Тот же логотип, что и в шапке, с учётом темы (не заглушка «Л»)
+                <ThemedLogo dark={logoUrl} light={logoLightUrl} alt={clubName} className="h-11 w-auto" />
               ) : (
                 <span className="grid h-11 w-11 place-items-center rounded-md bg-accent font-display text-xl font-bold text-white">
                   Л

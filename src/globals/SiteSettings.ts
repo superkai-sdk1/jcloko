@@ -28,7 +28,20 @@ export const SiteSettings: GlobalConfig = {
   fields: [
     { name: 'clubName', type: 'text', label: 'Название клуба', defaultValue: 'Клуб дзюдо «Локомотив»' },
     { name: 'tagline', type: 'text', label: 'Слоган' },
-    { name: 'logo', type: 'upload', relationTo: 'media', label: 'Логотип' },
+    {
+      name: 'logo',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Логотип (тёмная тема)',
+      admin: { description: 'Основной логотип для тёмной темы (обычно светлый). Показывается в шапке, подвале и т. д.' },
+    },
+    {
+      name: 'logoLight',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Логотип (светлая тема)',
+      admin: { description: 'Версия логотипа для светлой темы (обычно тёмная). Если не задан — используется основной.' },
+    },
     {
       type: 'group',
       name: 'contacts',
@@ -46,6 +59,7 @@ export const SiteSettings: GlobalConfig = {
       label: 'Соцсети',
       fields: [
         { name: 'telegram', type: 'text', label: 'Telegram' },
+        { name: 'max', type: 'text', label: 'MAX' },
         { name: 'vk', type: 'text', label: 'ВКонтакте' },
         { name: 'youtube', type: 'text', label: 'YouTube' },
         { name: 'rutube', type: 'text', label: 'RuTube' },
