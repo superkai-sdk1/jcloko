@@ -613,6 +613,13 @@ export interface Hall {
    */
   note?: string | null;
   /**
+   * Основная информация о зале — показывается на странице зала.
+   */
+  description?: string | null;
+  phone?: string | null;
+  photo?: (number | null) | Media;
+  coach?: (number | null) | Coach;
+  /**
    * По горизонтали: 0 — запад, 100 — восток.
    */
   mapX?: number | null;
@@ -1724,6 +1731,10 @@ export interface HallsSelect<T extends boolean = true> {
   city?: T;
   address?: T;
   note?: T;
+  description?: T;
+  phone?: T;
+  photo?: T;
+  coach?: T;
   mapX?: T;
   mapY?: T;
   displayOrder?: T;
