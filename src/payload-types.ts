@@ -73,6 +73,7 @@ export interface Config {
     videos: Video;
     coaches: Coach;
     athletes: Athlete;
+    halls: Hall;
     'schedule-entries': ScheduleEntry;
     partners: Partner;
     media: Media;
@@ -94,6 +95,7 @@ export interface Config {
     videos: VideosSelect<false> | VideosSelect<true>;
     coaches: CoachesSelect<false> | CoachesSelect<true>;
     athletes: AthletesSelect<false> | AthletesSelect<true>;
+    halls: HallsSelect<false> | HallsSelect<true>;
     'schedule-entries': ScheduleEntriesSelect<false> | ScheduleEntriesSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -587,9 +589,41 @@ export interface ScheduleEntry {
   endTime?: string | null;
   coach?: (number | null) | Coach;
   hall?: string | null;
+  hallLink?: (number | null) | Hall;
   ageGroup?: string | null;
   level?: ('beginner' | 'intermediate' | 'advanced' | 'all') | null;
   notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Спортзалы клуба: адрес, вместимость и позиция на интерактивной карте.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "halls".
+ */
+export interface Hall {
+  id: number;
+  name: string;
+  city?: string | null;
+  address: string;
+  /**
+   * Например: «60 человек».
+   */
+  note?: string | null;
+  /**
+   * По горизонтали: 0 — запад, 100 — восток.
+   */
+  mapX?: number | null;
+  /**
+   * По вертикали: 0 — север, 100 — юг.
+   */
+  mapY?: number | null;
+  displayOrder?: number | null;
+  /**
+   * ЧПУ-адрес. Оставьте пустым — будет создан из заголовка.
+   */
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1155,6 +1189,10 @@ export interface PayloadLockedDocument {
         value: number | Athlete;
       } | null)
     | ({
+        relationTo: 'halls';
+        value: number | Hall;
+      } | null)
+    | ({
         relationTo: 'schedule-entries';
         value: number | ScheduleEntry;
       } | null)
@@ -1649,6 +1687,22 @@ export interface AthletesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "halls_select".
+ */
+export interface HallsSelect<T extends boolean = true> {
+  name?: T;
+  city?: T;
+  address?: T;
+  note?: T;
+  mapX?: T;
+  mapY?: T;
+  displayOrder?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "schedule-entries_select".
  */
 export interface ScheduleEntriesSelect<T extends boolean = true> {
@@ -1658,6 +1712,7 @@ export interface ScheduleEntriesSelect<T extends boolean = true> {
   endTime?: T;
   coach?: T;
   hall?: T;
+  hallLink?: T;
   ageGroup?: T;
   level?: T;
   notes?: T;
