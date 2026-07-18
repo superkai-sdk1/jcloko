@@ -339,7 +339,7 @@ export default buildConfig({
             for (const [startTime, endTime] of g.slots) {
               await payload.create({
                 collection: 'schedule-entries',
-                data: { group: g.group, dayOfWeek: day, startTime, endTime, hall: hid, ...(g.ageGroup ? { ageGroup: g.ageGroup } : {}) } as never,
+                data: { group: g.group, dayOfWeek: day, startTime, endTime, hallLink: hid, ...(g.ageGroup ? { ageGroup: g.ageGroup } : {}) } as never,
               })
             }
           }

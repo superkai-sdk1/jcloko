@@ -23,7 +23,7 @@ export default async function SchedulePage() {
 
   const entries: SchedEntry[] = (rawEntries as unknown as Record<string, unknown>[]).map((e) => {
     const coach = e.coach as Record<string, unknown> | undefined
-    const hall = e.hall as Record<string, unknown> | undefined
+    const hall = e.hallLink as Record<string, unknown> | undefined
     return {
       id: String(e.id),
       group: str(e.group),

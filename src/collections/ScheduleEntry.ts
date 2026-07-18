@@ -46,7 +46,9 @@ export const ScheduleEntry: CollectionConfig = {
       relationTo: 'coaches',
       label: 'Тренер',
     },
-    { name: 'hall', type: 'relationship', relationTo: 'halls', label: 'Зал' },
+    // Устаревшее свободное поле (скрыто) — оставлено, чтобы не менять тип колонки.
+    { name: 'hall', type: 'text', label: 'Зал (устар.)', admin: { hidden: true } },
+    { name: 'hallLink', type: 'relationship', relationTo: 'halls', label: 'Зал' },
     { name: 'ageGroup', type: 'text', label: 'Возраст' },
     {
       name: 'level',
