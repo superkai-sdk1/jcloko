@@ -189,6 +189,7 @@ export interface Page {
         | ContactFormBlock
         | EducationProgramBlock
         | ForumChallengeBlock
+        | GymMapBlock
         | RichTextBlock
       )[]
     | null;
@@ -847,6 +848,22 @@ export interface ForumChallengeBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GymMapBlock".
+ */
+export interface GymMapBlock {
+  /**
+   * Маленькая подпись над заголовком секции. Если пусто — берётся значение по умолчанию.
+   */
+  eyebrow?: string | null;
+  heading?: string | null;
+  subheading?: string | null;
+  showAllLink?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gymMap';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "RichTextBlock".
  */
 export interface RichTextBlock {
@@ -1289,6 +1306,7 @@ export interface PagesSelect<T extends boolean = true> {
         contactForm?: T | ContactFormBlockSelect<T>;
         educationProgram?: T | EducationProgramBlockSelect<T>;
         forumChallenge?: T | ForumChallengeBlockSelect<T>;
+        gymMap?: T | GymMapBlockSelect<T>;
         richText?: T | RichTextBlockSelect<T>;
       };
   metaTitle?: T;
@@ -1529,6 +1547,18 @@ export interface ForumChallengeBlockSelect<T extends boolean = true> {
   heading?: T;
   intro?: T;
   showSlides?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GymMapBlock_select".
+ */
+export interface GymMapBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subheading?: T;
+  showAllLink?: T;
   id?: T;
   blockName?: T;
 }
