@@ -45,6 +45,13 @@ export const getPartners = async () => {
   return res.docs
 }
 
+/** Документы для страницы «Документы» (порядок вывода). */
+export const getDocuments = async () => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'documents', sort: 'displayOrder', depth: 0, limit: 200 })
+  return res.docs
+}
+
 /** Генеральный партнёр (для шапки). Сначала флаг isGeneralPartner, иначе — из SiteSettings. */
 export const getGeneralPartner = async (): Promise<Record<string, unknown> | null> => {
   const payload = await getPayloadClient()

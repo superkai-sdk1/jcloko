@@ -9,10 +9,12 @@ import { Button } from '@/components/ui/Button'
 import { AdTooltip } from '@/components/AdTooltip'
 import { isExternalHref } from '@/lib/partnerLink'
 import { ThemeToggle } from '@/components/site/ThemeToggle'
+import { ThemedLogo } from '@/components/ui/ThemedLogo'
 
 type GeneralPartner = {
   name: string
   logoUrl?: string | null
+  logoLightUrl?: string | null
   href?: string | null
   erid?: string | null
   advertiser?: string | null
@@ -26,12 +28,20 @@ function ChevronDown({ className }: { className?: string }) {
   )
 }
 
-function SponsorMark({ sponsor, align = 'right' }: { sponsor: GeneralPartner; align?: 'center' | 'right' }) {
+function SponsorMark({
+  sponsor,
+  align = 'right',
+  size = 'lg',
+}: {
+  sponsor: GeneralPartner
+  align?: 'center' | 'right'
+  size?: 'lg' | 'sm'
+}) {
   const hasLogo = Boolean(sponsor.logoUrl)
+  const imgClass =
+    size === 'sm' ? 'h-8 w-auto shrink-0 object-contain' : 'h-14 w-auto shrink-0 object-contain lg:h-20'
   const inner = hasLogo ? (
-    // Обычный img (не next/image): надёжно для SVG и логотипов
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={sponsor.logoUrl as string} alt={sponsor.name} className="h-14 w-auto shrink-0 object-contain lg:h-20" />
+    <ThemedLogo dark={sponsor.logoUrl as string} light={sponsor.logoLightUrl} alt={sponsor.name} className={imgClass} />
   ) : (
     <span className="font-display text-base font-bold uppercase tracking-wide text-paper">
       {sponsor.name}
@@ -196,13 +206,15 @@ export function Header({
           <ThemeToggle />
         </div>
 
-        {/* Кнопка мобильного меню */}
-        <button
+        {/* Мобильная панель справа: логотип ген. спонсора + кнопка меню */}
+        <div className="flex items-center gap-2.5 lg:hidden">
+          {generalPartner && <SponsorMark sponsor={generalPartner} align="right" size="sm" />}
+          <button
           type="button"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={open}
-          className="grid h-11 w-11 place-items-center rounded-md text-paper hover:bg-surface-2 lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-md text-paper hover:bg-surface-2"
         >
           <span className="relative block h-4 w-6">
             <span
@@ -225,6 +237,7 @@ export function Header({
             />
           </span>
         </button>
+        </div>
       </div>
 
       {/* Мобильное меню */}
@@ -271,12 +284,6 @@ export function Header({
             <span className="text-xs uppercase tracking-wide text-muted">Тема оформления</span>
             <ThemeToggle showLabel />
           </div>
-          {generalPartner && (
-            <div className="mt-4 flex items-center gap-3 border-t border-line px-3 pt-4">
-              <span className="text-xs uppercase tracking-wide text-muted">Генеральный спонсор</span>
-              <SponsorMark sponsor={generalPartner} align="center" />
-            </div>
-          )}
         </nav>
       )}
     </header>

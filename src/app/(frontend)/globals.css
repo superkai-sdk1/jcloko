@@ -103,6 +103,14 @@
 }
 
 @layer utilities {
+  /* Показ логотипа в зависимости от темы (для двух версий лого партнёра) */
+  .light .only-dark {
+    display: none;
+  }
+  .dark .only-light {
+    display: none;
+  }
+
   /* Знак «Сделано в России»: чёрный логотип на светлой теме, инверсия в белый на тёмной */
   .made-in-russia {
     filter: none;

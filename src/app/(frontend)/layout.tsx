@@ -59,6 +59,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   let generalPartner: {
     name: string
     logoUrl?: string | null
+    logoLightUrl?: string | null
     href?: string | null
     erid?: string | null
     advertiser?: string | null
@@ -70,6 +71,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
       generalPartner = {
         name: gp.name,
         logoUrl: mediaUrl(gp.logo),
+        logoLightUrl: mediaUrl(gp.logoLight),
         href: resolvePartnerHref(gp),
         erid: typeof gp.erid === 'string' ? gp.erid : null,
         advertiser: typeof gp.advertiserInfo === 'string' ? gp.advertiserInfo : null,

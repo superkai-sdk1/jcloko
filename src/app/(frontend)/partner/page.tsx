@@ -19,7 +19,9 @@ export const metadata: Metadata = {
 
 type P = Record<string, unknown>
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
-const logoOf = (p: P): string | null => mediaUrl(p.pageLogo) || mediaUrl(p.logo)
+// На странице логотипы — на белых чипах, поэтому предпочитаем видимую (тёмную/цветную)
+// версию: отдельный логотип страницы → логотип для светлой темы → основной.
+const logoOf = (p: P): string | null => mediaUrl(p.pageLogo) || mediaUrl(p.logoLight) || mediaUrl(p.logo)
 
 /** Обёртка ячейки: ссылка (если задана) + маркировка «Реклама» (erid). */
 function CellLink({ p, children }: { p: P; children: React.ReactNode }) {

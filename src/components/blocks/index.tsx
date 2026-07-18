@@ -277,7 +277,7 @@ async function PartnersStripBlock({ b }: { b: Block }) {
                   <img
                     src={logo}
                     alt={mediaAlt(partner.logo, name)}
-                    className="h-16 w-auto max-w-full object-contain opacity-70 grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0 lg:h-20"
+                    className="h-16 w-auto max-w-full object-contain opacity-70 grayscale transition-all duration-500 ease-out group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0 lg:h-20 [@media(hover:none)]:opacity-100 [@media(hover:none)]:grayscale-0"
                   />
                 ) : (
                   <span className="font-display text-xl font-bold uppercase tracking-wide text-muted transition-colors group-hover:text-paper">

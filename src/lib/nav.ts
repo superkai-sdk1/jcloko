@@ -15,6 +15,7 @@ export const navLinks: NavItem[] = [
         label: 'Образовательная деятельность',
         description: 'Программа спортивной подготовки',
       },
+      { href: '/dokumenty', label: 'Документы', description: 'Официальные документы клуба' },
     ],
   },
   { href: '/raspisanie', label: 'Расписание' },

@@ -15,10 +15,11 @@ export const Documents: CollectionConfig = {
   labels: { singular: 'Документ', plural: 'Документы' },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'filename', 'updatedAt'],
+    defaultColumns: ['title', 'filename', 'displayOrder', 'updatedAt'],
     group: 'Контент',
-    description: 'Файлы для скачивания (например, программа спортивной подготовки в PDF).',
+    description: 'Файлы для скачивания и просмотра на странице «Документы» (PDF, Word и т. п.).',
   },
+  defaultSort: 'displayOrder',
   access: {
     read: anyone,
     create: isAdminOrEditor,
@@ -42,7 +43,20 @@ export const Documents: CollectionConfig = {
       name: 'title',
       type: 'text',
       label: 'Название',
-      admin: { description: 'Понятное имя документа для админки (необязательно).' },
+      admin: { description: 'Название документа, отображается на странице «Документы».' },
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+      label: 'Описание',
+      admin: { description: 'Короткое пояснение — что это за документ (необязательно).' },
+    },
+    {
+      name: 'displayOrder',
+      type: 'number',
+      label: 'Порядок вывода',
+      defaultValue: 0,
+      admin: { position: 'sidebar' },
     },
   ],
   upload: {

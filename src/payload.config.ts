@@ -282,6 +282,25 @@ export default buildConfig({
     } catch (err) {
       payload.logger.error({ err }, 'Failed to seed forum page')
     }
+
+    // 6) Идемпотентно добавляем «Документы» во вложенное меню «О клубе».
+    try {
+      const s = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as unknown as Record<string, unknown>
+      const nav = Array.isArray(s?.navigation) ? (s.navigation as Record<string, unknown>[]) : []
+      const about = nav.find((n) => n?.href === '/o-klube')
+      if (about) {
+        const kids = Array.isArray(about.children) ? (about.children as Record<string, unknown>[]) : []
+        if (!kids.some((c) => c?.href === '/dokumenty')) {
+          kids.push({ label: 'Документы', href: '/dokumenty', description: 'Официальные документы клуба' })
+          about.children = kids
+          const { id: _id, createdAt: _c, updatedAt: _u, globalType: _g, ...rest } = s
+          await payload.updateGlobal({ slug: 'site-settings', data: { ...rest, navigation: nav } as never })
+          payload.logger.info('Added «Документы» to nav')
+        }
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to add Документы to nav')
+    }
   },
   plugins: [],
 })

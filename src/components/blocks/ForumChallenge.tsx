@@ -6,6 +6,7 @@ import { Reveal } from '@/components/motion/Reveal'
 import { getGeneralPartner } from '@/lib/queries'
 import { mediaUrl } from '@/lib/media'
 import { resolvePartnerHref, isExternalHref } from '@/lib/partnerLink'
+import { ThemedLogo } from '@/components/ui/ThemedLogo'
 
 type Block = Record<string, unknown>
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
@@ -43,13 +44,13 @@ export async function ForumChallenge({ b }: { b: Block }) {
     gp = null
   }
   const gpLogo = gp ? mediaUrl(gp.logo) : null
+  const gpLogoLight = gp ? mediaUrl(gp.logoLight) : null
   const gpName = gp ? str(gp.name) : ''
   const gpHref = gp ? resolvePartnerHref(gp as never) : null
   const gpExternal = gpHref ? isExternalHref(gpHref) : false
 
   const logoImg = gpLogo ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={gpLogo} alt={gpName || 'Генеральный партнёр'} className="h-20 w-auto object-contain lg:h-28" />
+    <ThemedLogo dark={gpLogo} light={gpLogoLight} alt={gpName || 'Генеральный партнёр'} className="h-20 w-auto object-contain lg:h-28" />
   ) : null
 
   return (
