@@ -1891,7 +1891,14 @@ export interface SiteSetting {
   id: number;
   clubName?: string | null;
   tagline?: string | null;
+  /**
+   * Основной логотип для тёмной темы (обычно светлый). Показывается в шапке, подвале и т. д.
+   */
   logo?: (number | null) | Media;
+  /**
+   * Версия логотипа для светлой темы (обычно тёмная). Если не задан — используется основной.
+   */
+  logoLight?: (number | null) | Media;
   contacts?: {
     phone?: string | null;
     email?: string | null;
@@ -1900,6 +1907,7 @@ export interface SiteSetting {
   };
   socials?: {
     telegram?: string | null;
+    max?: string | null;
     vk?: string | null;
     youtube?: string | null;
     rutube?: string | null;
@@ -2018,6 +2026,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   clubName?: T;
   tagline?: T;
   logo?: T;
+  logoLight?: T;
   contacts?:
     | T
     | {
@@ -2030,6 +2039,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | T
     | {
         telegram?: T;
+        max?: T;
         vk?: T;
         youtube?: T;
         rutube?: T;
