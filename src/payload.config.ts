@@ -382,6 +382,27 @@ export default buildConfig({
     } catch (err) {
       payload.logger.error({ err }, 'Failed to swap home schedule to gym map')
     }
+
+    // 9) Реорганизация меню (один раз): Медиа → «Новости», Расписание → «Залы»,
+    //    Контакты → «О клубе». Дальше меню редактируется в CMS.
+    try {
+      const s = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as unknown as Record<string, unknown>
+      const nav = Array.isArray(s?.navigation) ? (s.navigation as Record<string, unknown>[]) : []
+      const isTop = (href: string) => nav.some((n) => n?.href === href)
+      // Признак старой (плоской) структуры — эти пункты ещё на верхнем уровне.
+      if (nav.length && isTop('/raspisanie') && isTop('/media') && isTop('/kontakty')) {
+        const newNav = navLinks.map((l) => ({
+          label: l.label,
+          href: l.href,
+          children: (l.children ?? []).map((c) => ({ label: c.label, href: c.href, description: c.description })),
+        }))
+        const { id: _id, createdAt: _c, updatedAt: _u, globalType: _g, ...rest } = s
+        await payload.updateGlobal({ slug: 'site-settings', data: { ...rest, navigation: newNav } as never })
+        payload.logger.info('Reorganized navigation into dropdowns')
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to reorganize navigation')
+    }
   },
   plugins: [],
 })

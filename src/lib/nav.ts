@@ -16,14 +16,26 @@ export const navLinks: NavItem[] = [
         description: 'Программа спортивной подготовки',
       },
       { href: '/dokumenty', label: 'Документы', description: 'Официальные документы клуба' },
+      { href: '/kontakty', label: 'Контакты', description: 'Как с нами связаться' },
     ],
   },
-  { href: '/zaly', label: 'Залы' },
-  { href: '/raspisanie', label: 'Расписание' },
-  { href: '/novosti', label: 'Новости' },
-  { href: '/media', label: 'Медиа' },
+  {
+    href: '/zaly',
+    label: 'Залы',
+    children: [
+      { href: '/zaly', label: 'Залы', description: 'Карта и все спортзалы клуба' },
+      { href: '/raspisanie', label: 'Расписание', description: 'Тренировки по залам' },
+    ],
+  },
+  {
+    href: '/novosti',
+    label: 'Новости',
+    children: [
+      { href: '/novosti', label: 'Новости', description: 'События, сборы и анонсы' },
+      { href: '/media', label: 'Медиа', description: 'Фото, фильмы и интервью' },
+    ],
+  },
   { href: '/partnery', label: 'Партнёры' },
-  { href: '/kontakty', label: 'Контакты' },
 ]
 
 const str = (v: unknown): string => (typeof v === 'string' ? v : '')
