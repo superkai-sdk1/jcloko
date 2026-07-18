@@ -132,7 +132,7 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
         onPointerLeave={onPointerUp}
         onClick={() => setActive(null)}
         className={cn(
-          'relative aspect-[10/7] w-full touch-none select-none overflow-hidden rounded-3xl border border-line bg-gradient-to-b from-ink-800 to-ink shadow-2xl shadow-black/30',
+          'relative aspect-[1000/749] w-full touch-none select-none overflow-hidden rounded-3xl border border-line bg-gradient-to-b from-ink-800 to-ink shadow-2xl shadow-black/30',
           scale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default',
         )}
       >
@@ -185,8 +185,11 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
         </div>
 
         {/* Подпись-подсказка */}
-        <div className="pointer-events-none absolute bottom-3 right-3 z-20 rounded-lg border border-line bg-ink/70 px-3 py-1.5 text-[11px] text-muted backdrop-blur">
-          Кабардино-Балкарская Республика · точки — залы
+        <div className="absolute bottom-3 right-3 z-20 rounded-lg border border-line bg-ink/70 px-3 py-1.5 text-[11px] text-muted backdrop-blur">
+          Кабардино-Балкарская Республика · точки — залы ·{' '}
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="pointer-events-auto underline hover:text-paper">
+            границы © OpenStreetMap
+          </a>
         </div>
 
         {/* Карточка выбранного зала */}
@@ -237,71 +240,67 @@ export function KbrMap({ halls }: { halls: Hall[] }) {
   )
 }
 
-/* ── Рисунок карты КБР (стилизованный) ──────────────────────────────────── */
+/* Контур Кабардино-Балкарии — упрощённая административная граница (данные © OpenStreetMap, ODbL). */
+const KBR_BORDER =
+  'M 40.0,472.1 L 48.0,481.3 L 47.1,491.8 L 59.8,496.4 L 65.8,517.9 L 102.7,539.4 L 133.8,546.5 L 156.9,563.9 L 161.1,562.1 L 161.3,541.7 L 197.4,532.4 L 218.0,545.0 L 238.9,538.3 L 247.9,553.1 L 269.4,555.7 L 267.3,569.6 L 294.7,573.4 L 316.7,590.2 L 305.7,601.8 L 320.9,632.6 L 347.6,644.4 L 360.7,662.1 L 373.4,666.0 L 379.0,680.9 L 428.1,698.8 L 435.4,694.4 L 442.8,709.0 L 470.2,705.0 L 482.3,687.2 L 481.7,674.6 L 489.3,662.1 L 544.6,677.6 L 566.8,637.7 L 561.1,621.7 L 572.3,614.8 L 578.2,585.3 L 601.2,566.3 L 619.1,563.6 L 621.6,551.1 L 611.2,543.6 L 621.4,512.5 L 655.6,452.1 L 668.4,467.1 L 668.8,483.9 L 690.9,492.5 L 694.2,501.1 L 703.0,474.3 L 730.7,483.5 L 716.5,499.9 L 729.7,518.5 L 752.0,494.4 L 770.9,485.8 L 744.8,435.3 L 773.3,397.6 L 774.1,388.8 L 791.6,384.9 L 801.9,406.5 L 804.5,437.8 L 866.7,377.3 L 874.3,385.0 L 881.3,411.7 L 918.7,390.8 L 906.5,376.0 L 921.2,349.4 L 919.7,322.7 L 932.9,298.9 L 915.6,284.7 L 913.5,239.2 L 889.5,233.7 L 882.8,241.2 L 865.8,242.0 L 856.4,235.8 L 843.6,202.8 L 843.9,164.0 L 854.4,164.7 L 854.6,116.0 L 876.3,108.6 L 876.4,84.1 L 908.7,84.3 L 908.9,42.3 L 887.3,49.3 L 887.2,68.2 L 844.3,73.3 L 844.1,100.5 L 825.5,100.3 L 825.3,94.5 L 790.5,94.4 L 790.6,69.6 L 723.2,69.4 L 723.2,60.2 L 704.9,60.0 L 704.8,46.2 L 695.2,40.0 L 669.8,59.4 L 667.6,75.6 L 651.2,75.8 L 630.1,94.9 L 630.1,127.3 L 621.4,138.7 L 619.3,159.9 L 552.3,142.0 L 533.4,144.9 L 502.6,131.6 L 476.7,135.2 L 434.8,171.1 L 395.7,76.3 L 369.4,74.8 L 361.8,76.0 L 366.6,87.7 L 359.9,95.6 L 362.5,113.8 L 291.0,111.9 L 264.0,131.8 L 241.5,130.3 L 243.9,142.1 L 236.4,146.4 L 236.6,169.3 L 183.9,159.0 L 161.9,164.0 L 155.7,174.9 L 159.6,230.9 L 138.6,240.4 L 128.2,255.5 L 64.2,279.1 L 73.9,335.0 L 63.3,358.4 L 65.4,381.5 L 50.3,385.2 L 51.6,394.0 L 45.6,399.4 L 48.8,404.3 L 42.4,411.4 L 47.9,428.0 L 57.4,435.4 L 47.8,440.8 L 40.0,472.1 Z'
+
+/* Декоративные горные пики в южной (горной) части республики. */
+const PEAKS: [number, number, number][] = [
+  [250, 560, 70], // крупный — условный Эльбрус
+  [360, 600, 42],
+  [470, 640, 38],
+  [560, 610, 46],
+  [660, 560, 40],
+  [720, 520, 34],
+]
+
+/** Рисунок карты КБР по реальной административной границе (© OpenStreetMap). */
 function MapArt() {
   return (
-    <svg viewBox="0 0 1000 700" className="h-full w-full" preserveAspectRatio="xMidYMid meet" aria-hidden>
+    <svg viewBox="0 0 1000 749" className="h-full w-full" preserveAspectRatio="xMidYMid meet" aria-hidden>
       <defs>
         <linearGradient id="kbrFill" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#1b3327" />
-          <stop offset="1" stopColor="#10231a" />
+          <stop offset="1" stopColor="#0f2118" />
         </linearGradient>
-        <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#33a06a" stopOpacity="0.25" />
-          <stop offset="1" stopColor="#1f7a4d" stopOpacity="0.05" />
-        </linearGradient>
+        <clipPath id="kbrClip">
+          <path d={KBR_BORDER} />
+        </clipPath>
+        <filter id="kbrGlow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#33a06a" floodOpacity="0.5" />
+        </filter>
       </defs>
 
-      {/* Силуэт республики */}
-      <path
-        d="M175 200 C 240 150, 300 140, 360 165 C 430 135, 510 160, 590 140 C 680 120, 760 155, 820 205 C 865 250, 855 320, 840 380 C 828 440, 800 500, 760 560 C 720 615, 660 645, 610 640 C 560 660, 505 620, 460 655 C 410 690, 350 655, 300 665 C 240 650, 190 600, 165 545 C 130 500, 120 435, 130 375 C 138 315, 150 250, 175 200 Z"
-        fill="url(#kbrFill)"
-        stroke="#33a06a"
-        strokeWidth="3"
-        strokeLinejoin="round"
-      />
-      {/* Внутренняя подсветка границы */}
-      <path
-        d="M175 200 C 240 150, 300 140, 360 165 C 430 135, 510 160, 590 140 C 680 120, 760 155, 820 205 C 865 250, 855 320, 840 380 C 828 440, 800 500, 760 560 C 720 615, 660 645, 610 640 C 560 660, 505 620, 460 655 C 410 690, 350 655, 300 665 C 240 650, 190 600, 165 545 C 130 500, 120 435, 130 375 C 138 315, 150 250, 175 200 Z"
-        fill="none"
-        stroke="#5fd69b"
-        strokeWidth="1"
-        strokeOpacity="0.35"
-      />
+      {/* Заливка территории */}
+      <path d={KBR_BORDER} fill="url(#kbrFill)" filter="url(#kbrGlow)" />
 
-      {/* Реки */}
-      <g stroke="#4aa3ff" strokeOpacity="0.4" strokeWidth="2.5" fill="none" strokeLinecap="round">
-        <path d="M320 470 C 360 400, 400 340, 470 300 C 520 270, 540 230, 560 190" />
-        <path d="M640 520 C 650 450, 660 380, 690 320 C 710 280, 720 240, 720 200" />
-        <path d="M470 300 C 520 320, 560 340, 620 350" strokeOpacity="0.25" />
-      </g>
-
-      {/* Горный массив на юге + Эльбрус (ЮЗ) */}
-      <g>
-        <path d="M150 560 L 240 470 L 320 545 L 410 460 L 500 560 L 590 470 L 690 570 L 780 500 L 840 560 L 840 660 L 150 660 Z" fill="url(#ridge)" />
-        {/* Эльбрус — двойная вершина */}
-        <g transform="translate(250 470)">
-          <path d="M-60 90 L 0 -30 L 22 10 L 40 -20 L 100 90 Z" fill="#2a4436" stroke="#5fd69b" strokeOpacity="0.4" strokeWidth="2" strokeLinejoin="round" />
-          <path d="M-18 30 L 0 -30 L 14 6 Z" fill="#eaf3ee" fillOpacity="0.9" />
-          <path d="M28 22 L 40 -20 L 56 30 Z" fill="#eaf3ee" fillOpacity="0.9" />
+      {/* Декор внутри границы */}
+      <g clipPath="url(#kbrClip)">
+        {/* фактурная сетка */}
+        <g stroke="#33a06a" strokeOpacity="0.07" strokeWidth="1">
+          {Array.from({ length: 20 }, (_, i) => (
+            <line key={`v${i}`} x1={i * 55} y1={0} x2={i * 55} y2={749} />
+          ))}
+          {Array.from({ length: 15 }, (_, i) => (
+            <line key={`h${i}`} x1={0} y1={i * 55} x2={1000} y2={i * 55} />
+          ))}
         </g>
-        {/* мелкие пики */}
-        {[
-          [430, 500],
-          [560, 520],
-          [690, 520],
-          [770, 540],
-        ].map(([x, y], i) => (
-          <path key={i} d={`M${x - 42} ${y + 60} L ${x} ${y} L ${x + 42} ${y + 60} Z`} fill="#233a2e" stroke="#33a06a" strokeOpacity="0.3" strokeWidth="1.5" strokeLinejoin="round" />
+        {/* горы на юге */}
+        {PEAKS.map(([x, y, w], i) => (
+          <g key={i}>
+            <path d={`M${x - w} ${y + w} L ${x} ${y} L ${x + w} ${y + w} Z`} fill="#22392d" stroke="#33a06a" strokeOpacity="0.35" strokeWidth="1.5" strokeLinejoin="round" />
+            <path d={`M${x - w * 0.34} ${y + w * 0.38} L ${x} ${y} L ${x + w * 0.34} ${y + w * 0.38} Z`} fill="#eaf3ee" fillOpacity="0.85" />
+          </g>
         ))}
       </g>
 
-      {/* Заголовок-подпись */}
-      <text x="185" y="230" fill="#5fd69b" fillOpacity="0.5" fontSize="22" fontFamily="var(--font-oswald), sans-serif" fontWeight="700" letterSpacing="3">
+      {/* Граница поверх — двойная обводка */}
+      <path d={KBR_BORDER} fill="none" stroke="#33a06a" strokeWidth="3.5" strokeLinejoin="round" />
+      <path d={KBR_BORDER} fill="none" stroke="#5fd69b" strokeWidth="1.2" strokeOpacity="0.4" strokeLinejoin="round" />
+
+      {/* Подписи */}
+      <text x="150" y="300" fill="#5fd69b" fillOpacity="0.5" fontSize="26" fontFamily="var(--font-oswald), sans-serif" fontWeight="700" letterSpacing="4">
         КБР
-      </text>
-      <text x="290" y="640" fill="#eaf3ee" fillOpacity="0.55" fontSize="15" fontFamily="var(--font-oswald), sans-serif" letterSpacing="2">
-        ГЛАВНЫЙ КАВКАЗСКИЙ ХРЕБЕТ
       </text>
     </svg>
   )

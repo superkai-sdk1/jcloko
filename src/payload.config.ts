@@ -307,13 +307,13 @@ export default buildConfig({
     // 7) Сид залов (точки на карте) + расписаний + пункт «Залы» в меню.
     try {
       const hallsSeed = [
-        { slug: 'nalchik-sosh24', name: 'СОШ №24 (Тырныаузская)', city: 'г. Нальчик', address: 'ул. Тырныаузская, 1 (МКОУ СОШ №24 им. П. И. Тамбиева)', note: '60 человек', mapX: 64, mapY: 52, displayOrder: 1 },
-        { slug: 'nalchik-avtokombinat', name: 'Автокомбинат (Чернышевского)', city: 'г. Нальчик', address: 'ул. Чернышевского, 183 (Автокомбинат)', note: 'до 250 человек', mapX: 69, mapY: 57, displayOrder: 2 },
-        { slug: 'nartan', name: 'Спорткомплекс (Нартан)', city: 'с. Нартан', address: 'ул. Ленина, 141А (Спорткомплекс)', note: '65 человек', mapX: 78, mapY: 49, displayOrder: 3 },
-        { slug: 'chegem-sosh5', name: 'СОШ №5 (Чегем)', city: 'г. Чегем', address: 'ул. Кабардинская, 103 (МКОУ «СОШ №5»)', note: '60 человек', mapX: 56, mapY: 44, displayOrder: 4 },
-        { slug: 'baksan-sosh12', name: 'СОШ №12 (Баксан)', city: 'г. Баксан', address: 'бульвар Олимпийский, 12 (МКОУ «СОШ №12 им. Ю. А. Гагарина»)', note: '', mapX: 47, mapY: 29, displayOrder: 5 },
-        { slug: 'islamey-sosh1', name: 'СОШ №1 (Исламей)', city: 'с. Исламей', address: 'ул. Эльбрусская, 127 (МОУ СОШ №1)', note: '50 человек', mapX: 39, mapY: 32, displayOrder: 6 },
-        { slug: 'zayukovo', name: 'Зал (Заюково)', city: 'с. Заюково', address: 'ул. Кирова, 518А', note: '', mapX: 30, mapY: 41, displayOrder: 7 },
+        { slug: 'nalchik-sosh24', name: 'СОШ №24 (Тырныаузская)', city: 'г. Нальчик', address: 'ул. Тырныаузская, 1 (МКОУ СОШ №24 им. П. И. Тамбиева)', note: '60 человек', mapX: 53.5, mapY: 48, displayOrder: 1 },
+        { slug: 'nalchik-avtokombinat', name: 'Автокомбинат (Чернышевского)', city: 'г. Нальчик', address: 'ул. Чернышевского, 183 (Автокомбинат)', note: 'до 250 человек', mapX: 57.5, mapY: 49.5, displayOrder: 2 },
+        { slug: 'nartan', name: 'Спорткомплекс (Нартан)', city: 'с. Нартан', address: 'ул. Ленина, 141А (Спорткомплекс)', note: '65 человек', mapX: 60, mapY: 46, displayOrder: 3 },
+        { slug: 'chegem-sosh5', name: 'СОШ №5 (Чегем)', city: 'г. Чегем', address: 'ул. Кабардинская, 103 (МКОУ «СОШ №5»)', note: '60 человек', mapX: 55, mapY: 41, displayOrder: 4 },
+        { slug: 'baksan-sosh12', name: 'СОШ №12 (Баксан)', city: 'г. Баксан', address: 'бульвар Олимпийский, 12 (МКОУ «СОШ №12 им. Ю. А. Гагарина»)', note: '', mapX: 52.8, mapY: 32, displayOrder: 5 },
+        { slug: 'islamey-sosh1', name: 'СОШ №1 (Исламей)', city: 'с. Исламей', address: 'ул. Эльбрусская, 127 (МОУ СОШ №1)', note: '50 человек', mapX: 49, mapY: 31.5, displayOrder: 6 },
+        { slug: 'zayukovo', name: 'Зал (Заюково)', city: 'с. Заюково', address: 'ул. Кирова, 518А', note: '', mapX: 43, mapY: 39.5, displayOrder: 7 },
       ]
       const idBySlug: Record<string, unknown> = {}
       for (const hs of hallsSeed) {
