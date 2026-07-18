@@ -366,7 +366,7 @@ export default buildConfig({
     // 8) На главной один раз заменяем блок расписания на карту залов.
     try {
       const found = await payload.find({ collection: 'pages', where: { slug: { equals: 'glavnaya' } }, limit: 1, depth: 0 })
-      const page = found.docs[0] as Record<string, unknown> | undefined
+      const page = found.docs[0] as unknown as Record<string, unknown> | undefined
       const layout = page && Array.isArray(page.layout) ? (page.layout as Record<string, unknown>[]) : []
       const hasSchedule = layout.some((b) => b?.blockType === 'scheduleTable')
       const hasGymMap = layout.some((b) => b?.blockType === 'gymMap')
