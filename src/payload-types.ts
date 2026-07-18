@@ -617,9 +617,13 @@ export interface Partner {
   id: number;
   name: string;
   /**
-   * Картинка или иконка спонсора для показа на сайте и в шапке.
+   * Основной логотип (используется на тёмной теме и в шапке). Если логотип светлый — загрузите тёмную версию ниже.
    */
   logo?: (number | null) | Media;
+  /**
+   * Вторая версия логотипа для светлой темы (например, тёмная версия, если основной — белый). На светлой теме сайт покажет её вместо основного. Необязательно.
+   */
+  logoLight?: (number | null) | Media;
   /**
    * Отдельный логотип для страницы партнёров (если нужен другой, чем в шапке). Если не задан — используется основной логотип.
    */
@@ -766,7 +770,7 @@ export interface EducationProgramBlock {
   blockType: 'educationProgram';
 }
 /**
- * Файлы для скачивания (например, программа спортивной подготовки в PDF).
+ * Файлы для скачивания и просмотра на странице «Документы» (PDF, Word и т. п.).
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documents".
@@ -774,9 +778,14 @@ export interface EducationProgramBlock {
 export interface Document {
   id: number;
   /**
-   * Понятное имя документа для админки (необязательно).
+   * Название документа, отображается на странице «Документы».
    */
   title?: string | null;
+  /**
+   * Короткое пояснение — что это за документ (необязательно).
+   */
+  description?: string | null;
+  displayOrder?: number | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1662,6 +1671,7 @@ export interface ScheduleEntriesSelect<T extends boolean = true> {
 export interface PartnersSelect<T extends boolean = true> {
   name?: T;
   logo?: T;
+  logoLight?: T;
   pageLogo?: T;
   description?: T;
   linkType?: T;
@@ -1733,6 +1743,8 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface DocumentsSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
+  displayOrder?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

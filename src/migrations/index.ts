@@ -12,6 +12,7 @@ import * as migration_20260715_150332_nav_pageheaders_footer from './20260715_15
 import * as migration_20260715_154714_ui_texts_and_eyebrows from './20260715_154714_ui_texts_and_eyebrows';
 import * as migration_20260717_095054_partner_page_fields from './20260717_095054_partner_page_fields';
 import * as migration_20260717_101717_forum_page from './20260717_101717_forum_page';
+import * as migration_20260718_102223_partner_logo_docs from './20260718_102223_partner_logo_docs';
 
 export const migrations = [
   {
@@ -82,6 +83,11 @@ export const migrations = [
   {
     up: migration_20260717_101717_forum_page.up,
     down: migration_20260717_101717_forum_page.down,
-    name: '20260717_101717_forum_page'
+    name: '20260717_101717_forum_page',
+  },
+  {
+    up: migration_20260718_102223_partner_logo_docs.up,
+    down: migration_20260718_102223_partner_logo_docs.down,
+    name: '20260718_102223_partner_logo_docs'
   },
 ];
