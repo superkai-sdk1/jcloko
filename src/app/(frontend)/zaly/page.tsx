@@ -1,0 +1,83 @@
+import React from 'react'
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { PageHeader } from '@/components/ui/PageHeader'
+import { Section } from '@/components/ui/Section'
+import { Container } from '@/components/ui/Container'
+import { Reveal } from '@/components/motion/Reveal'
+import { KbrMap, type Hall } from '@/components/site/KbrMap'
+import { getHalls } from '@/lib/queries'
+
+export const dynamic = 'force-dynamic'
+export const metadata: Metadata = {
+  title: 'Залы',
+  description: 'Спортзалы клуба дзюдо «Локомотив» на карте Кабардино-Балкарии — адреса и расписание.',
+}
+
+const str = (v: unknown): string => (typeof v === 'string' ? v : '')
+const num = (v: unknown): number | undefined => (typeof v === 'number' ? v : undefined)
+
+export default async function HallsPage() {
+  const raw = (await getHalls()) as unknown as Record<string, unknown>[]
+  const halls: Hall[] = raw.map((h) => ({
+    id: String(h.id),
+    name: str(h.name),
+    city: str(h.city),
+    address: str(h.address),
+    note: str(h.note),
+    slug: str(h.slug),
+    mapX: num(h.mapX),
+    mapY: num(h.mapY),
+  }))
+
+  return (
+    <>
+      <PageHeader
+        eyebrow="Где мы тренируем"
+        title="Наши залы"
+        subtitle="Спортзалы клуба на карте Кабардино-Балкарии. Нажмите точку, чтобы увидеть адрес и перейти к расписанию зала."
+      />
+
+      <Section tone="ink">
+        <Container>
+          {halls.length === 0 ? (
+            <p className="text-muted">Список залов скоро появится.</p>
+          ) : (
+            <>
+              <Reveal>
+                <KbrMap halls={halls} />
+              </Reveal>
+
+              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {halls.map((h, i) => (
+                  <Reveal key={h.id} delay={(i % 3) * 0.05} className="h-full">
+                    <div className="flex h-full flex-col rounded-2xl border border-line bg-surface p-5">
+                      {h.city && (
+                        <div className="font-display text-[11px] font-semibold uppercase tracking-wide text-primary-400">{h.city}</div>
+                      )}
+                      <h3 className="mt-0.5 font-display text-lg font-semibold uppercase leading-tight text-paper">{h.name}</h3>
+                      <p className="mt-1.5 flex items-start gap-1.5 text-sm text-muted">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden>
+                          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                          <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        {h.address}
+                      </p>
+                      {h.note && <p className="mt-1 text-xs text-muted">{h.note}</p>}
+                      <Link
+                        href={h.slug ? `/raspisanie?zal=${h.slug}` : '/raspisanie'}
+                        className="mt-4 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wide text-primary-400 hover:text-primary"
+                      >
+                        Расписание зала →
+                      </Link>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </>
+          )}
+        </Container>
+      </Section>
+    </>
+  )
+}

@@ -12,6 +12,7 @@ import { Documents } from './collections/Documents'
 import { Coaches } from './collections/Coaches'
 import { Athletes } from './collections/Athletes'
 import { ScheduleEntry } from './collections/ScheduleEntry'
+import { Halls } from './collections/Halls'
 import { NewsPost } from './collections/NewsPost'
 import { Partners } from './collections/Partners'
 import { MediaGallery } from './collections/MediaGallery'
@@ -76,6 +77,7 @@ export default buildConfig({
     Videos,
     Coaches,
     Athletes,
+    Halls,
     ScheduleEntry,
     Partners,
     Media,
@@ -300,6 +302,65 @@ export default buildConfig({
       }
     } catch (err) {
       payload.logger.error({ err }, 'Failed to add Документы to nav')
+    }
+
+    // 7) Сид залов (точки на карте) + расписаний + пункт «Залы» в меню.
+    try {
+      const hallsSeed = [
+        { slug: 'nalchik-sosh24', name: 'СОШ №24 (Тырныаузская)', city: 'г. Нальчик', address: 'ул. Тырныаузская, 1 (МКОУ СОШ №24 им. П. И. Тамбиева)', note: '60 человек', mapX: 64, mapY: 52, displayOrder: 1 },
+        { slug: 'nalchik-avtokombinat', name: 'Автокомбинат (Чернышевского)', city: 'г. Нальчик', address: 'ул. Чернышевского, 183 (Автокомбинат)', note: 'до 250 человек', mapX: 69, mapY: 57, displayOrder: 2 },
+        { slug: 'nartan', name: 'Спорткомплекс (Нартан)', city: 'с. Нартан', address: 'ул. Ленина, 141А (Спорткомплекс)', note: '65 человек', mapX: 78, mapY: 49, displayOrder: 3 },
+        { slug: 'chegem-sosh5', name: 'СОШ №5 (Чегем)', city: 'г. Чегем', address: 'ул. Кабардинская, 103 (МКОУ «СОШ №5»)', note: '60 человек', mapX: 56, mapY: 44, displayOrder: 4 },
+        { slug: 'baksan-sosh12', name: 'СОШ №12 (Баксан)', city: 'г. Баксан', address: 'бульвар Олимпийский, 12 (МКОУ «СОШ №12 им. Ю. А. Гагарина»)', note: '', mapX: 47, mapY: 29, displayOrder: 5 },
+        { slug: 'islamey-sosh1', name: 'СОШ №1 (Исламей)', city: 'с. Исламей', address: 'ул. Эльбрусская, 127 (МОУ СОШ №1)', note: '50 человек', mapX: 39, mapY: 32, displayOrder: 6 },
+        { slug: 'zayukovo', name: 'Зал (Заюково)', city: 'с. Заюково', address: 'ул. Кирова, 518А', note: '', mapX: 30, mapY: 41, displayOrder: 7 },
+      ]
+      const idBySlug: Record<string, unknown> = {}
+      for (const hs of hallsSeed) {
+        const found = await payload.find({ collection: 'halls', where: { slug: { equals: hs.slug } }, limit: 1, depth: 0 })
+        idBySlug[hs.slug] = found.totalDocs > 0 ? found.docs[0].id : (await payload.create({ collection: 'halls', data: hs as never })).id
+      }
+
+      const schedCount = await payload.count({ collection: 'schedule-entries' })
+      if (schedCount.totalDocs === 0) {
+        const schedSeed: { hall: string; days: string[]; slots: [string, string][]; group: string; ageGroup?: string }[] = [
+          { hall: 'nalchik-sosh24', days: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat'], slots: [['16:00', '17:00'], ['17:00', '18:00']], group: 'Группа' },
+          { hall: 'nalchik-avtokombinat', days: ['mon', 'wed', 'fri'], slots: [['07:00', '08:00']], group: 'Младшая группа', ageGroup: 'младшая' },
+          { hall: 'nalchik-avtokombinat', days: ['mon', 'tue', 'wed', 'fri'], slots: [['08:30', '10:00'], ['14:00', '15:20'], ['15:20', '17:00'], ['17:00', '19:00']], group: 'Группа' },
+          { hall: 'nalchik-avtokombinat', days: ['thu'], slots: [['17:00', '19:00']], group: 'Группа' },
+          { hall: 'nartan', days: ['mon', 'wed', 'fri'], slots: [['16:00', '17:30'], ['17:30', '19:30']], group: 'Группа' },
+          { hall: 'islamey-sosh1', days: ['mon', 'tue', 'wed', 'thu', 'fri'], slots: [['15:00', '17:00'], ['17:30', '19:30']], group: 'Группа' },
+          { hall: 'chegem-sosh5', days: ['tue', 'thu', 'sat'], slots: [['15:00', '16:30'], ['16:30', '18:00']], group: 'Группа' },
+        ]
+        for (const g of schedSeed) {
+          const hid = idBySlug[g.hall]
+          if (!hid) continue
+          for (const day of g.days) {
+            for (const [startTime, endTime] of g.slots) {
+              await payload.create({
+                collection: 'schedule-entries',
+                data: { group: g.group, dayOfWeek: day, startTime, endTime, hall: hid, ...(g.ageGroup ? { ageGroup: g.ageGroup } : {}) } as never,
+              })
+            }
+          }
+        }
+        payload.logger.info('Seeded halls + schedule entries')
+      }
+
+      // Пункт «Залы» в меню (перед «Расписанием»), идемпотентно.
+      const s = (await payload.findGlobal({ slug: 'site-settings', depth: 0 })) as unknown as Record<string, unknown>
+      const nav = Array.isArray(s?.navigation) ? (s.navigation as Record<string, unknown>[]) : []
+      if (nav.length && !nav.some((n) => n?.href === '/zaly')) {
+        const at = nav.findIndex((n) => n?.href === '/raspisanie')
+        const item = { label: 'Залы', href: '/zaly' }
+        if (at >= 0) nav.splice(at, 0, item)
+        else nav.push(item)
+        const { id: _id, createdAt: _c, updatedAt: _u, globalType: _g, ...rest } = s
+        await payload.updateGlobal({ slug: 'site-settings', data: { ...rest, navigation: nav } as never })
+        payload.logger.info('Added «Залы» to nav')
+      }
+    } catch (err) {
+      payload.logger.error({ err }, 'Failed to seed halls')
     }
   },
   plugins: [],

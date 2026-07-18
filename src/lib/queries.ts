@@ -78,7 +78,14 @@ export const getAthletes = async () => {
 /** Все занятия расписания. */
 export const getScheduleEntries = async () => {
   const payload = await getPayloadClient()
-  const res = await payload.find({ collection: 'schedule-entries', depth: 1, limit: 200 })
+  const res = await payload.find({ collection: 'schedule-entries', depth: 1, limit: 500 })
+  return res.docs
+}
+
+/** Спортзалы (для карты и фильтра расписания). */
+export const getHalls = async () => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'halls', sort: 'displayOrder', depth: 0, limit: 100 })
   return res.docs
 }
 

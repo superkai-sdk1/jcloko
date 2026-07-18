@@ -18,6 +18,7 @@ export const navLinks: NavItem[] = [
       { href: '/dokumenty', label: 'Документы', description: 'Официальные документы клуба' },
     ],
   },
+  { href: '/zaly', label: 'Залы' },
   { href: '/raspisanie', label: 'Расписание' },
   { href: '/novosti', label: 'Новости' },
   { href: '/media', label: 'Медиа' },

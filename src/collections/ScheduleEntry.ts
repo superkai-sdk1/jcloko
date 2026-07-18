@@ -46,7 +46,7 @@ export const ScheduleEntry: CollectionConfig = {
       relationTo: 'coaches',
       label: 'Тренер',
     },
-    { name: 'hall', type: 'text', label: 'Зал / место' },
+    { name: 'hall', type: 'relationship', relationTo: 'halls', label: 'Зал' },
     { name: 'ageGroup', type: 'text', label: 'Возраст' },
     {
       name: 'level',
