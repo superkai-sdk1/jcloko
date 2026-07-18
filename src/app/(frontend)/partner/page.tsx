@@ -78,51 +78,62 @@ export default async function PartnerPage() {
           {partners.length === 0 ? (
             <p className="text-muted">Список партнёров скоро появится.</p>
           ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-[minmax(240px,1fr)]">
-              {/* Генеральный партнёр — крупная выделенная ячейка */}
+            <div className="space-y-5">
+              {/* Генеральный партнёр — крупный featured-баннер на всю ширину */}
               {general && (
-                <Reveal variant="scale" className="sm:col-span-2 lg:col-span-2 lg:row-span-2">
-                  <div className="h-full">
-                    <CellLink p={general}>
-                      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-primary-400/50 bg-gradient-to-br from-primary/12 via-surface to-surface p-6 shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400 hover:shadow-2xl sm:p-8">
-                        <span className="absolute right-4 top-4 rounded-full border border-accent/40 bg-accent/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent">
+                <Reveal variant="scale">
+                  <CellLink p={general}>
+                    <article className="group relative grid overflow-hidden rounded-3xl border border-primary-400/50 bg-gradient-to-br from-primary/12 via-surface to-surface shadow-xl shadow-black/25 transition-all duration-300 hover:border-primary-400 hover:shadow-2xl lg:grid-cols-[minmax(0,44%)_1fr]">
+                      {/* Панель с логотипом — фиксированный тёмный фон (лого светлое) */}
+                      <div className="relative flex min-h-[220px] items-center justify-center bg-[#0e1b14] p-10 lg:min-h-[300px] lg:p-12">
+                        <span className="absolute left-5 top-5 rounded-full border border-accent/50 bg-accent/20 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-accent">
                           Генеральный партнёр
                         </span>
-                        <LogoChip src={logoOf(general)} alt={mediaAlt(general.pageLogo || general.logo, str(general.name))} big />
-                        <div className="mt-6 flex flex-1 flex-col">
-                          <h2 className="font-display text-2xl font-bold uppercase text-paper sm:text-3xl">{str(general.name)}</h2>
-                          {str(general.description) && (
-                            <p className="mt-3 max-w-2xl leading-relaxed text-paper/80">{str(general.description)}</p>
-                          )}
-                          {resolvePartnerHref(general as never) && (
-                            <span className="mt-4 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wide text-primary-400">
-                              Перейти
-                              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                            </span>
-                          )}
-                        </div>
-                      </article>
-                    </CellLink>
-                  </div>
-                </Reveal>
-              )}
-
-              {/* Остальные партнёры */}
-              {rest.map((p, i) => (
-                <Reveal key={String(p.id)} delay={(i % 3) * 0.05} className="h-full">
-                  <CellLink p={p}>
-                    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/50 hover:shadow-xl hover:shadow-black/30">
-                      <LogoChip src={logoOf(p)} alt={mediaAlt(p.pageLogo || p.logo, str(p.name))} />
-                      <div className="mt-4 flex flex-1 flex-col">
-                        <h3 className="font-display text-lg font-semibold uppercase text-paper">{str(p.name)}</h3>
-                        {str(p.description) && (
-                          <p className="mt-1.5 line-clamp-4 text-sm leading-relaxed text-muted">{str(p.description)}</p>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={(mediaUrl(general.logo) || logoOf(general)) as string}
+                          alt={mediaAlt(general.logo || general.pageLogo, str(general.name))}
+                          className="h-20 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105 lg:h-28"
+                        />
+                      </div>
+                      {/* Текст */}
+                      <div className="flex flex-col justify-center p-8 sm:p-10">
+                        <h2 className="font-display text-2xl font-bold uppercase text-paper sm:text-3xl">{str(general.name)}</h2>
+                        {str(general.description) && (
+                          <p className="mt-3 max-w-2xl leading-relaxed text-paper/80">{str(general.description)}</p>
+                        )}
+                        {resolvePartnerHref(general as never) && (
+                          <span className="mt-5 inline-flex items-center gap-1.5 font-display text-sm font-semibold uppercase tracking-wide text-primary-400">
+                            Перейти на сайт
+                            <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                          </span>
                         )}
                       </div>
                     </article>
                   </CellLink>
                 </Reveal>
-              ))}
+              )}
+
+              {/* Остальные партнёры — ровная сетка одинаковых карточек */}
+              {rest.length > 0 && (
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {rest.map((p, i) => (
+                    <Reveal key={String(p.id)} delay={(i % 3) * 0.05} className="h-full">
+                      <CellLink p={p}>
+                        <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface p-5 transition-all duration-300 hover:-translate-y-1 hover:border-primary-400/50 hover:shadow-xl hover:shadow-black/30">
+                          <LogoChip src={logoOf(p)} alt={mediaAlt(p.pageLogo || p.logo, str(p.name))} />
+                          <div className="mt-4 flex flex-1 flex-col">
+                            <h3 className="font-display text-lg font-semibold uppercase text-paper">{str(p.name)}</h3>
+                            {str(p.description) && (
+                              <p className="mt-1.5 line-clamp-4 text-sm leading-relaxed text-muted">{str(p.description)}</p>
+                            )}
+                          </div>
+                        </article>
+                      </CellLink>
+                    </Reveal>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </Container>
