@@ -24,14 +24,14 @@ const dayOrder = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const hall = (await getHallBySlug(slug)) as Record<string, unknown> | null
+  const hall = (await getHallBySlug(slug)) as unknown as Record<string, unknown> | null
   if (!hall) return {}
   return { title: `${str(hall.name)} — зал`, description: `${str(hall.city)}, ${str(hall.address)}. Расписание и контакты зала клуба дзюдо «Локомотив».` }
 }
 
 export default async function HallPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const hall = (await getHallBySlug(slug)) as Record<string, unknown> | null
+  const hall = (await getHallBySlug(slug)) as unknown as Record<string, unknown> | null
   if (!hall) notFound()
 
   const entries = (await getScheduleForHall(hall.id as string | number)) as unknown as Record<string, unknown>[]
