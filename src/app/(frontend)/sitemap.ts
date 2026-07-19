@@ -3,7 +3,7 @@ import { getPayloadClient } from '@/lib/payload'
 
 export const dynamic = 'force-dynamic'
 
-const BASE = process.env.NEXT_PUBLIC_SERVER_URL || 'https://chickenflow.ru'
+const BASE = process.env.NEXT_PUBLIC_SERVER_URL || 'https://jcloko.ru'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPaths = ['', '/o-klube', '/raspisanie', '/novosti', '/media', '/partnery', '/kontakty', '/politika']

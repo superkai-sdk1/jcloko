@@ -1,7 +1,13 @@
 # SITE_ADDRESS управляет режимом:
-#   ":80"            — HTTP без TLS (для smoke-теста по IP, пока DNS не настроен)
-#   "chickenflow.ru" — авто-HTTPS через Let's Encrypt (когда A-запись указывает на этот VPS)
-#   "jcloko.ru"      — боевой домен на этапе релиза
+#   ":80"       — HTTP без TLS (для smoke-теста по IP, пока DNS не настроен)
+#   "jcloko.ru" — боевой домен, авто-HTTPS через Let's Encrypt (A-запись уже на этот VPS)
+# www — отдельный сайт-блок с постоянным редиректом на apex-домен: работает
+# независимо от SITE_ADDRESS, при smoke-тесте по ":80" просто не выпустит
+# сертификат и будет молча простаивать (не мешает основному блоку).
+www.jcloko.ru {
+	redir https://jcloko.ru{uri} permanent
+}
+
 {$SITE_ADDRESS} {
 	encode zstd gzip
 

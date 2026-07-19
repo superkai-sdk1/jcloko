@@ -17,6 +17,11 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 FROM base AS build
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+# Публичный URL сайта нужен на этапе сборки: robots.ts/sitemap.ts и metadataBase
+# у Next.js по умолчанию статически генерируются один раз при `next build`,
+# поэтому одного .env в рантайме контейнера недостаточно.
+ARG NEXT_PUBLIC_SERVER_URL
+ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # importMap и типы Payload уже сгенерированы и закоммичены (регенерируются в

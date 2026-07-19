@@ -31,7 +31,7 @@ const inter = Inter({
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://chickenflow.ru'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SERVER_URL || 'https://jcloko.ru'),
   title: {
     default: 'Клуб дзюдо «Локомотив»',
     template: '%s — Клуб дзюдо «Локомотив»',
