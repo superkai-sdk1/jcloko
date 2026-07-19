@@ -10,9 +10,13 @@ services:
 
   app:
     # На VPS берём готовый образ из GHCR (собран в CI): docker compose pull.
-    # build остаётся запасным вариантом для локальной сборки.
+    # build остаётся запасным вариантом для локальной сборки (`docker compose
+    # up -d --build`) — например, пока CI недоступен. args берётся из .env.
     image: ${APP_IMAGE:-judo-app:latest}
-    build: .
+    build:
+      context: .
+      args:
+        - NEXT_PUBLIC_SERVER_URL
     restart: unless-stopped
     env_file:
       - .env
